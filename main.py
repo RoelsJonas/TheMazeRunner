@@ -24,6 +24,7 @@ CROSSHAIRGROOTTE = 26
 SENSITIVITY = 0.001
 
 DAGNACHTCYCLUSTIJD = 60 # aantal seconden dat 1 dag nacht cyclus duurt
+KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24     # om te weten om de hoeveel tijd de klok een uur moet opschuiven
 
 # Constanten
 BREEDTE = 800
@@ -34,7 +35,7 @@ SPRINT_SPEED = 1.75
 # Globale variabelen
 
 # positie van de speler
-p_speler = np.array([3 + 1 / math.sqrt(2), 4 - 1 / math.sqrt(2)])
+p_speler = np.array([9 + 1 / math.sqrt(2), 10 - 1 / math.sqrt(2)])
 #p_speler = np.array([5,0.75])
 
 # richting waarin de speler kijkt
@@ -97,9 +98,9 @@ def main():
     # Maak een renderer aan zodat we in ons venster kunnen renderen
     renderer = sdl2.ext.Renderer(window)
 
-    (resources, factory, ManagerFont, textures, hud, crosshair, dimmer) = rendering.create_resources(renderer)
+    (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist) = rendering.create_resources(renderer)
 
-    timeCycle = 25
+    timeCycle = 30
     winsound.PlaySound("resources\muziek.wav", winsound.SND_LOOP | winsound.SND_ASYNC)
     sprite = sprites.Sprite(3.0, 3.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, resources, factory)
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
@@ -115,7 +116,7 @@ def main():
         for kolom in range(0, window.size[0]):
             r_straal = raycast.bereken_r_straal(r_speler,r_cameravlak, kolom)
             (d_muur, intersectie, horizontaal) = raycast.raycast(p_speler, r_straal)
-            rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
+            rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, mist)
         # Verwissel de rendering context met de frame buffer=
 
         rendering.dim_image(renderer, dimmer, timeCycle)
@@ -135,7 +136,7 @@ def main():
             winsound.PlaySound("resources\GameOverSound.wav", winsound.SND_ASYNC)
             rendering.render_GameOVer(renderer, factory)
 
-        rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair)
+        rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages)
 
         timeCycle += delta
         if timeCycle >= DAGNACHTCYCLUSTIJD:
