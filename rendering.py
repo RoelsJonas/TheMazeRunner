@@ -21,7 +21,7 @@ def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokIma
     renderer.copy(klokImages[klok], srcrect=(0,0,300,300), dstrect=(505, 530, 60, 60))
 
 
-def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler):
+def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timecycle, mist):
     texture_index = 0
     d_euclidisch = d_muur
     d_muur = d_euclidisch * np.dot(r_speler, r_straal)
@@ -78,6 +78,7 @@ def create_resources(renderer):
     hud = factory.from_image(resources.get_path("hud.png"))
     crosshair = factory.from_image(resources.get_path("crosshair.png"))
     dimmer = factory.from_image((resources.get_path("dimmer.png")))
+    mist = factory.from_image((resources.get_path("tunnelVision.png")))
 
     klokImages = []
     for i in range(12):
@@ -85,9 +86,8 @@ def create_resources(renderer):
 
     textures = []
     textures.append(muur)
-    klokken = []
 
-    return(resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages)
+    return(resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist)
 
 def dim_image(renderer, dimmer, timeCycle):
 
