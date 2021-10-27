@@ -24,6 +24,7 @@ CROSSHAIRGROOTTE = 26
 SENSITIVITY = 0.001
 
 DAGNACHTCYCLUSTIJD = 60 # aantal seconden dat 1 dag nacht cyclus duurt
+KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24     # om te weten om de hoeveel tijd de klok een uur moet opschuiven
 
 # Constanten
 BREEDTE = 800
@@ -34,7 +35,7 @@ SPRINT_SPEED = 1.75
 # Globale variabelen
 
 # positie van de speler
-p_speler = np.array([3 + 1 / math.sqrt(2), 4 - 1 / math.sqrt(2)])
+p_speler = np.array([9 + 1 / math.sqrt(2), 10 - 1 / math.sqrt(2)])
 #p_speler = np.array([5,0.75])
 
 # richting waarin de speler kijkt
@@ -111,7 +112,7 @@ def main():
     # Maak een renderer aan zodat we in ons venster kunnen renderen
     renderer = sdl2.ext.Renderer(window)
 
-    (resources, factory, ManagerFont, textures, hud, crosshair, dimmer) = rendering.create_resources(renderer)
+    (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages) = rendering.create_resources(renderer)
 
     timeCycle = 25
     winsound.PlaySound("resources\muziek.wav", winsound.SND_LOOP | winsound.SND_ASYNC)
