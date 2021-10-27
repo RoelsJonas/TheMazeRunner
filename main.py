@@ -26,6 +26,8 @@ SENSITIVITY = 0.001
 DAGNACHTCYCLUSTIJD = 60 # aantal seconden dat 1 dag nacht cyclus duurt
 KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24     # om te weten om de hoeveel tijd de klok een uur moet opschuiven
 
+MUURHOOGTE = 3
+
 # Constanten
 BREEDTE = 800
 HOOGTE = 600
@@ -87,6 +89,7 @@ kleuren = [
     sdl2.ext.Color(219, 190, 72), # 8 = hunger
     sdl2.ext.Color(0, 255, 0),  # 9 = stamina
     sdl2.ext.Color(255, 0, 0),  # 10 = Rood
+    sdl2.ext.Color(19, 216, 255), #11 = blauw dag skybox
 ]
 
 
@@ -125,7 +128,7 @@ def main():
 
         # Reset de rendering context
         renderer.clear()
-        rendering.render_lucht_en_vloer(renderer)
+        rendering.render_lucht_en_vloer(renderer, timeCycle)
         # Render de huidige frame
         for kolom in range(0, window.size[0]):
             r_straal = raycast.bereken_r_straal(r_speler,r_cameravlak, kolom)
