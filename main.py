@@ -137,7 +137,7 @@ def main():
         # Verwissel de rendering context met de frame buffer=
 
         rendering.dim_image(renderer, dimmer, timeCycle)
-        #sprite.render(renderer, r_speler, r_cameravlak, p_speler)
+        sprites.render(renderer, r_speler, r_cameravlak, p_speler)
 
         end_time = time.time()
         delta = end_time - start_time
