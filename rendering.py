@@ -27,7 +27,7 @@ def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, text
     d_muur = d_euclidisch * np.dot(r_speler, r_straal)
 
     hoogte = main.MUURHOOGTE*(window.size[1]/d_muur)
-    y1 = int((window.size[1]-hoogte)//2) - 50
+    y1 = int((window.size[1]-hoogte)//2) - 100
     y2 = window.size[1]-y1
     textuur_y = 0
     textuur_hoogte = int(textures[texture_index].size[1])
@@ -44,8 +44,8 @@ def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, text
 
 
 def render_lucht_en_vloer(renderer, timecycle):
-    renderer.fill((0, 0, main.BREEDTE, int(main.HOOGTE / 2)), main.kleuren[11])
-    renderer.fill((0, main.HOOGTE, main.BREEDTE, int(-main.HOOGTE / 2)), main.kleuren[6])
+    renderer.fill((0, 0, main.BREEDTE, int(main.HOOGTE / 2)-100), main.kleuren[11])
+    renderer.fill((0, main.HOOGTE, main.BREEDTE, int(-main.HOOGTE / 2 -100)), main.kleuren[6])
 
 
 
@@ -74,7 +74,7 @@ def create_resources(renderer):
 
     ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(255, 255, 255))
 
-    muur = factory.from_image(resources.get_path("fisheyetest.png"))
+    muur = factory.from_image(resources.get_path("wall-concrete.png"))
     hud = factory.from_image(resources.get_path("hud.png"))
     crosshair = factory.from_image(resources.get_path("crosshair.png"))
     dimmer = factory.from_image((resources.get_path("dimmer.png")))
