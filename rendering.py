@@ -30,6 +30,7 @@ def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, text
     textuur_hoogte = int(textures[texture_index].size[1])
 
 
+
     if horizontaal:
         textuur_x = int(np.round((intersectie[0] - int(intersectie[0])) * textures[texture_index].size[0]))
     else:
@@ -79,6 +80,7 @@ def create_resources(renderer):
 
     textures = []
     textures.append(muur)
+    klokken = []
 
     return(resources, factory, ManagerFont, textures, hud, crosshair, dimmer)
 
