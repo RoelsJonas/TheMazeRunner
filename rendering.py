@@ -80,25 +80,26 @@ def create_resources(renderer):
     dimmer = factory.from_image((resources.get_path("dimmer.png")))
 
     klokImages = []
-    for i in range(12):
+    for i in range(6, 12):
+        klokImages.append(factory.from_image((resources.get_path("klok" + str(i+1) + ".png"))))
+    for i in range(6):
         klokImages.append(factory.from_image((resources.get_path("klok" + str(i+1) + ".png"))))
 
     textures = []
     textures.append(muur)
-    klokken = []
 
     return(resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages)
 
 def dim_image(renderer, dimmer, timeCycle):
 
-    if main.DAGNACHTCYCLUSTIJD//2 <= timeCycle <= ((main.DAGNACHTCYCLUSTIJD//2) + 5):
-        for i in range(int(timeCycle*10-300)):
+    if (main.DAGNACHTCYCLUSTIJD//2) + 5 <= timeCycle <= ((main.DAGNACHTCYCLUSTIJD//2) + 10):           #avond maken
+        for i in range(int(timeCycle*10-((main.DAGNACHTCYCLUSTIJD//2) + 5)*10)):                       # afhankelijk van timeCyclus bepaalde hoeveelheid dimmers toevoegen om langzaam donker te worden, term achter minteken is om offset te maken
             renderer.copy(dimmer, srcrect=(0, 0, 1, 1), dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
 
-    elif timeCycle > ((main.DAGNACHTCYCLUSTIJD//2) + 5):
+    elif timeCycle > ((main.DAGNACHTCYCLUSTIJD//2) + 10):                #nacht
         for i in range(50):
             renderer.copy(dimmer, srcrect=(0, 0, 1, 1), dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
 
-    elif timeCycle <= 5:
+    elif timeCycle <= 5:                        #ochtend maken
         for i in range(int(50-10*timeCycle)):
             renderer.copy(dimmer, srcrect=(0, 0, 1, 1), dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
