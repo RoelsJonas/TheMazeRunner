@@ -14,10 +14,11 @@ def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokIma
     renderer.fill((688, 565, int(hunger), 22), main.kleuren[8])
     renderer.copy(hud, srcrect=(0, 0, 800, 75), dstrect=(0, 525, main.BREEDTE,75))
     renderer.copy(crosshair, srcrect=(0, 0, 50, 50), dstrect=((main.BREEDTE - main.CROSSHAIRGROOTTE)//2, (main.HOOGTE - main.CROSSHAIRGROOTTE)//2 , main.CROSSHAIRGROOTTE, main.CROSSHAIRGROOTTE))
-    klok = 24 *int(main.DAGNACHTCYCLUSTIJD/timeCycle)
-    if klok > 12:
+    klok = int(24 * (int(timeCycle)/main.DAGNACHTCYCLUSTIJD))
+    if klok >= 12:
         klok -= 12
-    renderer.copy(klokImages[klok], srcrect=())
+    print(klok)
+    renderer.copy(klokImages[klok], srcrect=(0,0,300,300), dstrect=(505, 530, 60, 60))
 
 
 def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler):
@@ -65,8 +66,6 @@ def render_FPS(delta, renderer, factory, ManagerFont):
     renderer.copy(text, dstrect=(0, 0, 50, 25))
 
 
-
-
 def create_resources(renderer):
 
     resources = sdl2.ext.Resources(__file__, "resources")
@@ -82,7 +81,7 @@ def create_resources(renderer):
 
     klokImages = []
     for i in range(12):
-        klokImages.append(factory.from_image((resources.get_path("klok" + str(i) + ".png"))))
+        klokImages.append(factory.from_image((resources.get_path("klok" + str(i+1) + ".png"))))
 
     textures = []
     textures.append(muur)

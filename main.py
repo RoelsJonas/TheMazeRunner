@@ -150,7 +150,7 @@ def main():
             winsound.PlaySound("resources\GameOverSound.wav", winsound.SND_ASYNC)
             rendering.render_GameOVer(renderer, factory)
 
-        rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair)
+        rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages)
 
         timeCycle += delta
         if timeCycle >= DAGNACHTCYCLUSTIJD:
