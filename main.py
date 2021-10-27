@@ -112,9 +112,9 @@ def main():
     # Maak een renderer aan zodat we in ons venster kunnen renderen
     renderer = sdl2.ext.Renderer(window)
 
-    (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages) = rendering.create_resources(renderer)
+    (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist) = rendering.create_resources(renderer)
 
-    timeCycle = 25
+    timeCycle = 30
     winsound.PlaySound("resources\muziek.wav", winsound.SND_LOOP | winsound.SND_ASYNC)
     sprite = sprites.Sprite(3, 3, 1, 0, "spellun-sprite.png", 0.5, 0.25, resources, factory)
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
@@ -130,7 +130,7 @@ def main():
         for kolom in range(0, window.size[0]):
             r_straal = raycast.bereken_r_straal(r_speler,r_cameravlak, kolom)
             (d_muur, intersectie, horizontaal) = raycast.raycast(p_speler, r_straal)
-            rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
+            rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, mist)
         # Verwissel de rendering context met de frame buffer=
 
         rendering.dim_image(renderer, dimmer, timeCycle)
