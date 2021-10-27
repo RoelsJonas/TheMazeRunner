@@ -27,7 +27,7 @@ def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, text
     d_muur = d_euclidisch * np.dot(r_speler, r_straal)
 
     hoogte = main.MUURHOOGTE*(window.size[1]/d_muur)
-    y1 = int((window.size[1]-hoogte)//2) -50
+    y1 = int((window.size[1]-hoogte)//2) - 50
     y2 = window.size[1]-y1
     textuur_y = 0
     textuur_hoogte = int(textures[texture_index].size[1])
