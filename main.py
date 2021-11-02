@@ -115,10 +115,10 @@ def main():
     # Maak een renderer aan zodat we in ons venster kunnen renderen
     renderer = sdl2.ext.Renderer(window)
 
-    (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist) = rendering.create_resources(renderer)
+    (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites) = rendering.create_resources(renderer)
 
-    timeCycle = 30
-    winsound.PlaySound("resources\muziek.wav", winsound.SND_LOOP | winsound.SND_ASYNC)
+    timeCycle = 55
+    winsound.PlaySound("resources\muziek.wav", winsound.SND_LOOP | winsound.SND_ASYNC | winsound.SND_NOSTOP)
     sprite = sprites.Sprite(3.0, 3.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, resources, factory)
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
     while not moet_afsluiten:
@@ -150,7 +150,7 @@ def main():
         elif hp>=0:
             hp -= delta * HUNGERHPLOSSMODIFIER
         else:
-            winsound.PlaySound("resources\GameOverSound.wav", winsound.SND_ASYNC)
+            winsound.PlaySound("resources\GameOverSound.wav", winsound.SND_ASYNC )
             rendering.render_GameOVer(renderer, factory)
 
         rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages)

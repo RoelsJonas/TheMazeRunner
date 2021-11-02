@@ -28,7 +28,6 @@ def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, text
 
     hoogte = main.MUURHOOGTE*(window.size[1]/d_muur)
     y1 = int((window.size[1]-hoogte)//2) - 100
-    y2 = window.size[1]-y1
     textuur_y = 0
     textuur_hoogte = int(textures[texture_index].size[1])
 
@@ -89,7 +88,10 @@ def create_resources(renderer):
     textures = []
     textures.append(muur)
 
-    return(resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist)
+    afbeeldingen_sprites = []
+    afbeeldingen_sprites.append(factory.from_image((resources.get_path("spellun-sprite.png"))))
+
+    return(resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites)
 
 def dim_image(renderer, dimmer, timeCycle):
 

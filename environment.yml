@@ -6,4 +6,5 @@ dependencies:
   - pysdl2
   - pillow
   - numpy
+  - playsound
   

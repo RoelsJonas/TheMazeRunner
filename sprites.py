@@ -38,23 +38,27 @@ class Sprite:
             #bepaal de coordinaten tov van het camera vlak
             cameraCoordinaten = (1 / determinant) * np.dot(adj, p_kolom)
             cameraCoordinaten[0] += ((-0.5 + kolom / breed) * self.breedte)
-            print(cameraCoordinaten)
+            #print(cameraCoordinaten)
 
             #bepaal het snijpunt met het cameravlak
             snijpunt = (cameraCoordinaten[0] * main.D_CAMERA) / cameraCoordinaten[1]
 
             #bepaal in welke kolom van het scherm dit snijpunt valt
-            if -1 <= snijpunt <= 1:
+            if -1 <= snijpunt <= 1 and cameraCoordinaten[1] > 0:
                 schermKolom = int(np.round((snijpunt + 1) * main.BREEDTE/2))
-                y1 = 200
+                d_sprite = np.linalg.norm(p_kolom)
+                h = (main.HOOGTE/d_sprite)
+                y1 = main.HOOGTE - int((main.HOOGTE-h)//2) - 100
+                h = int(self.hoogte * h)
             else:
                 schermKolom = main.BREEDTE + 1 #render buiten scherm
                 y1 = 0
+                h = 0
 
-            h = y1 * self.hoogte
+
             renderer.copy(self.afbeelding,
                           srcrect=(kolom, 0, 1, self.afbeelding.size[1]),
-                          dstrect=(int(main.BREEDTE - 1 - schermKolom), int(y1), 1, int(h)))
+                          dstrect=(int(main.BREEDTE - 1 - schermKolom), y1, 2, h))
 
 
 
