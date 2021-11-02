@@ -24,7 +24,7 @@ class Sprite:
         self.hoogte = h
         self.breedte = b
 
-    def render(self, renderer, r_speler, r_cameravlak, p_speler):
+    def render(self, renderer, r_speler, r_cameravlak, p_speler, z_buffer):
         breed = self.afbeelding.size[0]
         determinant = ((r_cameravlak[0] * r_speler[1]) - (r_speler[0] * r_cameravlak[1]))
         adj = np.array([[r_speler[1],-r_speler[0]],[-r_cameravlak[1],r_cameravlak[0]]])
@@ -51,15 +51,15 @@ class Sprite:
                 h = (main.HOOGTE/d_sprite)
                 y1 = main.HOOGTE - int((main.HOOGTE-h)//2) - 100
                 h = int(self.hoogte * h)
-            else:
-                schermKolom = main.BREEDTE + 1 #render buiten scherm
-                y1 = 0
-                h = 0
+                schermKolom = main.BREEDTE - 1 - schermKolom
+                if d_sprite < z_buffer[schermKolom] or z_buffer[schermKolom] == 0:
+                    z_buffer[schermKolom] = d_sprite
+                    renderer.copy(self.afbeelding,
+                                srcrect=(kolom, 0, 1, self.afbeelding.size[1]),
+                                dstrect=(schermKolom, y1, 2, h))
+        return z_buffer
 
 
-            renderer.copy(self.afbeelding,
-                          srcrect=(kolom, 0, 1, self.afbeelding.size[1]),
-                          dstrect=(int(main.BREEDTE - 1 - schermKolom), y1, 2, h))
 
 
 

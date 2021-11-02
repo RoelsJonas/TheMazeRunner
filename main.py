@@ -128,16 +128,21 @@ def main():
 
         # Reset de rendering context
         renderer.clear()
+
+        #maak lege z buffer aan:
+        z_buffer = np.zeros(BREEDTE, float)
+
         rendering.render_lucht_en_vloer(renderer, timeCycle)
         # Render de huidige frame
         for kolom in range(0, window.size[0]):
             r_straal = raycast.bereken_r_straal(r_speler,r_cameravlak, kolom)
             (d_muur, intersectie, horizontaal) = raycast.raycast(p_speler, r_straal)
+            z_buffer[BREEDTE - 1 - kolom] = d_muur
             rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, mist)
         # Verwissel de rendering context met de frame buffer=
 
         rendering.dim_image(renderer, dimmer, timeCycle)
-        sprite.render(renderer, r_speler, r_cameravlak, p_speler)
+        z_buffer = sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
 
         end_time = time.time()
         delta = end_time - start_time

@@ -31,15 +31,13 @@ def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, text
     textuur_y = 0
     textuur_hoogte = int(textures[texture_index].size[1])
 
-
-
+    schermkolom = main.BREEDTE - 1 - kolom
     if horizontaal:
         textuur_x = int(np.round((intersectie[0] - int(intersectie[0])) * textures[texture_index].size[0]))
     else:
         textuur_x = int(np.round((intersectie[1] - int(intersectie[1])) * textures[texture_index].size[0]))
 
-    renderer.copy(textures[0], srcrect=(textuur_x, textuur_y, 1, textuur_hoogte), dstrect=(main.BREEDTE - 1 - kolom, y1, 2, int(hoogte))) #muur
-
+    renderer.copy(textures[0], srcrect=(textuur_x, textuur_y, 1, textuur_hoogte), dstrect=(schermkolom, y1, 2, int(hoogte))) #muur
 
 
 def render_lucht_en_vloer(renderer, timecycle):
