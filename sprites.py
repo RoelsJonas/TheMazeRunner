@@ -34,10 +34,11 @@ class Sprite:
             #bepaal de coordinaten van de kolom ten opzichte van de speler
             p_kolom[0] -= p_speler[0]
             p_kolom[1] -= p_speler[1]
+            p_kolom[0] += ((-0.5 + kolom / breed) * self.breedte) * self.r_sprite[0]
+            p_kolom[1] += ((-0.5 + kolom / breed) * self.breedte) * self.r_sprite[1]
 
             #bepaal de coordinaten tov van het camera vlak
             cameraCoordinaten = (1 / determinant) * np.dot(adj, p_kolom)
-            cameraCoordinaten[0] += ((-0.5 + kolom / breed) * self.breedte)
             #print(cameraCoordinaten)
 
             #bepaal het snijpunt met het cameravlak
