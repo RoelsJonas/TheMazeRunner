@@ -17,7 +17,6 @@ def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokIma
     klok = int(24 * (int(timeCycle)/main.DAGNACHTCYCLUSTIJD))
     if klok >= 12:
         klok -= 12
-    print(klok)
     renderer.copy(klokImages[klok], srcrect=(0,0,300,300), dstrect=(505, 530, 60, 60))
 
 

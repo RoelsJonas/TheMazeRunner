@@ -8,8 +8,6 @@ def bewegen(delta, delta_p, r_speler, r_cameravlak, p_speler):
 
     p_speler_nieuw = np.array([p_speler[0], p_speler[1]])
 
-    dichtste_afstand = 0.2
-
     p_speler_nieuw += delta * delta_p[0] * r_speler
     p_speler_nieuw += delta * delta_p[1] * r_cameravlak
 

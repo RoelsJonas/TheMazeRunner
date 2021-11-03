@@ -23,7 +23,7 @@ HUNGERHPLOSSMODIFIER = 0.1 #snelheid waarmee hp verloren gaat wanneer hunger = 0
 CROSSHAIRGROOTTE = 26
 SENSITIVITY = 0.001
 
-DAGNACHTCYCLUSTIJD = 60 # aantal seconden dat 1 dag nacht cyclus duurt
+DAGNACHTCYCLUSTIJD = 120 # aantal seconden dat 1 dag nacht cyclus duurt
 KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24     # om te weten om de hoeveel tijd de klok een uur moet opschuiven
 
 MUURHOOGTE = 1.5
@@ -119,7 +119,7 @@ def main():
 
     timeCycle = 55
     winsound.PlaySound("resources\muziek.wav", winsound.SND_LOOP | winsound.SND_ASYNC | winsound.SND_NOSTOP)
-    sprite = sprites.Sprite(3.0, 3.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, resources, factory)
+    sprite = sprites.Sprite(3.0, 3.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, resources, factory)
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
     while not moet_afsluiten:
         # Onthoud de huidige tijd
@@ -143,12 +143,11 @@ def main():
 
         rendering.dim_image(renderer, dimmer, timeCycle)
         z_buffer = sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
-
         end_time = time.time()
         delta = end_time - start_time
 
         rendering.render_FPS(delta, renderer, factory, ManagerFont)
-
+        sprite.moveToPlayer(p_speler, delta)
 
         if hunger >= 0:
             hunger -= delta * HUNGERMODIFIER
