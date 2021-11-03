@@ -15,10 +15,11 @@ class Sprite:
     hp = 0
     hungerValue = 5
     eetbaar = False
+    healer = False
     DPS = 0
     middensteKolom = 0
 
-    def __init__(self, x, y, richting_x,richting_y, png, h, b, speed, volgIk, eet, waarde, health, damage, resources, factory):
+    def __init__(self, x, y, richting_x,richting_y, png, h, b, speed, volgIk, eet, healer, waarde, health, damage, resources, factory):
         self.p_sprite = np.array([[x], [y]])
         self.afbeelding = factory.from_image(resources.get_path(png))
         self.hoogte = h
@@ -29,6 +30,7 @@ class Sprite:
         self.eetbaar = eet
         self.hungerValue = waarde
         self.hp = health
+        self.healer = healer
         self.DPS = damage
 
     def move(self, delta_x, delta_y):
@@ -116,7 +118,18 @@ class Sprite:
                 hunger += self.hungerValue
                 if hunger > 100:
                     hunger = 100
+                if hunger > 60:
+                    hp += self.DPS
                 destroy = True
+        if self.healer:
+            p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
+            p_sprite[0] -= p_speler[0]
+            p_sprite[1] -= p_speler[1]
+            p_sprite = np.linalg.norm(p_sprite)
+            if p_sprite < main.INTERACTIONDISTANCE:
+                hp += self.DPS
+                destroy = True
+
         if self.volgt:
             if self.hp < 0:
                 destroy = True

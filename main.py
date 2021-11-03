@@ -16,7 +16,7 @@ hp = 100
 stamina = 100
 hunger = 100
 
-HUNGERMODIFIER = 0.15 #snelheid waarmee hunger daalt
+HUNGERMODIFIER = 6 #snelheid waarmee hunger daalt
 SPRINTINGHUNGERMODIFIER = 0.15 #snelheid waarmee hunger extra daal tijdens het sprinten
 STAMINALOSSMODIFIER = 5 #snelheid waarmee stamina verloren gaat tijdens sprinten
 STAMINAREGENMODIFIER = 3 #snelheid waarmee stamina regenereert
@@ -24,8 +24,10 @@ HUNGERHPLOSSMODIFIER = 0.1 #snelheid waarmee hp verloren gaat wanneer hunger = 0
 CROSSHAIRGROOTTE = 26
 SENSITIVITY = 0.001
 INTERACTIONDISTANCE = 0.2
+HPREPLENISHMODIFIERER = 0,2
 
-DAGNACHTCYCLUSTIJD = 120 # aantal seconden dat 1 dag nacht cyclus duurt
+
+DAGNACHTCYCLUSTIJD = 360 # aantal seconden dat 1 dag nacht cyclus duurt
 KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24     # om te weten om de hoeveel tijd de klok een uur moet opschuiven
 
 MUURHOOGTE = 1.5
@@ -103,10 +105,11 @@ def main():
     timeToAttack = 0
 
     timeCycle = 55
-    winsound.PlaySound("resources\muziek.wav", winsound.SND_LOOP | winsound.SND_ASYNC | winsound.SND_NOSTOP)
+    #winsound.PlaySound("resources\muziek.wav", winsound.SND_LOOP | winsound.SND_ASYNC | winsound.SND_NOSTOP)
     spriteList = []
-    spriteList.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, True, False, 0, 50, 10, resources, factory))
-    spriteList.append(sprites.Sprite(28.0, 28.0, 1, 0, "burger.png", 0.5, 0.5, 1, False, True, 10, 0, 0, resources, factory))
+    #spriteList.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, True, False, False, 0, 50, 10, resources, factory))
+    spriteList.append(sprites.Sprite(28.0, 28.0, 1, 0, "burger.png", 0.5, 0.5, 1, False, True, False, 10, 0, 5, resources, factory))
+    spriteList.append(sprites.Sprite(25.0, 25.0, 1, 0, "medkit.png", 0.5, 0.5, 1, False, True, True, 0, 0, 30, resources, factory))   #doet damage van -30 -> healt en volgt met speed 0, dus volgt niet
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
     while not moet_afsluiten:
         # Onthoud de huidige tijd
@@ -143,7 +146,7 @@ def main():
 
         if hunger >= 0:
             hunger -= delta * HUNGERMODIFIER
-        if hp>=0:
+        if hp >= 0:
             hp -= delta * HUNGERHPLOSSMODIFIER
         else:
             winsound.PlaySound("resources\GameOverSound.wav", winsound.SND_ASYNC )
