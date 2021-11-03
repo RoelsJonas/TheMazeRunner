@@ -12,9 +12,9 @@ def generateWorld(afbeelding):
     for i in range(r_in.shape[0]):
         for j in range(r_in.shape[1]):
             if r_in[i, j] == 0:
-                world_map[i, j] = 0
-            else:
                 world_map[i, j] = 1
+            else:
+                world_map[i, j] = 0
 
     return world_map
 
