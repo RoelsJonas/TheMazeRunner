@@ -1,6 +1,3 @@
-import math
-import time
-import numpy as np
 import sdl2
 import sdl2.ext
 import sdl2.sdlttf
@@ -9,6 +6,9 @@ import raycast
 import movement
 import sprites
 import winsound
+import numpy as np
+import math
+import time
 
 #begin waarden instellen
 hp = 100
