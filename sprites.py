@@ -41,7 +41,7 @@ class Sprite:
                 norm = np.linalg.norm(afstand)
                 afstand /= norm
                 self.r_sprite = np.array([afstand[1], -1 * afstand[0]])
-                p_sprite_nieuw = np.array([self.p_sprite[0] - delta * afstand[0], self.p_sprite[1] - delta * afstand[1]])
+                p_sprite_nieuw = np.array([self.p_sprite[0] - delta * self.MOVEMENTSPEED * afstand[0], self.p_sprite[1] - delta * self.MOVEMENTSPEED * afstand[1]])
 
                 #check of nieuwe positie geldig is
                 if main.world_map[int(p_sprite_nieuw[1]), int(p_sprite_nieuw[0])] == 0:
