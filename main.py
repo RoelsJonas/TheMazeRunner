@@ -23,6 +23,7 @@ STAMINAREGENMODIFIER = 3 #snelheid waarmee stamina regenereert
 HUNGERHPLOSSMODIFIER = 0.1 #snelheid waarmee hp verloren gaat wanneer hunger = 0
 CROSSHAIRGROOTTE = 26
 SENSITIVITY = 0.001
+INTERACTIONDISTANCE = 0.2
 
 DAGNACHTCYCLUSTIJD = 120 # aantal seconden dat 1 dag nacht cyclus duurt
 KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24     # om te weten om de hoeveel tijd de klok een uur moet opschuiven
@@ -32,8 +33,8 @@ MUURHOOGTE = 1.5
 # Constanten
 BREEDTE = 800
 HOOGTE = 600
-SPEED = 1
-SPRINT_SPEED = 1.75
+SPEED = 1.5
+SPRINT_SPEED = 2.25
 
 # Globale variabelen
 
@@ -98,11 +99,13 @@ def main():
 
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites) = rendering.create_resources(renderer)
 
+    damage = 0
+
     timeCycle = 55
     winsound.PlaySound("resources\muziek.wav", winsound.SND_LOOP | winsound.SND_ASYNC | winsound.SND_NOSTOP)
     spriteList = []
-    spriteList.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, True, resources, factory))
-    spriteList.append(sprites.Sprite(28.0, 28.0, 1, 0, "burger.png", 0.5, 0.5, 1, False, resources, factory))
+    spriteList.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, True, False, 0, 50, 10, resources, factory))
+    spriteList.append(sprites.Sprite(28.0, 28.0, 1, 0, "burger.png", 0.5, 0.5, 1, False, True, 10, 0, 0, resources, factory))
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
     while not moet_afsluiten:
         # Onthoud de huidige tijd
@@ -130,12 +133,15 @@ def main():
         for sprite in spriteList:
             z_buffer = sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
             sprite.moveToPlayer(p_speler, delta)
+            (hunger, hp, destroy) = sprite.checkInteractie(hunger, hp, p_speler, delta, damage)
+            if destroy:
+                spriteList.remove(sprite)
 
         rendering.render_FPS(delta, renderer, factory, ManagerFont)
 
         if hunger >= 0:
             hunger -= delta * HUNGERMODIFIER
-        elif hp>=0:
+        if hp>=0:
             hp -= delta * HUNGERHPLOSSMODIFIER
         else:
             winsound.PlaySound("resources\GameOverSound.wav", winsound.SND_ASYNC )
@@ -147,7 +153,7 @@ def main():
         if timeCycle >= DAGNACHTCYCLUSTIJD:
             timeCycle = 0
 
-        (p_speler, moet_afsluiten, stamina, hunger) = movement.polling(delta,p_speler,r_speler,r_cameravlak, stamina, hunger)
+        (p_speler, moet_afsluiten, stamina, hunger, damage) = movement.polling(delta,p_speler,r_speler,r_cameravlak, stamina, hunger)
         (r_speler, r_cameravlak) = movement.draaien(r_speler, r_cameravlak)
 
         renderer.present()

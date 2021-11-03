@@ -12,8 +12,13 @@ class Sprite:
     drawn = False
     followTime = 0
     volgt = False
+    hp = 0
+    hungerValue = 5
+    eetbaar = False
+    DPS = 0
+    middensteKolom = 0
 
-    def __init__(self, x, y, richting_x,richting_y, png, h, b, speed, volgIk, resources, factory):
+    def __init__(self, x, y, richting_x,richting_y, png, h, b, speed, volgIk, eet, waarde, health, damage, resources, factory):
         self.p_sprite = np.array([[x], [y]])
         self.afbeelding = factory.from_image(resources.get_path(png))
         self.hoogte = h
@@ -21,6 +26,10 @@ class Sprite:
         self.r_sprite = np.array([richting_x, richting_y])
         self.MOVEMENTSPEED = speed
         self.volgt = volgIk
+        self.eetbaar = eet
+        self.hungerValue = waarde
+        self.hp = health
+        self.DPS = damage
 
     def move(self, delta_x, delta_y):
         self.p_sprite += np.array([delta_x, delta_y])
@@ -63,12 +72,13 @@ class Sprite:
             #bepaal de coordinaten van de kolom ten opzichte van de speler
             p_kolom[0] -= p_speler[0]
             p_kolom[1] -= p_speler[1]
-            p_kolom[0] += ((-0.5 + kolom / breed) * self.breedte) * self.r_sprite[0]
-            p_kolom[1] += ((-0.5 + kolom / breed) * self.breedte) * self.r_sprite[1]
+            #p_kolom[0] += ((-0.5 + kolom / breed) * self.breedte) # * self.r_sprite[0]
+            #p_kolom[1] += ((-0.5 + kolom / breed) * self.breedte) * self.r_sprite[1]
 
             #bepaal de coordinaten tov van het camera vlak
             cameraCoordinaten = (1 / determinant) * np.dot(adj, p_kolom)
-            #print(cameraCoordinaten)
+
+            cameraCoordinaten[0] += ((-0.5 + kolom / breed) * self.breedte)
 
             #bepaal het snijpunt met het cameravlak
             snijpunt = (cameraCoordinaten[0] * main.D_CAMERA) / cameraCoordinaten[1]
@@ -88,7 +98,39 @@ class Sprite:
                     renderer.copy(self.afbeelding,
                                 srcrect=(kolom, 0, 1, self.afbeelding.size[1]),
                                 dstrect=(schermKolom, y1, 2, h))
+            else:
+                schermKolom = 0
+            if kolom == main.BREEDTE//2:
+                self.middensteKolom = schermKolom
+
         return z_buffer
+
+    def checkInteractie(self, hunger, hp, p_speler, delta, damage):
+        destroy = False
+        if self.eetbaar:
+            p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
+            p_sprite[0] -= p_speler[0]
+            p_sprite[1] -= p_speler[1]
+            p_sprite = np.linalg.norm(p_sprite)
+            if p_sprite < main.INTERACTIONDISTANCE:
+                hunger += self.hungerValue
+                if hunger > 100:
+                    hunger = 100
+                destroy = True
+        if self.volgt:
+            if hp < 0:
+                destroy = True
+
+            p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
+            p_sprite[0] -= p_speler[0]
+            p_sprite[1] -= p_speler[1]
+            p_sprite = np.linalg.norm(p_sprite)
+            if p_sprite < main.INTERACTIONDISTANCE:
+                hp -= self.DPS * delta
+                self.hp -= damage * delta
+
+        return(hunger, hp, destroy)
+
 
 
 

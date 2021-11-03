@@ -25,7 +25,7 @@ def bewegen(delta, delta_p, r_speler, r_cameravlak, p_speler):
 
 def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger):
     moet_afsluiten = False
-
+    damage = 0
     delta_p = np.array([0,0])
     key_states = sdl2.SDL_GetKeyboardState(None)
 
@@ -64,12 +64,11 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger):
     if key_states[sdl2.SDL_SCANCODE_ESCAPE]:
         moet_afsluiten = True
 
-    return(p_speler, moet_afsluiten, stamina, hunger)
+    return(p_speler, moet_afsluiten, stamina, hunger, damage)
 
 
 def draaien(r_speler, r_cameravlak):
     events = sdl2.ext.get_events()
-
     for event in events:
         if event.type == sdl2.SDL_MOUSEMOTION:
             beweging = (-1) * event.motion.xrel * main.SENSITIVITY
