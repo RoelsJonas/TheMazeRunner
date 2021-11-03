@@ -100,6 +100,7 @@ def main():
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites) = rendering.create_resources(renderer)
 
     damage = 0
+    timeToAttack = 0
 
     timeCycle = 55
     winsound.PlaySound("resources\muziek.wav", winsound.SND_LOOP | winsound.SND_ASYNC | winsound.SND_NOSTOP)
@@ -133,10 +134,11 @@ def main():
         for sprite in spriteList:
             z_buffer = sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
             sprite.moveToPlayer(p_speler, delta)
-            (hunger, hp, destroy) = sprite.checkInteractie(hunger, hp, p_speler, delta, damage)
+            (hunger, hp, destroy, timeToAttack) = sprite.checkInteractie(hunger, hp, p_speler, delta, damage, timeToAttack)
             if destroy:
                 spriteList.remove(sprite)
 
+        timeToAttack -= delta
         rendering.render_FPS(delta, renderer, factory, ManagerFont)
 
         if hunger >= 0:
@@ -153,8 +155,8 @@ def main():
         if timeCycle >= DAGNACHTCYCLUSTIJD:
             timeCycle = 0
 
-        (p_speler, moet_afsluiten, stamina, hunger, damage) = movement.polling(delta,p_speler,r_speler,r_cameravlak, stamina, hunger)
-        (r_speler, r_cameravlak) = movement.draaien(r_speler, r_cameravlak)
+        (p_speler, moet_afsluiten, stamina, hunger) = movement.polling(delta,p_speler,r_speler,r_cameravlak, stamina, hunger)
+        (r_speler, r_cameravlak, damage) = movement.draaien(r_speler, r_cameravlak)
 
         renderer.present()
 

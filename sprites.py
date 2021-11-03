@@ -105,7 +105,7 @@ class Sprite:
 
         return z_buffer
 
-    def checkInteractie(self, hunger, hp, p_speler, delta, damage):
+    def checkInteractie(self, hunger, hp, p_speler, delta, damage, timeToAttack):
         destroy = False
         if self.eetbaar:
             p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
@@ -118,7 +118,7 @@ class Sprite:
                     hunger = 100
                 destroy = True
         if self.volgt:
-            if hp < 0:
+            if self.hp < 0:
                 destroy = True
 
             p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
@@ -127,9 +127,11 @@ class Sprite:
             p_sprite = np.linalg.norm(p_sprite)
             if p_sprite < main.INTERACTIONDISTANCE:
                 hp -= self.DPS * delta
-                self.hp -= damage * delta
+                if timeToAttack < 0:
+                    self.hp -= damage
+                    timeToAttack = .5
 
-        return(hunger, hp, destroy)
+        return(hunger, hp, destroy, timeToAttack)
 
 
 
