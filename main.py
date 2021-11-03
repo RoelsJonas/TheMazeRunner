@@ -38,7 +38,7 @@ SPRINT_SPEED = 1.75
 # Globale variabelen
 
 # positie van de speler
-p_speler = np.array([19 + 1 / math.sqrt(2), 20 - 1 / math.sqrt(2)])
+p_speler = np.array([30 + 1 / math.sqrt(2), 30 - 1 / math.sqrt(2)])
 #p_speler = np.array([5,0.75])
 
 # richting waarin de speler kijkt
@@ -100,7 +100,9 @@ def main():
 
     timeCycle = 55
     winsound.PlaySound("resources\muziek.wav", winsound.SND_LOOP | winsound.SND_ASYNC | winsound.SND_NOSTOP)
-    sprite = sprites.Sprite(3.0, 3.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, resources, factory)
+    spriteList = []
+    spriteList.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, True, resources, factory))
+    spriteList.append(sprites.Sprite(28.0, 28.0, 1, 0, "burger.png", 0.5, 0.5, 1, False, resources, factory))
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
     while not moet_afsluiten:
         # Onthoud de huidige tijd
@@ -123,12 +125,13 @@ def main():
         # Verwissel de rendering context met de frame buffer=
 
         rendering.dim_image(renderer, dimmer, timeCycle)
-        z_buffer = sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
         end_time = time.time()
         delta = end_time - start_time
+        for sprite in spriteList:
+            z_buffer = sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
+            sprite.moveToPlayer(p_speler, delta)
 
         rendering.render_FPS(delta, renderer, factory, ManagerFont)
-        sprite.moveToPlayer(p_speler, delta)
 
         if hunger >= 0:
             hunger -= delta * HUNGERMODIFIER

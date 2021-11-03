@@ -11,15 +11,16 @@ class Sprite:
     MOVEMENTSPEED = 0
     drawn = False
     followTime = 0
-    volgt = True
+    volgt = False
 
-    def __init__(self, x, y, richting_x,richting_y, png, h, b, speed, resources, factory):
+    def __init__(self, x, y, richting_x,richting_y, png, h, b, speed, volgIk, resources, factory):
         self.p_sprite = np.array([[x], [y]])
         self.afbeelding = factory.from_image(resources.get_path(png))
         self.hoogte = h
         self.breedte = b
         self.r_sprite = np.array([richting_x, richting_y])
         self.MOVEMENTSPEED = speed
+        self.volgt = volgIk
 
     def move(self, delta_x, delta_y):
         self.p_sprite += np.array([delta_x, delta_y])
