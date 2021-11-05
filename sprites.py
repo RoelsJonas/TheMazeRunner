@@ -127,7 +127,7 @@ class Sprite:
             p_sprite[1] -= p_speler[1]
             p_sprite = np.linalg.norm(p_sprite)
             if p_sprite < main.INTERACTIONDISTANCE:
-                if hp >= 100:
+                if hp + self.DPS >= 100:
                     hp = 100
                     destroy = False
                 else:
