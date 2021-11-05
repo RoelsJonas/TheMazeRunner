@@ -129,6 +129,7 @@ class Sprite:
             if p_sprite < main.INTERACTIONDISTANCE:
                 if hp >= 100:
                     hp = 100
+                    destroy = False
                 else:
                     hp += self.DPS
                     destroy = True
