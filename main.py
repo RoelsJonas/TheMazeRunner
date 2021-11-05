@@ -146,7 +146,7 @@ def main():
 
         if hunger >= 0:
             hunger -= delta * HUNGERMODIFIER
-        if hp >= 0:
+        elif hp >= 0:
             hp -= delta * HUNGERHPLOSSMODIFIER
         else:
             winsound.PlaySound("resources\GameOverSound.wav", winsound.SND_ASYNC )
