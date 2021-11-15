@@ -1,6 +1,14 @@
 import numpy as np
 import main
 
+
+def sortSprites(list, p_speler):
+    for sprite in list:
+        sprite.updateDistance(p_speler)
+    list.sort(key=lambda x: x.d_speler, reverse=True)
+    return(list)
+
+
 class Sprite:
     p_sprite = np.array([0, 0])
     hoogte = 0
@@ -18,6 +26,7 @@ class Sprite:
     healer = False
     DPS = 0
     middensteKolom = 0
+    d_speler = 0
 
     def __init__(self, x, y, richting_x,richting_y, png, h, b, speed, volgIk, eet, healer, waarde, health, damage, resources, factory):
         self.p_sprite = np.array([[x], [y]])
@@ -94,7 +103,6 @@ class Sprite:
                 h = int(self.hoogte * h)
                 schermKolom = main.BREEDTE - 1 - schermKolom
                 if d_sprite < z_buffer[schermKolom] or z_buffer[schermKolom] == 0:
-                    z_buffer[schermKolom] = d_sprite
                     self.drawn = True
                     self.followTime = 7.5
                     renderer.copy(self.afbeelding,
@@ -105,7 +113,11 @@ class Sprite:
             if kolom == main.BREEDTE//2:
                 self.middensteKolom = schermKolom
 
-        return z_buffer
+
+    def updateDistance(self, p_speler):
+        d = np.array([self.p_sprite[0]-p_speler[0], self.p_sprite[1]-p_speler[1]])
+        self.d_speler = np.linalg.norm(d)
+
 
     def checkInteractie(self, hunger, hp, p_speler, delta, damage, timeToAttack):
         destroy = False

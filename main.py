@@ -134,8 +134,9 @@ def main():
         rendering.dim_image(renderer, dimmer, timeCycle)
         end_time = time.time()
         delta = end_time - start_time
+        spriteList = sprites.sortSprites(spriteList, p_speler)
         for sprite in spriteList:
-            z_buffer = sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
+            sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
             sprite.moveToPlayer(p_speler, delta)
             (hunger, hp, destroy, timeToAttack) = sprite.checkInteractie(hunger, hp, p_speler, delta, damage, timeToAttack)
             if destroy:
@@ -158,7 +159,7 @@ def main():
         if timeCycle >= DAGNACHTCYCLUSTIJD:
             timeCycle = 0
 
-        (p_speler, moet_afsluiten, stamina, hunger) = movement.polling(delta,p_speler,r_speler,r_cameravlak, stamina, hunger)
+        (p_speler, moet_afsluiten, stamina, hunger) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger)
         (r_speler, r_cameravlak, damage) = movement.draaien(r_speler, r_cameravlak)
 
         renderer.present()
