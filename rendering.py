@@ -9,10 +9,10 @@ import main
 
 def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages):
 
-    renderer.fill((69, 540, int(hp), 47), main.kleuren[10])
-    renderer.fill((688, 535, int(stamina), 22), main.kleuren[9])
-    renderer.fill((688, 565, int(hunger), 22), main.kleuren[8])
-    renderer.copy(hud, srcrect=(0, 0, 800, 75), dstrect=(0, 525, main.BREEDTE,75))
+    renderer.fill((((main.BREEDTE - 800 )//2) + 69, main.HOOGTE - 60, int(hp), 47), main.kleuren[10])
+    renderer.fill((((main.BREEDTE - 800 )//2) + 688, main.HOOGTE - 65, int(stamina), 22), main.kleuren[9])
+    renderer.fill((((main.BREEDTE - 800 )//2) + 688, main.HOOGTE - 35, int(hunger), 22), main.kleuren[8])
+    renderer.copy(hud, srcrect=(0, 0, 800, 75), dstrect=(((main.BREEDTE - 800 )//2), (main.HOOGTE - 75), 800,75))
     renderer.copy(crosshair, srcrect=(0, 0, 50, 50), dstrect=((main.BREEDTE - main.CROSSHAIRGROOTTE)//2, (main.HOOGTE - main.CROSSHAIRGROOTTE)//2 , main.CROSSHAIRGROOTTE, main.CROSSHAIRGROOTTE))
     klok = int(24 * (int(timeCycle)/main.DAGNACHTCYCLUSTIJD))
     if klok >= 12:
