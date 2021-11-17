@@ -7,7 +7,7 @@ import sdl2.sdlttf
 import main
 
 
-def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped):
+def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist):
     offset = ((main.BREEDTE - 800 )//2)
 
     renderer.fill((offset + 69, main.HOOGTE - 60, int(hp), 47), main.kleuren[10])
@@ -24,6 +24,9 @@ def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokIma
     renderer.fill((offset + 251 + equiped * 75 , main.HOOGTE - 65, 5, 55), main.kleuren[1])
     renderer.fill((offset + 200 + equiped * 75 , main.HOOGTE - 65, 55, 5), main.kleuren[1])
     renderer.fill((offset + 200 + equiped * 75 , main.HOOGTE - 15, 55, 5), main.kleuren[1])
+    for i in range (len(equiplist)):
+        if equiplist[i] != None:
+            equiplist[i].render(i, renderer, offset )
 
 
 def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timecycle, mist):

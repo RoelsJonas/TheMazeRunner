@@ -12,6 +12,7 @@ import movement
 import sprites
 import winsound
 import imageToMap
+import equips
 
 #begin waarden instellen
 hp = 100
@@ -107,7 +108,7 @@ def main():
     timeToAttack = 0
 
     equiped = 1
-
+    equiplist = [equips.equip(factory, resources, "medkit.png", "food", 0, 10, 0, True), equips.equip(factory, resources, "burger.png", "food", 0, 10, 0, True), equips.equip(factory, resources, "burger.png", "food", 0, 10, 0, True), equips.equip(factory, resources, "burger.png", "food", 0, 10, 0, True)]
     timeCycle = 55
     #winsound.PlaySound("resources\muziek.wav", winsound.SND_LOOP | winsound.SND_ASYNC | winsound.SND_NOSTOP)
     spriteList = []
@@ -115,6 +116,8 @@ def main():
     spriteList.append(sprites.Sprite(28.0, 28.0, 1, 0, "burger.png", 0.5, 0.5, 1, False, True, False, 10, 0, 5, resources, factory))
     spriteList.append(sprites.Sprite(25.0, 25.0, 1, 0, "medkit.png", 0.5, 0.5, 1, False, True, True, 0, 0, 30, resources, factory))   #doet damage van -30 -> healt en volgt met speed 0, dus volgt niet
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
+
+    interact = False
     while not moet_afsluiten:
         # Onthoud de huidige tijd
         start_time = time.time()
@@ -146,6 +149,8 @@ def main():
             if destroy:
                 spriteList.remove(sprite)
 
+        (hunger, hp) = equips.interactions(hunger, hp, equiped, equiplist, interact)
+
         timeToAttack -= delta
         rendering.render_FPS(delta, renderer, factory, ManagerFont)
 
@@ -157,13 +162,13 @@ def main():
             winsound.PlaySound("resources\GameOverSound.wav", winsound.SND_ASYNC )
             rendering.render_GameOVer(renderer, factory)
 
-        rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped)
+        rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist)
 
         timeCycle += delta
         if timeCycle >= DAGNACHTCYCLUSTIJD:
             timeCycle = 0
 
-        (p_speler, moet_afsluiten, stamina, hunger, equiped) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped)
+        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped)
         (r_speler, r_cameravlak, damage) = movement.draaien(r_speler, r_cameravlak)
 
         renderer.present()
