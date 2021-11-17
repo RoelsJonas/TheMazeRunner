@@ -102,13 +102,16 @@ def main():
     # Maak een renderer aan zodat we in ons venster kunnen renderen
     renderer = sdl2.ext.Renderer(window)
 
+    beginText = text.text("Wie ben ik? Wat doe ik hier? IS JONAS SEXY?", 10, 50, 450, 700, 50)
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites) = rendering.create_resources(renderer)
 
     damage = 0
     timeToAttack = 0
-
+    interact = False
     equiped = 1
 
+    start_time = time.time()
+    equiplist = [equips.equip(factory, resources, "medkit.png", "healing", 0, 0, 10, True),equips.equip(factory, resources, "medkit.png", "healing", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", "healing", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", "healing", 0, 0, 10, True)]
     timeCycle = 55
     #winsound.PlaySound("resources\muziek.wav", winsound.SND_LOOP | winsound.SND_ASYNC | winsound.SND_NOSTOP)
     spriteList = []
@@ -118,7 +121,6 @@ def main():
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
     while not moet_afsluiten:
         # Onthoud de huidige tijd
-        start_time = time.time()
         kolom = 0
 
         # Reset de rendering context
@@ -139,6 +141,7 @@ def main():
         rendering.dim_image(renderer, dimmer, timeCycle)
         end_time = time.time()
         delta = end_time - start_time
+        start_time = time.time()
         spriteList = sprites.sortSprites(spriteList, p_speler)
         for sprite in spriteList:
             sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
@@ -149,6 +152,9 @@ def main():
 
         timeToAttack -= delta
         rendering.render_FPS(delta, renderer, factory, ManagerFont)
+        beginText.renderText(delta, renderer, factory)
+
+        (hunger, hp) = equips.interactions(hunger, hp, equiped, equiplist, interact)
 
         if hunger >= 0:
             hunger -= delta * HUNGERMODIFIER
@@ -158,13 +164,13 @@ def main():
             winsound.PlaySound("resources\GameOverSound.wav", winsound.SND_ASYNC )
             rendering.render_GameOVer(renderer, factory)
 
-        rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped)
+        rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist)
 
         timeCycle += delta
         if timeCycle >= DAGNACHTCYCLUSTIJD:
             timeCycle = 0
 
-        (p_speler, moet_afsluiten, stamina, hunger, equiped) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped)
+        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped)
         (r_speler, r_cameravlak, damage) = movement.draaien(r_speler, r_cameravlak)
 
         renderer.present()
