@@ -1,11 +1,14 @@
 import main
 import numpy as np
-def interactions(hunger, hp, equiped, equiplist, interact):
+import text
+
+def interactions(hunger, hp, equiped, equiplist, interact, consumableText):
     if equiplist[equiped] != None:
         if interact and equiplist[equiped].consumable:
             (hunger, hp) = equiplist[equiped].interact(hunger, hp)
             equiplist[equiped] = None
-    return(hunger, hp)
+            consumableText.textTimer = 10
+    return(hunger, hp, consumableText)
 
 
 class equip:
@@ -18,6 +21,7 @@ class equip:
     image = ""
     b = 0
     h = 0
+    text = ""
 
     def __init__(self, factory, resources, afbeelding, type, damage, hunger, healing, consumeerbaar):
         self.type = type

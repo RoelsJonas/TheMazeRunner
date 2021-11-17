@@ -103,6 +103,7 @@ def main():
     renderer = sdl2.ext.Renderer(window)
 
     beginText = text.text("Wie ben ik? Wat doe ik hier? IS JONAS SEXY?", 10, 50, 450, 700, 50)
+    consumableText = text.text("hmm, that's good stuff", 0, 200, 450, 400, 50)
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites) = rendering.create_resources(renderer)
 
     damage = 0
@@ -154,7 +155,10 @@ def main():
         rendering.render_FPS(delta, renderer, factory, ManagerFont)
         beginText.renderText(delta, renderer, factory)
 
-        (hunger, hp) = equips.interactions(hunger, hp, equiped, equiplist, interact)
+        (hunger, hp, consumableText) = equips.interactions(hunger, hp, equiped, equiplist, interact, consumableText)
+        consumableText.renderText(delta, renderer, factory)
+
+
 
         if hunger >= 0:
             hunger -= delta * HUNGERMODIFIER
