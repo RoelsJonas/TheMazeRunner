@@ -30,6 +30,9 @@ SENSITIVITY = 0.001
 INTERACTIONDISTANCE = 0.2
 HPREPLENISHMODIFIERER = 0,2
 
+CONSUMESOUND = "GameOverSound.wav"
+
+
 
 DAGNACHTCYCLUSTIJD = 360 # aantal seconden dat 1 dag nacht cyclus duurt
 KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24     # om te weten om de hoeveel tijd de klok een uur moet opschuiven
@@ -115,7 +118,7 @@ def main():
     start_time = time.time()
     equiplist = [equips.equip(factory, resources, "medkit.png", "healing", 0, 0, 10, True),equips.equip(factory, resources, "medkit.png", "healing", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", "healing", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", "healing", 0, 0, 10, True)]
     timeCycle = 55
-    playsound.playsound("/resources/muziek.wav")
+    winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
     spriteList = []
     #spriteList.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, True, False, False, 0, 50, 10, resources, factory))
     spriteList.append(sprites.Sprite(28.0, 28.0, 1, 0, "burger.png", 0.5, 0.5, 1, False, True, False, 10, 0, 5, resources, factory))
@@ -166,7 +169,7 @@ def main():
         elif hp >= 0:
             hp -= delta * HUNGERHPLOSSMODIFIER
         else:
-            playsound.playpound("/resources/GameOverSound.wav")
+            playsound.playsound('GameOverSound.wav', False)
             rendering.render_GameOVer(renderer, factory)
 
         rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist)

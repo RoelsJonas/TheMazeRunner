@@ -1,6 +1,7 @@
 import main
 import numpy as np
 import text
+import playsound
 
 def interactions(hunger, hp, equiped, equiplist, interact, consumableText):
     if equiplist[equiped] != None:
@@ -8,6 +9,7 @@ def interactions(hunger, hp, equiped, equiplist, interact, consumableText):
             (hunger, hp) = equiplist[equiped].interact(hunger, hp)
             equiplist[equiped] = None
             consumableText.textTimer = 10
+            playsound.playsound(main.CONSUMESOUND, False)
     return(hunger, hp, consumableText)
 
 
