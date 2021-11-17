@@ -25,8 +25,7 @@ class equip:
     h = 0
     text = ""
 
-    def __init__(self, factory, resources, afbeelding, type, damage, hunger, healing, consumeerbaar):
-        self.type = type
+    def __init__(self, factory, resources, afbeelding, damage, hunger, healing, consumeerbaar):
         self.damage = damage
         self.hunger = hunger
         self.healing = healing

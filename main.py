@@ -113,16 +113,17 @@ def main():
     damage = 0
     timeToAttack = 0
     interact = False
+    pakOp = False
     equiped = 1
 
     start_time = time.time()
-    equiplist = [equips.equip(factory, resources, "medkit.png", "healing", 0, 0, 10, True),equips.equip(factory, resources, "medkit.png", "healing", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", "healing", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", "healing", 0, 0, 10, True)]
+    equiplist = [equips.equip(factory, resources, "medkit.png", 0, 0, 10, True),equips.equip(factory, resources, "medkit.png", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", 0, 0, 10, True)]
     timeCycle = 55
     winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
     spriteList = []
-    #spriteList.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, True, False, False, 0, 50, 10, resources, factory))
-    spriteList.append(sprites.Sprite(28.0, 28.0, 1, 0, "burger.png", 0.5, 0.5, 1, False, True, False, 10, 0, 5, resources, factory))
-    spriteList.append(sprites.Sprite(25.0, 25.0, 1, 0, "medkit.png", 0.5, 0.5, 1, False, True, True, 0, 0, 30, resources, factory))   #doet damage van -30 -> healt en volgt met speed 0, dus volgt niet
+    #spriteList.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, True, False, False, False, 0, 50, 10, resources, factory))
+    spriteList.append(sprites.Sprite(28.0, 28.0, 1, 0, "burger.png", 0.5, 0.5, 1, False, False, False, True, 10, 0, 5, resources, factory))
+    spriteList.append(sprites.Sprite(25.0, 25.0, 1, 0, "medkit.png", 0.5, 0.5, 1, False, True, True, True, 0, 0, 30, resources, factory))   #doet damage van -30 -> healt en volgt met speed 0, dus volgt niet
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
     while not moet_afsluiten:
         # Onthoud de huidige tijd
@@ -151,7 +152,7 @@ def main():
         for sprite in spriteList:
             sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
             sprite.moveToPlayer(p_speler, delta)
-            (hunger, hp, destroy, timeToAttack) = sprite.checkInteractie(hunger, hp, p_speler, delta, damage, timeToAttack)
+            (hunger, hp, destroy, timeToAttack, equiplist) = sprite.checkInteractie(hunger, hp, p_speler, delta, damage, timeToAttack, pakOp, equiplist, equiped)
             if destroy:
                 spriteList.remove(sprite)
 
@@ -178,7 +179,7 @@ def main():
         if timeCycle >= DAGNACHTCYCLUSTIJD:
             timeCycle = 0
 
-        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped)
+        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped)
         (r_speler, r_cameravlak, damage) = movement.draaien(r_speler, r_cameravlak)
 
         renderer.present()

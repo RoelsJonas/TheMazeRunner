@@ -1,5 +1,6 @@
 import numpy as np
 import main
+import equips
 
 
 def sortSprites(list, p_speler):
@@ -27,9 +28,15 @@ class Sprite:
     DPS = 0
     middensteKolom = 0
     d_speler = 0
+    collectible = False
+    factory = ""
+    renderer = ""
+    resources = ""
+    afbeeldingLink = ""
 
-    def __init__(self, x, y, richting_x,richting_y, png, h, b, speed, volgIk, eet, healer, waarde, health, damage, resources, factory):
+    def __init__(self, x, y, richting_x,richting_y, png, h, b, speed, volgIk, eet, healer, collectible, waarde, health, damage, resources, factory):
         self.p_sprite = np.array([[x], [y]])
+        self.afbeeldingLink = png
         self.afbeelding = factory.from_image(resources.get_path(png))
         self.hoogte = h
         self.breedte = b
@@ -41,6 +48,9 @@ class Sprite:
         self.hp = health
         self.healer = healer
         self.DPS = damage
+        self.collectible = collectible
+        self.factory = factory
+        self.resources = resources
 
     def move(self, delta_x, delta_y):
         self.p_sprite += np.array([delta_x, delta_y])
@@ -119,7 +129,7 @@ class Sprite:
         self.d_speler = np.linalg.norm(d)
 
 
-    def checkInteractie(self, hunger, hp, p_speler, delta, damage, timeToAttack):
+    def checkInteractie(self, hunger, hp, p_speler, delta, damage, timeToAttack, interaction, equiplist, equiped):
         destroy = False
         if self.eetbaar:
             p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
@@ -166,7 +176,17 @@ class Sprite:
                     self.hp -= damage
                     timeToAttack = .5
 
-        return(hunger, hp, destroy, timeToAttack)
+        if self.collectible and interaction:
+            p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
+            p_sprite[0] -= p_speler[0]
+            p_sprite[1] -= p_speler[1]
+            p_sprite = np.linalg.norm(p_sprite)
+            if equiplist[equiped] == None and p_sprite < 1:
+                equiplist[equiped] = equips.equip(self.factory, self.resources, self.afbeeldingLink, self.DPS, self.hungerValue, self.hp, True)
+                destroy = True
+
+
+        return(hunger, hp, destroy, timeToAttack, equiplist)
 
 
 
