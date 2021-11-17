@@ -12,6 +12,7 @@ import movement
 import sprites
 import winsound
 import imageToMap
+import text
 
 #begin waarden instellen
 hp = 100
@@ -114,12 +115,13 @@ def main():
     #spriteList.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, True, False, False, 0, 50, 10, resources, factory))
     spriteList.append(sprites.Sprite(28.0, 28.0, 1, 0, "burger.png", 0.5, 0.5, 1, False, True, False, 10, 0, 5, resources, factory))
     spriteList.append(sprites.Sprite(25.0, 25.0, 1, 0, "medkit.png", 0.5, 0.5, 1, False, True, True, 0, 0, 30, resources, factory))   #doet damage van -30 -> healt en volgt met speed 0, dus volgt niet
+
+    beginText = text.text("Wie ben ik? Wat doe ik hier? IS JONAS SEXY?", 10, 50, 450, 700, 50)
+
+    start_time = time.time()
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
     while not moet_afsluiten:
-        # Onthoud de huidige tijd
-        start_time = time.time()
         kolom = 0
-
         # Reset de rendering context
         renderer.clear()
 
@@ -138,6 +140,7 @@ def main():
         rendering.dim_image(renderer, dimmer, timeCycle)
         end_time = time.time()
         delta = end_time - start_time
+        start_time = time.time()
         spriteList = sprites.sortSprites(spriteList, p_speler)
         for sprite in spriteList:
             sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
@@ -148,6 +151,7 @@ def main():
 
         timeToAttack -= delta
         rendering.render_FPS(delta, renderer, factory, ManagerFont)
+        beginText.renderText(delta, renderer, factory)
 
         if hunger >= 0:
             hunger -= delta * HUNGERMODIFIER

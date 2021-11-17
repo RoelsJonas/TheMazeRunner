@@ -61,7 +61,6 @@ def render_GameOVer(renderer, factory):
     sdl2.ext.quit()
 
 
-
 def render_FPS(delta, renderer, factory, ManagerFont):
     text_ = "FPS:" + str(np.round(1 / delta))
     text = factory.from_text(text_, fontmanager=ManagerFont)
