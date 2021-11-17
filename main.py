@@ -4,6 +4,7 @@ import numpy as np
 import sdl2
 import sdl2.ext
 import sdl2.sdlttf
+import playsound
 
 
 import rendering
@@ -114,7 +115,7 @@ def main():
     start_time = time.time()
     equiplist = [equips.equip(factory, resources, "medkit.png", "healing", 0, 0, 10, True),equips.equip(factory, resources, "medkit.png", "healing", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", "healing", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", "healing", 0, 0, 10, True)]
     timeCycle = 55
-    #winsound.PlaySound("resources\muziek.wav", winsound.SND_LOOP | winsound.SND_ASYNC | winsound.SND_NOSTOP)
+    playsound.playsound("/resources/muziek.wav")
     spriteList = []
     #spriteList.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, True, False, False, 0, 50, 10, resources, factory))
     spriteList.append(sprites.Sprite(28.0, 28.0, 1, 0, "burger.png", 0.5, 0.5, 1, False, True, False, 10, 0, 5, resources, factory))
@@ -165,7 +166,7 @@ def main():
         elif hp >= 0:
             hp -= delta * HUNGERHPLOSSMODIFIER
         else:
-            winsound.PlaySound("resources\GameOverSound.wav", winsound.SND_ASYNC )
+            playsound.playpound("/resources/GameOverSound.wav")
             rendering.render_GameOVer(renderer, factory)
 
         rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist)
