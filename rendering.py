@@ -7,8 +7,9 @@ import sdl2.sdlttf
 import main
 
 
-def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages):
+def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped):
     offset = ((main.BREEDTE - 800 )//2)
+
     renderer.fill((offset + 69, main.HOOGTE - 60, int(hp), 47), main.kleuren[10])
     renderer.fill((offset + 688, main.HOOGTE - 65, int(stamina), 22), main.kleuren[9])
     renderer.fill((offset + 688, main.HOOGTE - 35, int(hunger), 22), main.kleuren[8])
@@ -18,6 +19,11 @@ def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokIma
     if klok >= 12:
         klok -= 12
     renderer.copy(klokImages[klok], srcrect=(0,0,300,300), dstrect=(offset + 505, main.HOOGTE-70, 60, 60))
+    #voeg rechthoek om geselecteerd item toe
+    renderer.fill((offset + 200 + equiped * 75 , main.HOOGTE - 65, 5, 55), main.kleuren[1])
+    renderer.fill((offset + 251 + equiped * 75 , main.HOOGTE - 65, 5, 55), main.kleuren[1])
+    renderer.fill((offset + 200 + equiped * 75 , main.HOOGTE - 65, 55, 5), main.kleuren[1])
+    renderer.fill((offset + 200 + equiped * 75 , main.HOOGTE - 15, 55, 5), main.kleuren[1])
 
 
 def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timecycle, mist):

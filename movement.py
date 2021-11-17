@@ -23,7 +23,7 @@ def bewegen(delta, delta_p, r_speler, r_cameravlak, p_speler):
     return(p_speler)
 
 
-def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger):
+def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped):
     moet_afsluiten = False
     damage = 0
     delta_p = np.array([0,0])
@@ -50,6 +50,15 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger):
     if key_states[sdl2.SDL_SCANCODE_D]:
         delta_p[1] -= 1
 
+    if key_states[sdl2.SDL_SCANCODE_1]:
+        equiped = 0
+    if key_states[sdl2.SDL_SCANCODE_2]:
+        equiped = 1
+    if key_states[sdl2.SDL_SCANCODE_3]:
+        equiped = 2
+    if key_states[sdl2.SDL_SCANCODE_4]:
+        equiped = 3
+
     if delta_p[0] != 0 or delta_p[1] != 0:
 
         if sprinting:
@@ -64,7 +73,7 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger):
     if key_states[sdl2.SDL_SCANCODE_ESCAPE]:
         moet_afsluiten = True
 
-    return(p_speler, moet_afsluiten, stamina, hunger)
+    return(p_speler, moet_afsluiten, stamina, hunger, equiped)
 
 
 def draaien(r_speler, r_cameravlak):

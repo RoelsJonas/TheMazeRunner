@@ -4,6 +4,8 @@ import numpy as np
 import sdl2
 import sdl2.ext
 import sdl2.sdlttf
+
+
 import rendering
 import raycast
 import movement
@@ -104,6 +106,8 @@ def main():
     damage = 0
     timeToAttack = 0
 
+    equiped = 1
+
     timeCycle = 55
     #winsound.PlaySound("resources\muziek.wav", winsound.SND_LOOP | winsound.SND_ASYNC | winsound.SND_NOSTOP)
     spriteList = []
@@ -153,13 +157,13 @@ def main():
             winsound.PlaySound("resources\GameOverSound.wav", winsound.SND_ASYNC )
             rendering.render_GameOVer(renderer, factory)
 
-        rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages)
+        rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped)
 
         timeCycle += delta
         if timeCycle >= DAGNACHTCYCLUSTIJD:
             timeCycle = 0
 
-        (p_speler, moet_afsluiten, stamina, hunger) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger)
+        (p_speler, moet_afsluiten, stamina, hunger, equiped) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped)
         (r_speler, r_cameravlak, damage) = movement.draaien(r_speler, r_cameravlak)
 
         renderer.present()
