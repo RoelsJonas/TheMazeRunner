@@ -1,6 +1,26 @@
 import numpy as np
 import main
 
+
+def rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler):
+    texture_index = 0
+    d_euclidisch = d_muur
+    d_muur = d_euclidisch * np.dot(r_speler, r_straal)
+
+    hoogte = main.MUURHOOGTE * (window.size[1] / d_muur)
+    y1 = int((window.size[1] - hoogte) // 2) - 100
+    textuur_y = 0
+    textuur_hoogte = int(textures[texture_index].size[1])
+
+    schermkolom = main.BREEDTE - 1 - kolom
+    if horizontaal:
+        textuur_x = int(np.round((intersectie[0] - int(intersectie[0])) * textures[texture_index].size[0]))
+    else:
+        textuur_x = int(np.round((intersectie[1] - int(intersectie[1])) * textures[texture_index].size[0]))
+
+    renderer.copy(textures[0], srcrect=(textuur_x, textuur_y, 1, textuur_hoogte),
+                  dstrect=(schermkolom, y1, 2, int(hoogte)))  # muur
+
 class timedDoor:
     p_door = np.array([0,0])
     state = 1 #definieer hoe gesloten de deur is (1 is dicht, 0 volledig open)
@@ -33,9 +53,8 @@ class timedDoor:
 
 
 
-    def render(self, renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, mist):
+    def render(self, renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle):
         self.timedUpdateState(timeCycle)
-        print(kolom, d_muur)
 
         #render niets als deur volledig open is
         if self.state == 0:
@@ -44,104 +63,23 @@ class timedDoor:
         #render als een muur wanneer de deur volledig gesloten is
         elif self.state == 1:
 
-            texture_index = 0
-            d_euclidisch = d_muur
-            d_muur = d_euclidisch * np.dot(r_speler, r_straal)
-
-            hoogte = main.MUURHOOGTE * (window.size[1] / d_muur)
-            y1 = int((window.size[1] - hoogte) // 2) - 100
-            textuur_y = 0
-            textuur_hoogte = int(textures[texture_index].size[1])
-
-            schermkolom = main.BREEDTE - 1 - kolom
-            if horizontaal:
-                textuur_x = int(np.round((intersectie[0] - int(intersectie[0])) * textures[texture_index].size[0]))
-            else:
-                textuur_x = int(np.round((intersectie[1] - int(intersectie[1])) * textures[texture_index].size[0]))
-
-            renderer.copy(textures[0], srcrect=(textuur_x, textuur_y, 1, textuur_hoogte),
-                        dstrect=(schermkolom, y1, 2, int(hoogte)))  # muur
-
+            rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
         #
         elif self.side == 0:
             if horizontaal:
                 if intersectie[0] - int(intersectie[0]) < self.state:
-                    texture_index = 0
-                    d_euclidisch = d_muur
-                    d_muur = d_euclidisch * np.dot(r_speler, r_straal)
-
-                    hoogte = main.MUURHOOGTE * (window.size[1] / d_muur)
-                    y1 = int((window.size[1] - hoogte) // 2) - 100
-                    textuur_y = 0
-                    textuur_hoogte = int(textures[texture_index].size[1])
-
-                    schermkolom = main.BREEDTE - 1 - kolom
-                    if horizontaal:
-                        textuur_x = int(np.round((intersectie[0] - int(intersectie[0])) * textures[texture_index].size[0]))
-                    else:
-                        textuur_x = int(np.round((intersectie[1] - int(intersectie[1])) * textures[texture_index].size[0]))
-
-                    renderer.copy(textures[0], srcrect=(textuur_x, textuur_y, 1, textuur_hoogte),
-                                dstrect=(schermkolom, y1, 2, int(hoogte)))  # muur
+                    rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
             else:
                 if intersectie[1] - int(intersectie[1]) < self.state:
-                    texture_index = 0
-                    d_euclidisch = d_muur
-                    d_muur = d_euclidisch * np.dot(r_speler, r_straal)
-
-                    hoogte = main.MUURHOOGTE * (window.size[1] / d_muur)
-                    y1 = int((window.size[1] - hoogte) // 2) - 100
-                    textuur_y = 0
-                    textuur_hoogte = int(textures[texture_index].size[1])
-
-                    schermkolom = main.BREEDTE - 1 - kolom
-                    if horizontaal:
-                        textuur_x = int(np.round((intersectie[0] - int(intersectie[0])) * textures[texture_index].size[0]))
-                    else:
-                        textuur_x = int(np.round((intersectie[1] - int(intersectie[1])) * textures[texture_index].size[0]))
-
-                    renderer.copy(textures[0], srcrect=(textuur_x, textuur_y, 1, textuur_hoogte),
-                                dstrect=(schermkolom, y1, 2, int(hoogte)))  # muur
+                    rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
 
         elif self.side == 1:
             if horizontaal:
                 if 1 + int(intersectie[0]) - intersectie[0] < self.state:
-                    texture_index = 0
-                    d_euclidisch = d_muur
-                    d_muur = d_euclidisch * np.dot(r_speler, r_straal)
-
-                    hoogte = main.MUURHOOGTE * (window.size[1] / d_muur)
-                    y1 = int((window.size[1] - hoogte) // 2) - 100
-                    textuur_y = 0
-                    textuur_hoogte = int(textures[texture_index].size[1])
-
-                    schermkolom = main.BREEDTE - 1 - kolom
-                    if horizontaal:
-                        textuur_x = int(np.round((intersectie[0] - int(intersectie[0])) * textures[texture_index].size[0]))
-                    else:
-                        textuur_x = int(np.round((intersectie[1] - int(intersectie[1])) * textures[texture_index].size[0]))
-
-                    renderer.copy(textures[0], srcrect=(textuur_x, textuur_y, 1, textuur_hoogte),
-                                dstrect=(schermkolom, y1, 2, int(hoogte)))  # muur
+                    rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
             else:
                 if  1 + int(intersectie[1]) - intersectie[1] < self.state:
-                    texture_index = 0
-                    d_euclidisch = d_muur
-                    d_muur = d_euclidisch * np.dot(r_speler, r_straal)
-
-                    hoogte = main.MUURHOOGTE * (window.size[1] / d_muur)
-                    y1 = int((window.size[1] - hoogte) // 2) - 100
-                    textuur_y = 0
-                    textuur_hoogte = int(textures[texture_index].size[1])
-
-                    schermkolom = main.BREEDTE - 1 - kolom
-                    if horizontaal:
-                        textuur_x = int(np.round((intersectie[0] - int(intersectie[0])) * textures[texture_index].size[0]))
-                    else:
-                        textuur_x = int(np.round((intersectie[1] - int(intersectie[1])) * textures[texture_index].size[0]))
-
-                    renderer.copy(textures[0], srcrect=(textuur_x, textuur_y, 1, textuur_hoogte),
-                                dstrect=(schermkolom, y1, 2, int(hoogte)))  # muur
+                    rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
 
 
 

@@ -118,7 +118,7 @@ def main():
 
     start_time = time.time()
     equiplist = [equips.equip(factory, resources, "medkit.png", 0, 0, 10, True),equips.equip(factory, resources, "medkit.png", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", 0, 0, 10, True)]
-    timeCycle = 20
+    timeCycle = 45
     winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
     spriteList = []
     #spriteList.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, True, False, False, False, 0, 50, 10, resources, factory))
@@ -143,7 +143,7 @@ def main():
             z_buffer[BREEDTE - 1 - kolom] = d_muur
             rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, mist)
             if deur:
-                door_map[l_deur[0], l_deur[1]].render(renderer, window, kolom, d_deur,  i_deur, h_deur, textures, r_straal, r_speler, timeCycle, mist)
+                door_map[l_deur[0], l_deur[1]].render(renderer, window, kolom, d_deur,  i_deur, h_deur, textures, r_straal, r_speler, timeCycle)
 
         # Verwissel de rendering context met de frame buffer=
 
