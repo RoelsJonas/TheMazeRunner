@@ -34,7 +34,7 @@ CONSUMESOUND = "GameOverSound.wav"
 
 
 
-DAGNACHTCYCLUSTIJD = 360 # aantal seconden dat 1 dag nacht cyclus duurt
+DAGNACHTCYCLUSTIJD = 60 # aantal seconden dat 1 dag nacht cyclus duurt
 KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24     # om te weten om de hoeveel tijd de klok een uur moet opschuiven
 
 MUURHOOGTE = 1.5
@@ -65,7 +65,7 @@ moet_afsluiten = False
 # de "wereldkaart". Dit is een 2d matrix waarin elke cel een type van muur voorstelt
 # Een 0 betekent dat op deze plaats in de game wereld geen muren aanwezig zijn
 
-world_map = imageToMap.generateWorld("resources\map.png")
+(world_map, doorLocations, door_map) = imageToMap.generateWorld("resources\map3.png")
 
 # Vooraf gedefinieerde kleuren
 kleuren = [
@@ -118,7 +118,7 @@ def main():
 
     start_time = time.time()
     equiplist = [equips.equip(factory, resources, "medkit.png", 0, 0, 10, True),equips.equip(factory, resources, "medkit.png", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", 0, 0, 10, True)]
-    timeCycle = 55
+    timeCycle = 14
     winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
     spriteList = []
     #spriteList.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, True, False, False, False, 0, 50, 10, resources, factory))
@@ -139,9 +139,12 @@ def main():
         # Render de huidige frame
         for kolom in range(0, window.size[0]):
             r_straal = raycast.bereken_r_straal(r_speler,r_cameravlak, kolom)
-            (d_muur, intersectie, horizontaal) = raycast.raycast(p_speler, r_straal)
+            (d_muur, intersectie, horizontaal, deur, d_deur, l_deur, i_deur, h_deur) = raycast.raycast(p_speler, r_straal)
             z_buffer[BREEDTE - 1 - kolom] = d_muur
             rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, mist)
+            if deur:
+                door_map[l_deur[0], l_deur[1]].render(renderer, window, kolom, d_deur,  i_deur, h_deur, textures, r_straal, r_speler, timeCycle, mist)
+
         # Verwissel de rendering context met de frame buffer=
 
         rendering.dim_image(renderer, dimmer, timeCycle)
@@ -179,7 +182,7 @@ def main():
         if timeCycle >= DAGNACHTCYCLUSTIJD:
             timeCycle = 0
 
-        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped)
+        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map)
         (r_speler, r_cameravlak, damage) = movement.draaien(r_speler, r_cameravlak)
 
         renderer.present()

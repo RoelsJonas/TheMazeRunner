@@ -3,8 +3,9 @@ import sdl2
 import sdl2.ext
 import sdl2.sdlttf
 import main
+import doors
 
-def bewegen(delta, delta_p, r_speler, r_cameravlak, p_speler):
+def bewegen(delta, delta_p, r_speler, r_cameravlak, p_speler, door_map):
 
     p_speler_nieuw = np.array([p_speler[0], p_speler[1]])
 
@@ -20,10 +21,19 @@ def bewegen(delta, delta_p, r_speler, r_cameravlak, p_speler):
     elif main.world_map[int(p_speler_nieuw[1]), int(p_speler[0])] == 0:
         p_speler[1] = p_speler_nieuw[1]
 
+    if  main.world_map[int(p_speler_nieuw[1]), int(p_speler_nieuw[0])] == 2 and door_map[int(p_speler_nieuw[1]), int(p_speler_nieuw[0])].state == 0:
+        p_speler = p_speler_nieuw
+
+    elif main.world_map[int(p_speler[1]), int(p_speler_nieuw[0])] == 2 and door_map[int(p_speler[1]), int(p_speler_nieuw[0])].self.state == 0:
+        p_speler[0] = p_speler_nieuw[0]
+
+    elif main.world_map[int(p_speler_nieuw[1]), int(p_speler[0])] == 2 and door_map[int(p_speler_nieuw[1]), int(p_speler[0])].state == 0:
+        p_speler[1] = p_speler_nieuw[1]
+
     return(p_speler)
 
 
-def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped):
+def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, door_map):
     moet_afsluiten = False
     damage = 0
     delta_p = np.array([0,0])
@@ -76,7 +86,7 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped):
             stamina += delta * main.STAMINAREGENMODIFIER
 
         delta_p = delta_p / np.linalg.norm(delta_p)
-        p_speler = bewegen(delta, delta_p, r_speler, r_cameravlak, p_speler)
+        p_speler = bewegen(delta, delta_p, r_speler, r_cameravlak, p_speler, door_map)
 
     if key_states[sdl2.SDL_SCANCODE_ESCAPE]:
         moet_afsluiten = True

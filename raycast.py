@@ -9,10 +9,14 @@ def bereken_r_straal(r_speler, r_cameravlak, kolom):
     return r_straal
 
 def raycast(p_speler, r_straal):
-
+    d_deur = 0
+    l_deur = 0
+    i_deur = 0
+    h_deur = 0
     d_muur = -1
     intersectie = np.array([0,0])
     horizontaal = True
+    deur = False
 
     #stap 0 initialiseer x en y met waarde 0
     x = 0
@@ -67,8 +71,15 @@ def raycast(p_speler, r_straal):
         if i_y >= main.world_map.shape[0] or i_y < 0:
             return
 
-        if main.world_map[i_y, i_x] == 1:
-            d_muur = ((intersectie[0] - p_speler[0]) ** 2 + (intersectie[1] - p_speler[1]) ** 2) ** 0.5
+        if main.world_map[i_y, i_x] != 0:
+            if main.world_map[i_y, i_x] == 1:
+                d_muur = ((intersectie[0] - p_speler[0]) ** 2 + (intersectie[1] - p_speler[1]) ** 2) ** 0.5
+            if main.world_map[i_y, i_x] == 2:
+                deur = True
+                d_deur = ((intersectie[0] - p_speler[0]) ** 2 + (intersectie[1] - p_speler[1]) ** 2) ** 0.5
+                l_deur = (i_y, i_x)
+                i_deur = intersectie
+                h_deur = horizontaal
 
 
-    return (d_muur, intersectie, horizontaal)
+    return (d_muur, intersectie, horizontaal, deur, d_deur, l_deur, i_deur, h_deur)
