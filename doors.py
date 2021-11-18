@@ -17,7 +17,6 @@ def rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, texture
         textuur_x = int(np.round((intersectie[0] - int(intersectie[0])) * textures[texture_index].size[0]))
     else:
         textuur_x = int(np.round((intersectie[1] - int(intersectie[1])) * textures[texture_index].size[0]))
-
     renderer.copy(textures[0], srcrect=(textuur_x, textuur_y, 1, textuur_hoogte),
                   dstrect=(schermkolom, y1, 2, int(hoogte)))  # muur
 
@@ -62,11 +61,12 @@ class timedDoor:
 
         #render als een muur wanneer de deur volledig gesloten is
         elif self.state == 1:
-
             rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
-        #
+
+        #kijk of deur rechts/linkssluitend is
         elif self.side == 0:
             if horizontaal:
+                #kijk of de intersectie binnen het gesloten deel zit
                 if intersectie[0] - int(intersectie[0]) < self.state:
                     rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
             else:
