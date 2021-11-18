@@ -35,6 +35,7 @@ class timedDoor:
 
     def render(self, renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, mist):
         self.timedUpdateState(timeCycle)
+        print(kolom, d_muur)
 
         #render niets als deur volledig open is
         if self.state == 0:

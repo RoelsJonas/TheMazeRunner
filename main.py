@@ -65,7 +65,7 @@ moet_afsluiten = False
 # de "wereldkaart". Dit is een 2d matrix waarin elke cel een type van muur voorstelt
 # Een 0 betekent dat op deze plaats in de game wereld geen muren aanwezig zijn
 
-(world_map, doorLocations, door_map) = imageToMap.generateWorld("resources\map3.png")
+(world_map, doorLocations, door_map) = imageToMap.generateWorld("resources\map5.png")
 
 # Vooraf gedefinieerde kleuren
 kleuren = [
@@ -118,7 +118,7 @@ def main():
 
     start_time = time.time()
     equiplist = [equips.equip(factory, resources, "medkit.png", 0, 0, 10, True),equips.equip(factory, resources, "medkit.png", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", 0, 0, 10, True)]
-    timeCycle = 14
+    timeCycle = 20
     winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
     spriteList = []
     #spriteList.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, True, False, False, False, 0, 50, 10, resources, factory))

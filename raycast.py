@@ -74,7 +74,7 @@ def raycast(p_speler, r_straal):
         if main.world_map[i_y, i_x] != 0:
             if main.world_map[i_y, i_x] == 1:
                 d_muur = ((intersectie[0] - p_speler[0]) ** 2 + (intersectie[1] - p_speler[1]) ** 2) ** 0.5
-            if main.world_map[i_y, i_x] == 2:
+            if main.world_map[i_y, i_x] == 2 and not(deur):
                 deur = True
                 d_deur = ((intersectie[0] - p_speler[0]) ** 2 + (intersectie[1] - p_speler[1]) ** 2) ** 0.5
                 l_deur = (i_y, i_x)
