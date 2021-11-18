@@ -35,11 +35,11 @@ class timedDoor:
 
     def timedUpdateState(self, timeCycle):
         #open deur volledig tijdens dag
-        if(1 < timeCycle <= main.DAGNACHTCYCLUSTIJD//2):
+        if(5 < timeCycle <= main.DAGNACHTCYCLUSTIJD//2 + 5):
             self.state = 0
 
         #sluit deur volledig tijdens nacht
-        elif((main.DAGNACHTCYCLUSTIJD//2 + 5) < timeCycle):
+        elif((main.DAGNACHTCYCLUSTIJD//2 + 10) < timeCycle):
             self.state = 1
 
         #open de deur gelijdelijk aan tijdens de ochtend
@@ -48,7 +48,7 @@ class timedDoor:
 
         #sluit de deur gelijdelijk aan tijdens de avond
         else:
-            self.state = (timeCycle - main.DAGNACHTCYCLUSTIJD//2)/5
+            self.state = (timeCycle - main.DAGNACHTCYCLUSTIJD//2 - 5)/5
 
 
 
