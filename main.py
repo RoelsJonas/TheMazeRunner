@@ -139,15 +139,12 @@ def main():
         # Render de huidige frame
         for kolom in range(0, window.size[0]):
             r_straal = raycast.bereken_r_straal(r_speler,r_cameravlak, kolom)
-            (d_muur, intersectie, horizontaal, deur, d_deur, l_deur, i_deur, h_deur) = raycast.raycast(p_speler, r_straal)
-            z_buffer[BREEDTE - 1 - kolom] = d_muur
-            rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, mist)
-            if deur:
-                z_buffer = door_map[l_deur[0], l_deur[1]].render(renderer, window, kolom, d_deur,  i_deur, h_deur, textures, r_straal, r_speler, timeCycle, z_buffer)
-
+            (d_muur, intersectie, horizontaal, z_buffer) = raycast.raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, timeCycle, z_buffer)
+            if z_buffer[BREEDTE - 1 - kolom] == 0 or z_buffer[BREEDTE - 1 - kolom] > d_muur:
+                z_buffer[BREEDTE - 1 - kolom] = d_muur
+                rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, mist)
         # Verwissel de rendering context met de frame buffer=
 
-        rendering.dim_image(renderer, dimmer, timeCycle)
         end_time = time.time()
         delta = end_time - start_time
         start_time = time.time()
@@ -160,11 +157,8 @@ def main():
                 spriteList.remove(sprite)
 
         timeToAttack -= delta
-        rendering.render_FPS(delta, renderer, factory, ManagerFont)
-        beginText.renderText(delta, renderer, factory)
 
         (hunger, hp, consumableText) = equips.interactions(hunger, hp, equiped, equiplist, interact, consumableText)
-        consumableText.renderText(delta, renderer, factory)
 
 
 
@@ -176,7 +170,6 @@ def main():
             playsound.playsound('GameOverSound.wav', False)
             rendering.render_GameOVer(renderer, factory)
 
-        rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist)
 
         timeCycle += delta
         if timeCycle >= DAGNACHTCYCLUSTIJD:
@@ -184,7 +177,11 @@ def main():
 
         (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map)
         (r_speler, r_cameravlak, damage) = movement.draaien(r_speler, r_cameravlak)
-
+        rendering.dim_image(renderer, dimmer, timeCycle)
+        rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist)
+        beginText.renderText(delta, renderer, factory)
+        consumableText.renderText(delta, renderer, factory)
+        rendering.render_FPS(delta, renderer, factory, ManagerFont)
         renderer.present()
 
     # Sluit SDL2 af
