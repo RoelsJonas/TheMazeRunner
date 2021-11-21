@@ -2,7 +2,7 @@ import numpy as np
 import main
 
 
-def rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler):
+def rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, offset):
     texture_index = 0
     d_euclidisch = d_muur
     d_muur = d_euclidisch * np.dot(r_speler, r_straal)
@@ -17,7 +17,9 @@ def rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, texture
         textuur_x = int(np.round((intersectie[0] - int(intersectie[0])) * textures[texture_index].size[0]))
     else:
         textuur_x = int(np.round((intersectie[1] - int(intersectie[1])) * textures[texture_index].size[0]))
-    renderer.copy(textures[0], srcrect=(textuur_x, textuur_y, 1, textuur_hoogte),
+
+
+    renderer.copy(textures[0], srcrect=(textuur_x + offset, textuur_y, 1, textuur_hoogte),
                   dstrect=(schermkolom, y1, 2, int(hoogte)))  # muur
 
 class timedDoor:
@@ -44,7 +46,7 @@ class timedDoor:
 
         #open de deur gelijdelijk aan tijdens de ochtend
         elif timeCycle <= 5:
-            self.state = 1 - timeCycle/5
+            self.state = 1 - timeCycle
 
         #sluit de deur gelijdelijk aan tijdens de avond
         else:
@@ -62,29 +64,31 @@ class timedDoor:
         #render als een muur wanneer de deur volledig gesloten is
         elif self.state == 1:
             z_buffer[main.BREEDTE - 1 - kolom] = d_muur
-            rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
+            rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, 0)
 
         #kijk of deur rechts/linkssluitend is
         elif self.side == 0:
+            offset = int((1 - self.state) * textures[0].size[0])
             if horizontaal:
                 #kijk of de intersectie binnen het gesloten deel zit
                 if intersectie[0] - int(intersectie[0]) < self.state:
                     z_buffer[main.BREEDTE - 1 - kolom] = d_muur
-                    rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
+                    rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, offset)
             else:
                 if intersectie[1] - int(intersectie[1]) < self.state:
                     z_buffer[main.BREEDTE - 1 - kolom] = d_muur
-                    rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
+                    rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, offset)
 
         elif self.side == 1:
+            offset = -1 * int((1 - self.state) * textures[0].size[0])
             if horizontaal:
                 if 1 + int(intersectie[0]) - intersectie[0] < self.state:
                     z_buffer[main.BREEDTE - 1 - kolom] = d_muur
-                    rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
+                    rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, offset)
             else:
                 if  1 + int(intersectie[1]) - intersectie[1] < self.state:
                     z_buffer[main.BREEDTE - 1 - kolom] = d_muur
-                    rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
+                    rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, offset)
 
         return(z_buffer)
 

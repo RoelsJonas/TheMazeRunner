@@ -34,7 +34,7 @@ CONSUMESOUND = "GameOverSound.wav"
 
 
 
-DAGNACHTCYCLUSTIJD = 30 # aantal seconden dat 1 dag nacht cyclus duurt
+DAGNACHTCYCLUSTIJD = 60 # aantal seconden dat 1 dag nacht cyclus duurt
 KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24     # om te weten om de hoeveel tijd de klok een uur moet opschuiven
 
 MUURHOOGTE = 1.5
@@ -85,6 +85,7 @@ kleuren = [
 
 
 def main():
+    (world_map, doorLocations, door_map) = imageToMap.generateWorld("resources\map6.png")
     # Initialiseer de SDL2 bibliotheek
     sdl2.ext.init()
     global p_speler
@@ -118,7 +119,7 @@ def main():
 
     start_time = time.time()
     equiplist = [equips.equip(factory, resources, "medkit.png", 0, 0, 10, True),equips.equip(factory, resources, "medkit.png", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", 0, 0, 10, True)]
-    timeCycle = 26
+    timeCycle = 28
     #winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
     spriteList = []
     #spriteList.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, True, False, False, False, 0, 50, 10, resources, factory))
@@ -139,7 +140,7 @@ def main():
         # Render de huidige frame
         for kolom in range(0, window.size[0]):
             r_straal = raycast.bereken_r_straal(r_speler,r_cameravlak, kolom)
-            (d_muur, intersectie, horizontaal, z_buffer) = raycast.raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, timeCycle, z_buffer)
+            (d_muur, intersectie, horizontaal, z_buffer, door_map) = raycast.raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, timeCycle, z_buffer, door_map)
             if z_buffer[BREEDTE - 1 - kolom] == 0 or z_buffer[BREEDTE - 1 - kolom] > d_muur:
                 z_buffer[BREEDTE - 1 - kolom] = d_muur
                 rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, mist)
