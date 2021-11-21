@@ -52,15 +52,16 @@ class timedDoor:
 
 
 
-    def render(self, renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle):
+    def render(self, renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, z_buffer):
         self.timedUpdateState(timeCycle)
 
         #render niets als deur volledig open is
         if self.state == 0:
-            return
+            return(z_buffer)
 
         #render als een muur wanneer de deur volledig gesloten is
         elif self.state == 1:
+            z_buffer[main.BREEDTE - 1 - kolom] = d_muur
             rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
 
         #kijk of deur rechts/linkssluitend is
@@ -68,18 +69,24 @@ class timedDoor:
             if horizontaal:
                 #kijk of de intersectie binnen het gesloten deel zit
                 if intersectie[0] - int(intersectie[0]) < self.state:
+                    z_buffer[main.BREEDTE - 1 - kolom] = d_muur
                     rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
             else:
                 if intersectie[1] - int(intersectie[1]) < self.state:
+                    z_buffer[main.BREEDTE - 1 - kolom] = d_muur
                     rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
 
         elif self.side == 1:
             if horizontaal:
                 if 1 + int(intersectie[0]) - intersectie[0] < self.state:
+                    z_buffer[main.BREEDTE - 1 - kolom] = d_muur
                     rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
             else:
                 if  1 + int(intersectie[1]) - intersectie[1] < self.state:
+                    z_buffer[main.BREEDTE - 1 - kolom] = d_muur
                     rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
+
+        return(z_buffer)
 
 
 

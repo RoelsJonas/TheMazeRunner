@@ -122,7 +122,7 @@ def main():
     #winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
     spriteList = []
     #spriteList.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, True, False, False, False, 0, 50, 10, resources, factory))
-    spriteList.append(sprites.Sprite(28.0, 28.0, 1, 0, "burger.png", 0.5, 0.5, 1, False, False, False, True, 10, 0, 5, resources, factory))
+    spriteList.append(sprites.Sprite(28.0, 17.0, 1, 0, "burger.png", 0.5, 0.5, 1, False, False, False, True, 10, 0, 5, resources, factory))
     spriteList.append(sprites.Sprite(25.0, 25.0, 1, 0, "medkit.png", 0.5, 0.5, 1, False, True, True, True, 0, 0, 30, resources, factory))   #doet damage van -30 -> healt en volgt met speed 0, dus volgt niet
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
     while not moet_afsluiten:
@@ -143,7 +143,7 @@ def main():
             z_buffer[BREEDTE - 1 - kolom] = d_muur
             rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, mist)
             if deur:
-                door_map[l_deur[0], l_deur[1]].render(renderer, window, kolom, d_deur,  i_deur, h_deur, textures, r_straal, r_speler, timeCycle)
+                z_buffer = door_map[l_deur[0], l_deur[1]].render(renderer, window, kolom, d_deur,  i_deur, h_deur, textures, r_straal, r_speler, timeCycle, z_buffer)
 
         # Verwissel de rendering context met de frame buffer=
 
