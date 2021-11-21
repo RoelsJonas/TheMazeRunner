@@ -65,7 +65,7 @@ moet_afsluiten = False
 # de "wereldkaart". Dit is een 2d matrix waarin elke cel een type van muur voorstelt
 # Een 0 betekent dat op deze plaats in de game wereld geen muren aanwezig zijn
 
-(world_map, doorLocations, door_map) = imageToMap.generateWorld("resources\map5.png")
+(world_map, doorLocations, door_map) = imageToMap.generateWorld("resources\map6.png")
 
 # Vooraf gedefinieerde kleuren
 kleuren = [
