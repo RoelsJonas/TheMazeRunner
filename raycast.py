@@ -9,10 +9,6 @@ def bereken_r_straal(r_speler, r_cameravlak, kolom):
     return r_straal
 
 def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, timeCycle, z_buffer, door_map):
-    d_deur = 0
-    l_deur = 0
-    i_deur = 0
-    h_deur = 0
     d_muur = -1
     intersectie = np.array([0,0])
     horizontaal = True
@@ -80,7 +76,7 @@ def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, tim
                 l_deur = (i_y, i_x)
                 i_deur = intersectie
                 h_deur = horizontaal
-                z_buffer_nieuw = door_map[l_deur[0], l_deur[1]].render(renderer, window, kolom, d_deur, i_deur, h_deur, textures, r_straal, r_speler, timeCycle, z_buffer)
+                z_buffer_nieuw = door_map[l_deur[0], l_deur[1]].render(renderer, window, kolom, d_deur, i_deur, h_deur, textures, r_straal, r_speler, timeCycle, z_buffer, p_speler)
                 if z_buffer[main.BREEDTE - 1 - kolom] == 0 or z_buffer_nieuw[main.BREEDTE - 1 - kolom] < z_buffer[main.BREEDTE - 1 - kolom]:
                     z_buffer = z_buffer_nieuw
 
