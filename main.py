@@ -30,7 +30,8 @@ SENSITIVITY = 0.001
 INTERACTIONDISTANCE = 0.2
 HPREPLENISHMODIFIERER = 0,2
 
-CONSUMESOUND = "GameOverSound.wav"
+CONSUMESOUND = "consumable.wav"
+GAMEOVERSOUND = "GameOverSound.wav"
 
 
 
@@ -65,7 +66,7 @@ moet_afsluiten = False
 # de "wereldkaart". Dit is een 2d matrix waarin elke cel een type van muur voorstelt
 # Een 0 betekent dat op deze plaats in de game wereld geen muren aanwezig zijn
 
-(world_map, doorLocations, door_map) = imageToMap.generateWorld("resources\map6.png")
+#(world_map, doorLocations, door_map) = imageToMap.generateWorld("resources\map6.png")
 
 # Vooraf gedefinieerde kleuren
 kleuren = [
@@ -84,8 +85,8 @@ kleuren = [
 ]
 
 
+
 def main():
-    (world_map, doorLocations, door_map) = imageToMap.generateWorld("resources\map6.png")
     # Initialiseer de SDL2 bibliotheek
     sdl2.ext.init()
     global p_speler
@@ -107,10 +108,14 @@ def main():
     # Maak een renderer aan zodat we in ons venster kunnen renderen
     renderer = sdl2.ext.Renderer(window)
 
-    beginText = text.text("Wie ben ik? Wat doe ik hier? IS JONAS SEXY?", 10, 50, 450, 700, 50)
-    consumableText = text.text("hmm, that's good stuff", 0, 200, 450, 400, 50)
+
+    beginText = text.text("Wie ben ik? Wat doe ik hier?", 10, 50, 450, 700, 50)
+    consumableText = text.text("Hmm, that's good stuff!", 0, 200, 450, 400, 50)
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites) = rendering.create_resources(renderer)
 
+    (world_map, doorLocations, door_map) = imageToMap.generateWorld("resources\map7.png", factory, resources, textures)
+
+    delta = 1
     damage = 0
     timeToAttack = 0
     interact = False
@@ -122,7 +127,7 @@ def main():
     timeCycle = 28
     #winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
     spriteList = []
-    #spriteList.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, True, False, False, False, 0, 50, 10, resources, factory))
+    spriteList.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 0.5, 0.25, 1, True, False, False, False, 0, 50, 10, resources, factory))
     spriteList.append(sprites.Sprite(28.0, 17.0, 1, 0, "burger.png", 0.5, 0.5, 1, False, False, False, True, 10, 0, 5, resources, factory))
     spriteList.append(sprites.Sprite(25.0, 25.0, 1, 0, "medkit.png", 0.5, 0.5, 1, False, True, True, True, 0, 0, 30, resources, factory))   #doet damage van -30 -> healt en volgt met speed 0, dus volgt niet
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
@@ -140,22 +145,30 @@ def main():
         # Render de huidige frame
         for kolom in range(0, window.size[0]):
             r_straal = raycast.bereken_r_straal(r_speler,r_cameravlak, kolom)
-            (d_muur, intersectie, horizontaal, z_buffer, door_map) = raycast.raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, timeCycle, z_buffer, door_map)
+            (d_muur, intersectie, horizontaal, z_buffer, door_map) = raycast.raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, timeCycle, z_buffer, door_map, world_map, delta)
             if z_buffer[BREEDTE - 1 - kolom] == 0 or z_buffer[BREEDTE - 1 - kolom] > d_muur:
                 z_buffer[BREEDTE - 1 - kolom] = d_muur
-                rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, mist)
+                rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
         # Verwissel de rendering context met de frame buffer=
 
         end_time = time.time()
         delta = end_time - start_time
         start_time = time.time()
         spriteList = sprites.sortSprites(spriteList, p_speler)
+
+        for i in range(len(doorLocations)):
+            if world_map[doorLocations[i][0], doorLocations[i][1]] == 3:
+                door_map[doorLocations[i][0], doorLocations[i][1]].interact(pakOp, p_speler, equiplist, equiped)
+                door_map[doorLocations[i][0], doorLocations[i][1]].updateState(delta)
+
         for sprite in spriteList:
             sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
-            sprite.moveToPlayer(p_speler, delta)
+            sprite.moveToPlayer(p_speler, delta, world_map)
             (hunger, hp, destroy, timeToAttack, equiplist) = sprite.checkInteractie(hunger, hp, p_speler, delta, damage, timeToAttack, pakOp, equiplist, equiped)
             if destroy:
                 spriteList.remove(sprite)
+
+
 
         timeToAttack -= delta
 
@@ -168,7 +181,7 @@ def main():
         elif hp >= 0:
             hp -= delta * HUNGERHPLOSSMODIFIER
         else:
-            playsound.playsound('GameOverSound.wav', False)
+            playsound.playsound(GAMEOVERSOUND, False)
             rendering.render_GameOVer(renderer, factory)
 
 
@@ -176,7 +189,7 @@ def main():
         if timeCycle >= DAGNACHTCYCLUSTIJD:
             timeCycle = 0
 
-        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map)
+        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map)
         (r_speler, r_cameravlak, damage) = movement.draaien(r_speler, r_cameravlak)
         rendering.dim_image(renderer, dimmer, timeCycle)
         rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist)

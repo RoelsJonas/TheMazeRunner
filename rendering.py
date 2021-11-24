@@ -29,7 +29,7 @@ def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokIma
             equiplist[i].render(i, renderer, offset )
 
 
-def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timecycle, mist):
+def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler):
     texture_index = 0
     d_euclidisch = d_muur
     d_muur = d_euclidisch * np.dot(r_speler, r_straal)
@@ -79,6 +79,7 @@ def create_resources(renderer):
     ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(255, 255, 255))
 
     muur = factory.from_image(resources.get_path("wall-concrete1.png"))
+    muur2 = factory.from_image(resources.get_path("fisheyetest.png"))
     hud = factory.from_image(resources.get_path("hud.png"))
     crosshair = factory.from_image(resources.get_path("crosshair.png"))
     dimmer = factory.from_image((resources.get_path("dimmer.png")))
@@ -92,6 +93,7 @@ def create_resources(renderer):
 
     textures = []
     textures.append(muur)
+    textures.append(muur2)
 
     afbeeldingen_sprites = []
     afbeeldingen_sprites.append(factory.from_image((resources.get_path("spellun-sprite.png"))))

@@ -4,11 +4,12 @@ import doors
 
 
 MUUR = 1
-DEUR = 2
+TIMEDDEUR = 2
+INTERACTABLEDEUR = 3
 LEFT = 0
 RIGHT = 1
 
-def generateWorld(afbeelding):
+def generateWorld(afbeelding, factory, resources, textures):
     input_image = Image.open(afbeelding)
     r_image_in, g_image_in, b_image_in = input_image.split()
     r_in = np.uint32(np.array(r_image_in))
@@ -27,15 +28,21 @@ def generateWorld(afbeelding):
 
             #blauwwe pixel ==> timed deur die van links opent
             elif b_in[i, j] == 255 and r_in[i, j] == 0 and g_in[i, j] == 0:
-                world_map[i, j] = DEUR
-                door_map[i, j] = doors.timedDoor((j, i), LEFT)
+                world_map[i, j] = TIMEDDEUR
+                door_map[i, j] = doors.timedDoor((j, i), LEFT, textures[0])
                 doorLocation.append((i, j))
 
             #groene pixel ==> timed deur die van rechts opent
             elif b_in[i, j] == 0 and r_in[i, j] == 0 and g_in[i, j] == 255:
-                world_map[i, j] = DEUR
-                door_map[i, j] = doors.timedDoor((j, i), RIGHT)
+                world_map[i, j] = TIMEDDEUR
+                door_map[i, j] = doors.timedDoor((j, i), RIGHT, textures[0])
                 doorLocation.append((i, j))
+
+            elif b_in[i, j] == 0 and r_in[i, j] == 255 and g_in[i, j] == 0:
+                world_map[i, j] = INTERACTABLEDEUR
+                door_map[i, j] = doors.interactableDoor((j, i), RIGHT, textures[1])
+                doorLocation.append((i, j))
+
 
             #witte pixel ==> openruimte
             else:
