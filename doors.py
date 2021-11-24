@@ -73,24 +73,24 @@ class timedDoor:
             if horizontaal:
                 #kijk of de intersectie binnen het gesloten deel zit
                 if intersectie[0] - int(intersectie[0]) < self.state:
-                    offset = int((1 - self.state) * textures[0].size[0])
+                    offset = int((1 - self.state) * self.texture.size[0])
                     z_buffer[main.BREEDTE - 1 - kolom] = d_muur
                     rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, self.texture, r_straal, r_speler, offset)
             else:
                 if 1 + int(intersectie[1]) - intersectie[1] < self.state:
-                    offset = -1 * int((1 - self.state) * textures[0].size[0])
+                    offset = -1 * int((1 - self.state) * self.texture.size[0])
                     z_buffer[main.BREEDTE - 1 - kolom] = d_muur
                     rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, self.texture, r_straal, r_speler, offset)
 
         elif self.side == 1:
             if horizontaal:
                 if 1 + int(intersectie[0]) - intersectie[0] < self.state:
-                    offset = -1 * int((1 - self.state) * textures[0].size[0])
+                    offset = -1 * int((1 - self.state) * self.texture.size[0])
                     z_buffer[main.BREEDTE - 1 - kolom] = d_muur
                     rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, self.texture, r_straal, r_speler, offset)
             else:
                 if intersectie[1] - int(intersectie[1]) < self.state:
-                    offset = int((1 - self.state) * textures[0].size[0])
+                    offset = int((1 - self.state) * self.texture.size[0])
                     z_buffer[main.BREEDTE - 1 - kolom] = d_muur
                     rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, self.texture, r_straal, r_speler, offset)
 
@@ -112,14 +112,14 @@ class interactableDoor:
 
     def updateState(self, delta):
         if self.opening == 1:
-            self.state -= delta*2
+            self.state -= delta/5
             #check of deur volledig open is
             if self.state < 0:
                 self.state = 0 #stel de deur op volledig open in
                 self.opening = 0 #stop het openenen van de deur
 
         elif self.opening == 2:
-            self.state += delta*2
+            self.state += delta/5
             #check of deur volledig toe is
             if self.state > 1:
                 self.state = 1 #stel de deur op volleidg gesloten in
@@ -142,13 +142,13 @@ class interactableDoor:
             if horizontaal:
                 # kijk of de intersectie binnen het gesloten deel zit
                 if intersectie[0] - int(intersectie[0]) < self.state:
-                    offset = int((1 - self.state) * textures[0].size[0])
+                    offset = int((1 - self.state) * self.texture.size[0])
                     z_buffer[main.BREEDTE - 1 - kolom] = d_muur
                     rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, self.texture, r_straal,
                               r_speler, offset)
             else:
                 if 1 + int(intersectie[1]) - intersectie[1] < self.state:
-                    offset = -1 * int((1 - self.state) * textures[0].size[0])
+                    offset = -1 * int((1 - self.state) * self.texture.size[0])
                     z_buffer[main.BREEDTE - 1 - kolom] = d_muur
                     rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, self.texture, r_straal,
                               r_speler, offset)
@@ -156,13 +156,13 @@ class interactableDoor:
         elif self.side == 1:
             if horizontaal:
                 if 1 + int(intersectie[0]) - intersectie[0] < self.state:
-                    offset = -1 * int((1 - self.state) * textures[0].size[0])
+                    offset = -1 * int((1 - self.state) * self.texture.size[0])
                     z_buffer[main.BREEDTE - 1 - kolom] = d_muur
                     rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, self.texture, r_straal,
                               r_speler, offset)
             else:
                 if intersectie[1] - int(intersectie[1]) < self.state:
-                    offset = int((1 - self.state) * textures[0].size[0])
+                    offset = int((1 - self.state) * self.texture.size[0])
                     z_buffer[main.BREEDTE - 1 - kolom] = d_muur
                     rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, self.texture, r_straal,
                               r_speler, offset)
