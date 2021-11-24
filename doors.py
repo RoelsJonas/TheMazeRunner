@@ -1,5 +1,6 @@
 import numpy as np
 import main
+import playsound
 
 
 def rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, texture, r_straal, r_speler, offset):
@@ -176,6 +177,7 @@ class interactableDoor:
             d_deur[0] -= p_speler[0]
             d_deur[1] -= p_speler[1]
             d_deur = np.linalg.norm(d_deur)
+            playsound.playsound(main.GATESOUND, False)         #sound moet nog geeddit worden
 
             if d_deur < 1.25:
                 if self.state == 0:
