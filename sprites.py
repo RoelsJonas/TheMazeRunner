@@ -7,6 +7,7 @@ def sortSprites(list, p_speler):
     for sprite in list:
         sprite.updateDistance(p_speler)
     list.sort(key=lambda x: x.d_speler, reverse=True)
+    list.sort(key=lambda x: x.d_speler, reverse=True)
     return(list)
 
 
@@ -55,24 +56,29 @@ class Sprite:
     def move(self, delta_x, delta_y):
         self.p_sprite += np.array([delta_x, delta_y])
 
-    def moveToPlayer(self, p_speler, delta):
+    def moveToPlayer(self, p_speler, delta, world_map):
         if self.volgt:
             if self.followTime > 0:
-                afstand = np.array([self.p_sprite[0]-p_speler[0], self.p_sprite[1]-p_speler[1]])
-                norm = np.linalg.norm(afstand)
-                afstand /= norm
-                self.r_sprite = np.array([afstand[1], -1 * afstand[0]])
-                p_sprite_nieuw = np.array([self.p_sprite[0] - delta * self.MOVEMENTSPEED * afstand[0], self.p_sprite[1] - delta * self.MOVEMENTSPEED * afstand[1]])
+                p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
+                p_sprite[0] -= p_speler[0]
+                p_sprite[1] -= p_speler[1]
+                p_sprite = np.linalg.norm(p_sprite)
+                if p_sprite < main.INTERACTIONDISTANCE:
+                    afstand = np.array([self.p_sprite[0]-p_speler[0], self.p_sprite[1]-p_speler[1]])
+                    norm = np.linalg.norm(afstand)
+                    afstand /= norm
+                    self.r_sprite = np.array([afstand[1], -1 * afstand[0]])
+                    p_sprite_nieuw = np.array([self.p_sprite[0] - delta * self.MOVEMENTSPEED * afstand[0], self.p_sprite[1] - delta * self.MOVEMENTSPEED * afstand[1]])
 
                 #check of nieuwe positie geldig is
-                if main.world_map[int(p_sprite_nieuw[1]), int(p_sprite_nieuw[0])] == 0:
-                    self.p_sprite = p_sprite_nieuw
+                    if world_map[int(p_sprite_nieuw[1]), int(p_sprite_nieuw[0])] == 0:
+                        self.p_sprite = p_sprite_nieuw
 
-                elif main.world_map[int(self.p_sprite[1]), int(p_sprite_nieuw[0])] == 0:
-                    self.p_sprite[0] = p_sprite_nieuw[0]
+                    elif world_map[int(self.p_sprite[1]), int(p_sprite_nieuw[0])] == 0:
+                        self.p_sprite[0] = p_sprite_nieuw[0]
 
-                elif main.world_map[int(p_sprite_nieuw[1]), int(self.p_sprite[0])] == 0:
-                    self.p_sprite[1] = p_sprite_nieuw[1]
+                    elif world_map[int(p_sprite_nieuw[1]), int(self.p_sprite[0])] == 0:
+                        self.p_sprite[1] = p_sprite_nieuw[1]
 
                 self.followTime -= delta
             else:
