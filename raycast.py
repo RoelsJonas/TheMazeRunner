@@ -37,12 +37,12 @@ def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, tim
     #loop van stap 3 tot stap 6
     while d_muur == -1:
         if (d_horizontaal + x * delta_h) <= (d_verticaal + y * delta_v):
-            intersectie = p_speler + (d_horizontaal + (x * delta_h)) * r_straal
+            intersectie = np.add(p_speler, np.multiply(d_horizontaal + (x * delta_h), r_straal))
             horizontaal = True
             x += 1
 
         else:
-            intersectie = p_speler + (d_verticaal + (y * delta_v)) * r_straal
+            intersectie = np.add(p_speler, np.multiply(d_verticaal + (y * delta_v), r_straal))
             horizontaal = False
             y += 1
 
@@ -61,22 +61,14 @@ def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, tim
             else:
                 i_x = int(np.round(intersectie[0])) - 1
 
-        if i_x >= world_map.shape[1] or i_x < 0:
-            return
-
-        if i_y >= world_map.shape[0] or i_y < 0:
-            return
 
         if world_map[i_y, i_x] != 0:
             if world_map[i_y, i_x] == 1:
-                d_muur = ((intersectie[0] - p_speler[0]) ** 2 + (intersectie[1] - p_speler[1]) ** 2) ** 0.5
-            if (world_map[i_y, i_x] == 2 or world_map[i_y, i_x] == 3) and not(deur):
+                d_muur = np.linalg.norm(intersectie - p_speler) #np.sqrt(np.power(intersectie[0] - p_speler[0], 2) + np.power(intersectie[1] - p_speler[1], 2))
+
+            elif (world_map[i_y, i_x] == 2 or world_map[i_y, i_x] == 3) and not(deur):
                 deur = True
-                d_deur = ((intersectie[0] - p_speler[0]) ** 2 + (intersectie[1] - p_speler[1]) ** 2) ** 0.5
-                l_deur = (i_y, i_x)
-                i_deur = intersectie
-                h_deur = horizontaal
-                z_buffer_nieuw = door_map[l_deur[0], l_deur[1]].render(renderer, window, kolom, d_deur, i_deur, h_deur, textures, r_straal, r_speler, timeCycle, z_buffer, p_speler, delta)
+                z_buffer_nieuw = door_map[i_y, i_x].render(renderer, window, kolom, np.linalg.norm(intersectie - p_speler), intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, z_buffer, p_speler, delta)
                 if z_buffer[main.BREEDTE - 1 - kolom] == 0 or z_buffer_nieuw[main.BREEDTE - 1 - kolom] < z_buffer[main.BREEDTE - 1 - kolom]:
                     z_buffer = z_buffer_nieuw
 

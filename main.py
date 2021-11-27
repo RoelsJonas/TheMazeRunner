@@ -137,11 +137,8 @@ def main():
 
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
     while not moet_afsluiten:
-        # Onthoud de huidige tijd
-        kolom = 0
-
         # Reset de rendering context
-        renderer.clear()
+        #renderer.clear() lijkt onnodig
 
         #maak lege z buffer aan:
         z_buffer = np.zeros(BREEDTE, float)
@@ -188,8 +185,6 @@ def main():
 
         (hunger, hp, consumableText) = equips.interactions(hunger, hp, equiped, equiplist, interact, consumableText)
 
-
-
         if hunger >= 0:
             hunger -= delta * HUNGERMODIFIER
         elif hp >= 0:
@@ -197,7 +192,6 @@ def main():
         else:
             playsound.playsound(GAMEOVERSOUND, False)
             rendering.render_GameOVer(renderer, factory)
-
 
         timeCycle += delta
         if round(timeCycle) == DAGNACHTCYCLUSTIJD/2 + 5:

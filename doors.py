@@ -48,7 +48,7 @@ class timedDoor:
 
         #open de deur gelijdelijk aan tijdens de ochtend
         elif timeCycle <= 5:
-            self.state = 1 - timeCycle
+            self.state = 1 - timeCycle/5
 
         #sluit de deur gelijdelijk aan tijdens de avond
         else:
