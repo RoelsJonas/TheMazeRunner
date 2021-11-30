@@ -8,11 +8,12 @@ def bereken_r_straal(r_speler, r_cameravlak, kolom):
     r_straal = r_straal_kolom / np.linalg.norm(r_straal_kolom)
     return r_straal
 
-def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, timeCycle, z_buffer, door_map, world_map, delta):
+def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, timeCycle, z_buffer, door_map, world_map, delta, wall_map):
     d_muur = -1
     intersectie = np.array([0,0])
     horizontaal = True
     deur = False
+    texture = ""
 
     #stap 0 initialiseer x en y met waarde 0
     x = 0
@@ -65,6 +66,7 @@ def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, tim
         if world_map[i_y, i_x] != 0:
             if world_map[i_y, i_x] == 1:
                 d_muur = np.linalg.norm(intersectie - p_speler) #np.sqrt(np.power(intersectie[0] - p_speler[0], 2) + np.power(intersectie[1] - p_speler[1], 2))
+                texture = wall_map[i_y, i_x].image
 
             elif (world_map[i_y, i_x] == 2 or world_map[i_y, i_x] == 3) and not(deur):
                 deur = True
@@ -73,4 +75,4 @@ def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, tim
                     z_buffer = z_buffer_nieuw
 
 
-    return (d_muur, intersectie, horizontaal, z_buffer, door_map)
+    return (d_muur, intersectie, horizontaal, z_buffer, door_map, texture)

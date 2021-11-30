@@ -50,7 +50,7 @@ SPRINT_SPEED = 2.25
 # Globale variabelen
 
 # positie van de speler
-p_speler = np.array([30 + 1 / math.sqrt(2), 30 - 1 / math.sqrt(2)])
+p_speler = np.array([510 + 1 / math.sqrt(2), 512 - 1 / math.sqrt(2)])
 #p_speler = np.array([5,0.75])
 
 # richting waarin de speler kijkt
@@ -114,7 +114,7 @@ def main():
     consumableText = text.text("Hmm, that's good stuff!", 0, 200, 450, 400, 50)
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites) = rendering.create_resources(renderer)
 
-    (world_map, doorLocations, door_map) = imageToMap.generateWorld("resources\map7.png", factory, resources, textures)
+    (world_map, doorLocations, door_map, wall_map) = imageToMap.generateWorld("resources\map9.png", factory, resources, textures)
 
     delta = 1
     damage = 0
@@ -148,10 +148,10 @@ def main():
         # Render de huidige frame
         for kolom in range(0, window.size[0]):
             r_straal = raycast.bereken_r_straal(r_speler,r_cameravlak, kolom)
-            (d_muur, intersectie, horizontaal, z_buffer, door_map) = raycast.raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, timeCycle, z_buffer, door_map, world_map, delta)
+            (d_muur, intersectie, horizontaal, z_buffer, door_map, texture) = raycast.raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, timeCycle, z_buffer, door_map, world_map, delta, wall_map)
             if z_buffer[BREEDTE - 1 - kolom] == 0 or z_buffer[BREEDTE - 1 - kolom] > d_muur:
                 z_buffer[BREEDTE - 1 - kolom] = d_muur
-                rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler)
+                rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, texture, r_straal, r_speler)
         # Verwissel de rendering context met de frame buffer=
 
         end_time = time.time()

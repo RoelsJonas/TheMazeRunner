@@ -29,22 +29,22 @@ def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokIma
             equiplist[i].render(i, renderer, offset )
 
 
-def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler):
+def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, texture, r_straal, r_speler):
     d_euclidisch = d_muur
     d_muur = d_euclidisch * np.dot(r_speler, r_straal)
 
     hoogte = main.MUURHOOGTE*(window.size[1]/d_muur)
     y1 = int((window.size[1]-hoogte)//2) - 100
     textuur_y = 0
-    textuur_hoogte = int(textures[0].size[1])
+    textuur_hoogte = int(texture.size[1])
 
     schermkolom = main.BREEDTE - 1 - kolom
     if horizontaal:
-        textuur_x = int(np.round((intersectie[0] - int(intersectie[0])) * textures[0].size[0]))
+        textuur_x = int(np.round((intersectie[0] - int(intersectie[0])) * texture.size[0]))
     else:
-        textuur_x = int(np.round((intersectie[1] - int(intersectie[1])) * textures[0].size[0]))
+        textuur_x = int(np.round((intersectie[1] - int(intersectie[1])) * texture.size[0]))
 
-    renderer.copy(textures[0], srcrect=(textuur_x, textuur_y, 1, textuur_hoogte), dstrect=(schermkolom, y1, 2, int(hoogte))) #muur
+    renderer.copy(texture, srcrect=(textuur_x, textuur_y, 1, textuur_hoogte), dstrect=(schermkolom, y1, 2, int(hoogte))) #muur
 
 
 def render_lucht_en_vloer(renderer, timecycle):

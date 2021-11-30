@@ -18,13 +18,21 @@ def generateWorld(afbeelding, factory, resources, textures):
 
     world_map = np.zeros((r_in.shape[0], r_in.shape[1]), int)
     door_map = np.empty((r_in.shape[0], r_in.shape[1]), object)
+    wall_map = np.empty((r_in.shape[0], r_in.shape[1]), object)
     doorLocation = []
 
 
     for i in range(r_in.shape[0]):
-        for j in range(r_in.shape[1]): #zwarte pixe ==> muur
+        for j in range(r_in.shape[1]):
+            #zwarte pixe ==> muur met texture[0]
             if r_in[i, j] == 0 and b_in[i, j] == 0 and g_in[i, j] == 0:
                 world_map[i, j] = MUUR
+                wall_map[i, j] = Wall(i, j, textures[0])
+
+                #grijze pixel ==> muur met texture[1]
+            elif r_in[i, j] == 128 and b_in[i, j] == 128 and g_in[i, j] == 128:
+                world_map[i, j] = MUUR
+                wall_map[i, j] = Wall(i, j, textures[1])
 
             #blauwwe pixel ==> timed deur die van links opent
             elif b_in[i, j] == 255 and r_in[i, j] == 0 and g_in[i, j] == 0:
@@ -48,5 +56,14 @@ def generateWorld(afbeelding, factory, resources, textures):
             else:
                 world_map[i, j] = 0
 
-    return(world_map, doorLocation, door_map)
+    return(world_map, doorLocation, door_map, wall_map)
 
+
+class Wall:
+
+    image = ""
+    posWorldCoordinates = np.array([0.0, 0.0])
+
+    def __init__(self, x, y, image):
+        self.posWorldCoordinates = np.array([x, y])
+        self.image = image
