@@ -110,3 +110,68 @@ def dim_image(renderer, dimmer, timeCycle):
     elif timeCycle <= 5:                        #ochtend maken
         for i in range(int(50-10*timeCycle)):
             renderer.copy(dimmer, srcrect=(0, 0, 1, 1), dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
+
+
+def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted):
+    renderer.clear()
+    inventory = True
+    renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[5])
+    key_states = sdl2.SDL_GetKeyboardState(None)
+    events = sdl2.ext.get_events()
+    damage = 0
+    for event in events:
+        if event.type == sdl2.SDL_MOUSEMOTION:
+            muis_pos[0] += event.motion.xrel
+            if muis_pos[0] < 0:
+                muis_pos[0] = 0
+            elif muis_pos[0] > main.BREEDTE:
+                muis_pos[0] = main.BREEDTE
+
+            muis_pos[1] += event.motion.yrel
+            if muis_pos[1] < 0:
+                muis_pos[1] = 0
+            elif muis_pos[1] > main.HOOGTE:
+                muis_pos[1] = main.HOOGTE
+
+        if event.type == sdl2.SDL_MOUSEBUTTONDOWN:
+            if main.HOOGTE - 65 <= muis_pos[1] <= main.HOOGTE - 15:
+                if 200 <= muis_pos[0] - (main.BREEDTE - 800)//2 <= 255:
+                    highlighted[0] = not(highlighted[0])
+                elif 275 <= muis_pos[0] - (main.BREEDTE - 800)//2 <= 330:
+                    highlighted[1] = not(highlighted[1])
+                elif 350 <= muis_pos[0] - (main.BREEDTE - 800)//2 <= 405:
+                    highlighted[2] = not(highlighted[2])
+                elif 425 <= muis_pos[0] - (main.BREEDTE - 800)//2 <= 480:
+                    highlighted[3] = not(highlighted[3])
+
+
+    renderer.fill(((main.BREEDTE - 800) // 2 + 69, main.HOOGTE - 60, int(hp), 47), main.kleuren[10])
+    renderer.fill(((main.BREEDTE - 800) // 2 + 688, main.HOOGTE - 65, int(stamina), 22), main.kleuren[9])
+    renderer.fill(((main.BREEDTE - 800) // 2 + 688, main.HOOGTE - 35, int(hunger), 22), main.kleuren[8])
+    renderer.copy(factory.from_image(resources.get_path("hud.png")), srcrect=(0, 0, 800, 75), dstrect=((main.BREEDTE - 800)//2, main.HOOGTE - 75, 800, 75))
+
+    for i in range (len(equiplist)):
+        if equiplist[i] != None:
+            equiplist[i].render(i, renderer, (main.BREEDTE - 800)//2 )
+
+    for i in range(len(highlighted)):
+        if highlighted[i] == 1:
+            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + i * 75, main.HOOGTE - 65, 5, 55), main.kleuren[1])
+            renderer.fill(((main.BREEDTE - 800) // 2 + 251 + i * 75, main.HOOGTE - 65, 5, 55), main.kleuren[1])
+            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + i * 75, main.HOOGTE - 65, 55, 5), main.kleuren[1])
+            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + i * 75, main.HOOGTE - 15, 55, 5), main.kleuren[1])
+
+
+    renderer.copy(factory.from_image(resources.get_path("crosshair.png")),
+                  srcrect=(0, 0, 50, 50),
+                  dstrect=(muis_pos[0] - main.CROSSHAIRGROOTTE // 2, muis_pos[1] - main.CROSSHAIRGROOTTE // 2,
+                           main.CROSSHAIRGROOTTE, main.CROSSHAIRGROOTTE))
+
+
+    if key_states[sdl2.SDL_SCANCODE_Q] or key_states[sdl2.SDL_SCANCODE_ESCAPE]:
+        inventory = False
+
+
+
+    renderer.present()
+    return(muis_pos, equiplist, equiped, inventory, highlighted)

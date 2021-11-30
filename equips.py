@@ -28,11 +28,12 @@ class equip:
     imagetext = ""
     size = (1,1)
 
-    def __init__(self, factory, resources, afbeelding, damage, hunger, healing, *consumeerbaar):
+    def __init__(self, factory, resources, afbeelding, damage, hunger, healing, *consumeerbaar, **type):
         self.damage = damage
         self.hunger = hunger
         self.healing = healing
         self.consumable = consumeerbaar
+        self.type = type
         self.imagetext = afbeelding
         self.image = factory.from_image(resources.get_path(afbeelding))
         self.b = int(self.image.size[0])

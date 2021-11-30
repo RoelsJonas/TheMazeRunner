@@ -77,13 +77,14 @@ def generateWorld(afbeelding, factory, resources, textures, renderer):
 
 
 class Wall:
-
     image = ""
     posWorldCoordinates = np.array([0.0, 0.0])
+    type = "wall"
 
-    def __init__(self, x, y, image):
+    def __init__(self, x, y, image, *type):
         self.posWorldCoordinates = np.array([x, y])
         self.image = image
+        self.type = type
 
 
 def renderLoadingScreen(resources, factory, renderer, waarde, max, textindex):

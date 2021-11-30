@@ -125,9 +125,10 @@ def main():
     pakOp = False
     drop = False
     equiped = 1
+    muis_pos = np.array([BREEDTE//2, HOOGTE//2])
 
     start_time = time.time()
-    equiplist = [equips.equip(factory, resources, "medkit.png", 0, 0, 10, True),equips.equip(factory, resources, "medkit.png", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", 0, 0, 10)]
+    equiplist = [equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H"),equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H"), equips.equip(factory, resources, "medkit.png", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", 0, 0, 10)]
     timeCycle = 28
     #winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
     spriteList = []
@@ -206,8 +207,9 @@ def main():
             equiplist[equiped].drop(spriteList, p_speler, resources, factory)
             equiplist[equiped] = None
 
-        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map)
+        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map)
         (r_speler, r_cameravlak, damage) = movement.draaien(r_speler, r_cameravlak)
+
 
         if hunger >= 0:
             hunger -= delta * HUNGERMODIFIER
@@ -224,6 +226,11 @@ def main():
         consumableText.renderText(delta, renderer, factory)
         rendering.render_FPS(delta, renderer, factory, ManagerFont)
         renderer.present()
+
+        highlighted = [False, False, False, False]
+        while crafting:
+            (muis_pos, equiplist, equiped, crafting, highlighted) = rendering.render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted)
+            start_time = time.time()
 
     # Sluit SDL2 af
     sdl2.ext.quit()
