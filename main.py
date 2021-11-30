@@ -114,7 +114,9 @@ def main():
     consumableText = text.text("Hmm, that's good stuff!", 0, 200, 450, 400, 50)
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites) = rendering.create_resources(renderer)
 
-    (world_map, doorLocations, door_map, wall_map) = imageToMap.generateWorld("resources\map9.png", factory, ManagerFont, textures, renderer)
+    (world_map, doorLocations, door_map, wall_map) = imageToMap.generateWorld("resources\map7.png", factory, ManagerFont, textures, renderer)
+
+    p_speler = np.array([float(world_map.shape[1])/2, float(world_map.shape[0])/2])
 
     delta = 1
     damage = 0
@@ -134,7 +136,7 @@ def main():
     spriteList.append(sprites.Sprite(25.0, 25.0, 1, 0, "medkit.png", 0.5, 0.5, 1, False, True, True, True, 0, 0, 30, resources, factory))   #doet damage van -30 -> healt en volgt met speed 0, dus volgt niet
 
     spriteListNacht = []
-    spriteListNacht.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 4.0, 1.2, 1, True, False, False, False, 0, 50, 10, resources, factory))
+    #spriteListNacht.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 4.0, 1.2, 1, True, False, False, False, 0, 50, 10, resources, factory))
 
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
     while not moet_afsluiten:
@@ -159,6 +161,12 @@ def main():
         start_time = time.time()
         spriteList = sprites.sortSprites(spriteList, p_speler)
         spriteListNacht = sprites.sortSprites(spriteListNacht, p_speler)
+
+        if (int(p_speler[1]), int(p_speler[0])) in doorLocations:
+            if door_map[int(p_speler[1]), int(p_speler[0])].state == 1:
+                hp = -1
+
+
 
         for i in range(len(doorLocations)):
             if world_map[doorLocations[i][0], doorLocations[i][1]] == 3:
@@ -186,13 +194,6 @@ def main():
 
         (hunger, hp, consumableText) = equips.interactions(hunger, hp, equiped, equiplist, interact, consumableText)
 
-        if hunger >= 0:
-            hunger -= delta * HUNGERMODIFIER
-        elif hp >= 0:
-            hp -= delta * HUNGERHPLOSSMODIFIER
-        else:
-            playsound.playsound(GAMEOVERSOUND, False)
-            rendering.render_GameOVer(renderer, factory)
 
         timeCycle += delta
         if round(timeCycle) == DAGNACHTCYCLUSTIJD/2 + 5:
@@ -207,6 +208,16 @@ def main():
 
         (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map)
         (r_speler, r_cameravlak, damage) = movement.draaien(r_speler, r_cameravlak)
+
+        if hunger >= 0:
+            hunger -= delta * HUNGERMODIFIER
+        elif hp >= 0:
+            hp -= delta * HUNGERHPLOSSMODIFIER
+        if hp <= 0:
+            rendering.render_GameOVer(renderer, factory)
+            playsound.playsound(GAMEOVERSOUND, True)
+            moet_afsluiten = True
+
         rendering.dim_image(renderer, dimmer, timeCycle)
         rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist)
         beginText.renderText(delta, renderer, factory)

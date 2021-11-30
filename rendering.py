@@ -59,8 +59,6 @@ def render_GameOVer(renderer, factory):
     GameOver_render = factory.from_text(GameOver_text, fontmanager=ManagerFont)
     renderer.copy(GameOver_render, dstrect=(150, 200, 500, 200))
     renderer.present()
-    time.sleep(5)
-    sdl2.ext.quit()
 
 
 def render_FPS(delta, renderer, factory, ManagerFont):

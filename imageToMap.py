@@ -16,7 +16,8 @@ TIPS = ["Watch out! At night the doors will close and monster will appear!",
         "By sprinting you can cover more ground but consume more hunger.",
         "Consumables and other items can be picked up and dropped using F and G.",
         "Certain doors can be opened with a key or the right passcode.",
-        "Items can be crafted by combining specific items at the crafting station and pressing f"
+        "Items can be crafted by combining specific items at the crafting station and pressing f",
+        "Watch out to not get crushed by closing doors, they will not wait for you!"
         ]
 
 def generateWorld(afbeelding, factory, resources, textures, renderer):
