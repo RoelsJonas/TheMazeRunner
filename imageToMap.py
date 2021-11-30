@@ -16,7 +16,7 @@ TIPS = ["Watch out! At night the doors will close and monster will appear!",
         "By sprinting you can cover more ground but consume more hunger.",
         "Consumables and other items can be picked up and dropped using F and G.",
         "Certain doors can be opened with a key or the right passcode.",
-        "Items can be crafted by combining specific items at the crafting station and pressing f",
+        "Items can be crafted by combining specific items at the crafting station and pressing F",
         "Watch out to not get crushed by closing doors, they will not wait for you!"
         ]
 
@@ -91,6 +91,7 @@ def renderLoadingScreen(resources, factory, renderer, waarde, max, textindex):
     completion = int(100*waarde/max)
     renderer.clear()
     renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[5])
+    renderer.fill((main.BREEDTE//2 - 100,  main.HOOGTE//2 - 50, 2*completion, 100), main.kleuren[2])
     text1 = "Loading: " + str(completion) + "%"
     text2 = TIPS[textindex]
     text = factory.from_text(text1, fontmanager = resources)
