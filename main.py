@@ -121,10 +121,11 @@ def main():
     timeToAttack = 0
     interact = False
     pakOp = False
+    drop = False
     equiped = 1
 
     start_time = time.time()
-    equiplist = [equips.equip(factory, resources, "medkit.png", 0, 0, 10, True),equips.equip(factory, resources, "medkit.png", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", 0, 0, 10, True)]
+    equiplist = [equips.equip(factory, resources, "medkit.png", 0, 0, 10, True),equips.equip(factory, resources, "medkit.png", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", 0, 0, 10)]
     timeCycle = 28
     #winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
     spriteList = []
@@ -200,7 +201,11 @@ def main():
             timeCycle = 0
             playsound.playsound(GATESOUND, False)
 
-        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map)
+        if drop and equiplist[equiped] != None:
+            equiplist[equiped].drop(spriteList, p_speler, resources, factory)
+            equiplist[equiped] = None
+
+        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map)
         (r_speler, r_cameravlak, damage) = movement.draaien(r_speler, r_cameravlak)
         rendering.dim_image(renderer, dimmer, timeCycle)
         rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist)

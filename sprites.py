@@ -12,11 +12,11 @@ def sortSprites(list, p_speler):
 
 
 class Sprite:
-    p_sprite = np.array([0, 0])
+    p_sprite = np.array([0.0, 0.0])
     hoogte = 0
     breedte = 0
     afbeelding = ""
-    r_sprite = np.array([0, 0])
+    r_sprite = np.array([0.0, 0.0])
     a = 0
     MOVEMENTSPEED = 0
     drawn = False

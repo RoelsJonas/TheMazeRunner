@@ -42,6 +42,7 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, doo
     key_states = sdl2.SDL_GetKeyboardState(None)
     interact = False
     pakOp = False
+    drop = False
 
     if key_states[sdl2.SDL_SCANCODE_LSHIFT] and stamina > 0:
         delta = delta * main.SPRINT_SPEED
@@ -79,6 +80,9 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, doo
     if key_states[sdl2.SDL_SCANCODE_F]:
         pakOp = True
 
+    if key_states[sdl2.SDL_SCANCODE_G]:
+        drop = True
+
     if delta_p[0] != 0 or delta_p[1] != 0:
 
         if sprinting:
@@ -93,7 +97,7 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, doo
     if key_states[sdl2.SDL_SCANCODE_ESCAPE]:
         moet_afsluiten = True
 
-    return(p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp)
+    return(p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop)
 
 
 def draaien(r_speler, r_cameravlak):

@@ -1,6 +1,7 @@
 import main
 import numpy as np
 import text
+import sprites
 import playsound
 
 def interactions(hunger, hp, equiped, equiplist, interact, consumableText):
@@ -24,12 +25,15 @@ class equip:
     b = 0
     h = 0
     text = ""
+    imagetext = ""
+    size = (1,1)
 
-    def __init__(self, factory, resources, afbeelding, damage, hunger, healing, consumeerbaar):
+    def __init__(self, factory, resources, afbeelding, damage, hunger, healing, *consumeerbaar):
         self.damage = damage
         self.hunger = hunger
         self.healing = healing
         self.consumable = consumeerbaar
+        self.imagetext = afbeelding
         self.image = factory.from_image(resources.get_path(afbeelding))
         self.b = int(self.image.size[0])
         self.h = int(self.image.size[1])
@@ -51,5 +55,17 @@ class equip:
 
         return(hunger, hp)
 
+    def drop(self, spriteList, p_speler, resources, factory):
+        eetbaar = False
+        healer = False
 
+        if self.hunger > 0:
+            eetbaar = True
+
+        if self.healing > 0:
+            healer = True
+
+        spriteList.append(sprites.Sprite(p_speler[0]+0.1, p_speler[1]+.1, 0, 0, self.imagetext, self.size[0], self.size[1], 0, False, eetbaar, healer, True, self.hunger, self.healing, self.damage, resources, factory ))
+
+        return(spriteList)
 
