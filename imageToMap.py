@@ -2,12 +2,20 @@ from PIL import Image
 import numpy as np
 import doors
 import main
+import random
+import time
 
 MUUR = 1
 TIMEDDEUR = 2
 INTERACTABLEDEUR = 3
 LEFT = 0
 RIGHT = 1
+
+TIPS = ["Watch out! At night the doors will close and monster will appear!",
+        "If your hunger drops to 0 you will die a slow and painful death!",
+        "By sprinting you can cover more ground but consume more hunger.",
+        "Consumables and other items can be picked up and dropped using F and G.",
+        ]
 
 def generateWorld(afbeelding, factory, resources, textures, renderer):
     input_image = Image.open(afbeelding)
@@ -20,8 +28,8 @@ def generateWorld(afbeelding, factory, resources, textures, renderer):
     door_map = np.empty((r_in.shape[0], r_in.shape[1]), object)
     wall_map = np.empty((r_in.shape[0], r_in.shape[1]), object)
     doorLocation = []
-
-
+    timeIndex = random.randint(0, 3)
+    starttime = time.time()
     for i in range(r_in.shape[0]):
         for j in range(r_in.shape[1]):
             #zwarte pixe ==> muur met texture[0]
@@ -56,7 +64,11 @@ def generateWorld(afbeelding, factory, resources, textures, renderer):
             else:
                 world_map[i, j] = 0
 
-        renderLoadingScreen(resources, factory, renderer, i, r_in.shape[0])
+        endtime = time.time()
+        if (endtime - starttime) >= 2:
+            starttime += 5
+            timeIndex = random.randint(0, 3)
+        renderLoadingScreen(resources, factory, renderer, i, r_in.shape[0], timeIndex)
 
     return(world_map, doorLocation, door_map, wall_map)
 
@@ -71,11 +83,15 @@ class Wall:
         self.image = image
 
 
-def renderLoadingScreen(resources, factory, renderer, waarde, max):
+def renderLoadingScreen(resources, factory, renderer, waarde, max, textindex):
+
     completion = int(100*waarde/max)
     renderer.clear()
     renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[5])
-    text_ = "Loading: " + str(completion) + "%"
-    text = factory.from_text(text_, fontmanager=resources)
+    text1 = "Loading: " + str(completion) + "%"
+    text2 = TIPS[textindex]
+    text = factory.from_text(text1, fontmanager = resources)
     renderer.copy(text, dstrect=(main.BREEDTE//2 - 100, main.HOOGTE//2 - 50, 200, 100))
+    text = factory.from_text(text2, fontmanager = resources)
+    renderer.copy(text, dstrect=(main.BREEDTE // 2 - 250, main.HOOGTE - 100, 500, 80))
     renderer.present()
