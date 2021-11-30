@@ -114,7 +114,7 @@ def main():
     consumableText = text.text("Hmm, that's good stuff!", 0, 200, 450, 400, 50)
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites) = rendering.create_resources(renderer)
 
-    (world_map, doorLocations, door_map, wall_map) = imageToMap.generateWorld("resources\map9.png", factory, resources, textures)
+    (world_map, doorLocations, door_map, wall_map) = imageToMap.generateWorld("resources\map9.png", factory, ManagerFont, textures, renderer)
 
     delta = 1
     damage = 0
