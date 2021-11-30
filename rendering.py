@@ -112,7 +112,7 @@ def dim_image(renderer, dimmer, timeCycle):
             renderer.copy(dimmer, srcrect=(0, 0, 1, 1), dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
 
 
-def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted):
+def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted, craftingIndex1, craftingIndex2):
     renderer.clear()
     inventory = True
     renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[5])
@@ -136,13 +136,44 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
         if event.type == sdl2.SDL_MOUSEBUTTONDOWN:
             if main.HOOGTE - 65 <= muis_pos[1] <= main.HOOGTE - 15:
                 if 200 <= muis_pos[0] - (main.BREEDTE - 800)//2 <= 255:
-                    highlighted[0] = not(highlighted[0])
+                    if craftingIndex1 == 0:
+                        craftingIndex1 = None
+                    elif craftingIndex2 == 0:
+                        craftingIndex2 = None
+                    elif craftingIndex1 == None:
+                        craftingIndex1 = 0
+                    elif craftingIndex2 == None:
+                        craftingIndex2 = 0
+
                 elif 275 <= muis_pos[0] - (main.BREEDTE - 800)//2 <= 330:
-                    highlighted[1] = not(highlighted[1])
+                    if craftingIndex1 == 1:
+                        craftingIndex1 = None
+                    elif craftingIndex2 == 1:
+                        craftingIndex2 = None
+                    elif craftingIndex1 == None:
+                        craftingIndex1 = 1
+                    elif craftingIndex2 == None:
+                        craftingIndex2 = 1
+
                 elif 350 <= muis_pos[0] - (main.BREEDTE - 800)//2 <= 405:
-                    highlighted[2] = not(highlighted[2])
+                    if craftingIndex1 == 2:
+                        craftingIndex1 = None
+                    elif craftingIndex2 == 2:
+                        craftingIndex2 = None
+                    elif craftingIndex1 == None:
+                        craftingIndex1 = 2
+                    elif craftingIndex2 == None:
+                        craftingIndex2 = 2
+
                 elif 425 <= muis_pos[0] - (main.BREEDTE - 800)//2 <= 480:
-                    highlighted[3] = not(highlighted[3])
+                    if craftingIndex1 == 3:
+                        craftingIndex1 = None
+                    elif craftingIndex2 == 3:
+                        craftingIndex2 = None
+                    elif craftingIndex1 == None:
+                        craftingIndex1 = 3
+                    elif craftingIndex2 == None:
+                        craftingIndex2 = 3
 
 
     renderer.fill(((main.BREEDTE - 800) // 2 + 69, main.HOOGTE - 60, int(hp), 47), main.kleuren[10])
@@ -154,13 +185,43 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
         if equiplist[i] != None:
             equiplist[i].render(i, renderer, (main.BREEDTE - 800)//2 )
 
-    for i in range(len(highlighted)):
-        if highlighted[i] == 1:
-            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + i * 75, main.HOOGTE - 65, 5, 55), main.kleuren[1])
-            renderer.fill(((main.BREEDTE - 800) // 2 + 251 + i * 75, main.HOOGTE - 65, 5, 55), main.kleuren[1])
-            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + i * 75, main.HOOGTE - 65, 55, 5), main.kleuren[1])
-            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + i * 75, main.HOOGTE - 15, 55, 5), main.kleuren[1])
+    if craftingIndex1 != None:
+        if equiplist[craftingIndex1] != None:
+            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex1 * 75, main.HOOGTE - 65, 5, 55), main.kleuren[1])
+            renderer.fill(((main.BREEDTE - 800) // 2 + 251 + craftingIndex1 * 75, main.HOOGTE - 65, 5, 55), main.kleuren[1])
+            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex1 * 75, main.HOOGTE - 65, 55, 5), main.kleuren[1])
+            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex1 * 75, main.HOOGTE - 15, 55, 5), main.kleuren[1])
 
+    if craftingIndex2 != None:
+        if equiplist[craftingIndex2] != None:
+            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex2 * 75, main.HOOGTE - 65, 5, 55),main.kleuren[2])
+            renderer.fill(((main.BREEDTE - 800) // 2 + 251 + craftingIndex2 * 75, main.HOOGTE - 65, 5, 55),main.kleuren[2])
+            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex2 * 75, main.HOOGTE - 65, 55, 5),main.kleuren[2])
+            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex2 * 75, main.HOOGTE - 15, 55, 5),main.kleuren[2])
+
+
+    renderer.fill((main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 200, 5, 105), main.kleuren[1])
+    renderer.fill((main.BREEDTE // 2 - 24, main.HOOGTE // 2 - 200, 5, 105), main.kleuren[1])
+    renderer.fill((main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 200, 105, 5), main.kleuren[1])
+    renderer.fill((main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 100, 105, 5), main.kleuren[1])
+
+    renderer.fill((main.BREEDTE // 2 + 25, main.HOOGTE // 2 - 200, 5, 105), main.kleuren[2])
+    renderer.fill((main.BREEDTE // 2 + 126, main.HOOGTE // 2 - 200, 5, 105), main.kleuren[2])
+    renderer.fill((main.BREEDTE // 2 + 25, main.HOOGTE // 2 - 200, 105, 5), main.kleuren[2])
+    renderer.fill((main.BREEDTE // 2 + 25, main.HOOGTE // 2 - 100, 105, 5), main.kleuren[2])
+
+    renderer.fill((main.BREEDTE // 2 - 50, main.HOOGTE // 2 - 50, 5, 105), main.kleuren[3])
+    renderer.fill((main.BREEDTE // 2 + 51, main.HOOGTE // 2 - 50, 5, 105), main.kleuren[3])
+    renderer.fill((main.BREEDTE // 2 - 50, main.HOOGTE // 2 - 50, 105, 5), main.kleuren[3])
+    renderer.fill((main.BREEDTE // 2 - 50, main.HOOGTE // 2 + 50, 105, 5), main.kleuren[3])
+
+    if craftingIndex1 != None:
+        if equiplist[craftingIndex1] != None:
+            renderer.copy(equiplist[craftingIndex1].image, srcrect=(0, 0, equiplist[craftingIndex1].b, equiplist[craftingIndex1].h), dstrect=(main.BREEDTE // 2 - 113, main.HOOGTE // 2 - 185, 80, 80))
+
+    if craftingIndex2 != None:
+        if equiplist[craftingIndex2] != None:
+            renderer.copy(equiplist[craftingIndex2].image, srcrect=(0, 0, equiplist[craftingIndex2].b, equiplist[craftingIndex2].h), dstrect=(main.BREEDTE // 2 + 37, main.HOOGTE // 2 - 185, 80, 80))
 
     renderer.copy(factory.from_image(resources.get_path("crosshair.png")),
                   srcrect=(0, 0, 50, 50),
@@ -168,10 +229,11 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
                            main.CROSSHAIRGROOTTE, main.CROSSHAIRGROOTTE))
 
 
-    if key_states[sdl2.SDL_SCANCODE_Q] or key_states[sdl2.SDL_SCANCODE_ESCAPE]:
+    if key_states[sdl2.SDL_SCANCODE_E] or key_states[sdl2.SDL_SCANCODE_ESCAPE] or key_states[sdl2.SDL_SCANCODE_TAB]:
         inventory = False
-
+        craftingIndex1 = None
+        craftingIndex2 = None
 
 
     renderer.present()
-    return(muis_pos, equiplist, equiped, inventory, highlighted)
+    return(muis_pos, equiplist, equiped, inventory, highlighted, craftingIndex1, craftingIndex2)
