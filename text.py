@@ -15,9 +15,9 @@ class text:
     b = 0
     h = 0
 
-    def __init__(self, textFile, textTimer, x, y, b, h):
+    def __init__(self, textFile, x, y, b, h):
         self.textFile = textFile
-        self.textTimer = textTimer
+        self.textTimer = 0
         self.font = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(0, 0, 0))
         self.x = x
         self.y = y
