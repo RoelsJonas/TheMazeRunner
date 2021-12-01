@@ -66,6 +66,9 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, doo
     if key_states[sdl2.SDL_SCANCODE_D]:
         delta_p[1] -= 1
 
+    if key_states[sdl2.SDL_SCANCODE_C]:
+        r_speler *= -1
+
     if key_states[sdl2.SDL_SCANCODE_1]:
         equiped = 0
     if key_states[sdl2.SDL_SCANCODE_2]:
