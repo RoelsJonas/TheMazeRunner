@@ -33,6 +33,7 @@ class Craftable:
             self.consumable = True
 
     def checkTypes(self, equip1, equip2):
+
         if self.obj1 == equip1.type and self.obj2 == equip2.type:
             return(True)
 

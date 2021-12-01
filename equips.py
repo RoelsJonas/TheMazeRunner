@@ -28,7 +28,7 @@ class equip:
     imagetext = ""
     size = (1,1)
 
-    def __init__(self, factory, resources, afbeelding, damage, hunger, healing, *consumeerbaar, **type):
+    def __init__(self, factory, resources, afbeelding, damage, hunger, healing, consumeerbaar, type):
         self.damage = damage
         self.hunger = hunger
         self.healing = healing

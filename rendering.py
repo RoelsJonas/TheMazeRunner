@@ -5,6 +5,7 @@ import sdl2
 import sdl2.ext
 import sdl2.sdlttf
 import main
+import equips
 
 
 def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist):
@@ -112,10 +113,22 @@ def dim_image(renderer, dimmer, timeCycle):
             renderer.copy(dimmer, srcrect=(0, 0, 1, 1), dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
 
 
-def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted, craftingIndex1, craftingIndex2):
+def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted, craftingIndex1, craftingIndex2, craftables):
+    correctRecipe = None
+
     renderer.clear()
-    inventory = True
     renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[5])
+
+    if craftingIndex1 != None and craftingIndex2 != None:
+        for craftable in craftables:
+            if craftable.checkTypes(equiplist[craftingIndex1], equiplist[craftingIndex2]):
+                renderer.copy(craftable.image,
+                              srcrect=(0, 0, craftable.image.size[0], craftable.image.size[1]),
+                              dstrect=(main.BREEDTE // 2 - 40, main.HOOGTE // 2 - 40, 80, 80))
+
+                correctRecipe = craftable
+    inventory = True
+
     key_states = sdl2.SDL_GetKeyboardState(None)
     events = sdl2.ext.get_events()
     damage = 0
@@ -175,6 +188,14 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
                     elif craftingIndex2 == None:
                         craftingIndex2 = 3
 
+            if main.HOOGTE//2 - 50 <= muis_pos[1] <= main.HOOGTE//2 + 50:
+                if main.BREEDTE//2 - 50 <= muis_pos[0] <= main.BREEDTE//2 + 50:
+                    if correctRecipe != None:
+                        print("a")
+                        equiplist[craftingIndex1] = correctRecipe.crafted()#equips.equip(correctRecipe.factory, correctRecipe.resources, correctRecipe.image_text, correctRecipe.damage, correctRecipe.hunger, correctRecipe.hp, correctRecipe.consumable, correctRecipe.type)
+                        equiplist[craftingIndex2] = None
+                        craftingIndex2 = None
+                        craftingIndex1 = None
 
     renderer.fill(((main.BREEDTE - 800) // 2 + 69, main.HOOGTE - 60, int(hp), 47), main.kleuren[10])
     renderer.fill(((main.BREEDTE - 800) // 2 + 688, main.HOOGTE - 65, int(stamina), 22), main.kleuren[9])
@@ -194,10 +215,10 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
 
     if craftingIndex2 != None:
         if equiplist[craftingIndex2] != None:
-            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex2 * 75, main.HOOGTE - 65, 5, 55),main.kleuren[2])
-            renderer.fill(((main.BREEDTE - 800) // 2 + 251 + craftingIndex2 * 75, main.HOOGTE - 65, 5, 55),main.kleuren[2])
-            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex2 * 75, main.HOOGTE - 65, 55, 5),main.kleuren[2])
-            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex2 * 75, main.HOOGTE - 15, 55, 5),main.kleuren[2])
+            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex2 * 75, main.HOOGTE - 65, 5, 55), main.kleuren[2])
+            renderer.fill(((main.BREEDTE - 800) // 2 + 251 + craftingIndex2 * 75, main.HOOGTE - 65, 5, 55), main.kleuren[2])
+            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex2 * 75, main.HOOGTE - 65, 55, 5), main.kleuren[2])
+            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex2 * 75, main.HOOGTE - 15, 55, 5), main.kleuren[2])
 
 
     renderer.fill((main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 200, 5, 105), main.kleuren[1])
@@ -233,6 +254,9 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
         inventory = False
         craftingIndex1 = None
         craftingIndex2 = None
+
+
+
 
 
     renderer.present()
