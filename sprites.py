@@ -152,21 +152,7 @@ class Sprite:
                 else:
                     hunger += self.hungerValue
                     destroy = True
-        if self.healer:
-            p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
-            p_sprite[0] -= p_speler[0]
-            p_sprite[1] -= p_speler[1]
-            p_sprite = np.linalg.norm(p_sprite)
-            if p_sprite < main.INTERACTIONDISTANCE:
-                if hp == 100:
-                    hp = 100
-                    destroy = False
-                elif hp + self.DPS > 100:
-                    hp = 100
-                    destroy = True
-                else:
-                    hp += self.DPS
-                    destroy = True
+
 
         if self.volgt:
             if self.hp < 0:
