@@ -3,6 +3,7 @@ import numpy as np
 import equips
 
 
+
 class Craftable:
     type = ""
     obj1 = ""

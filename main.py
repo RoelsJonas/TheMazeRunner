@@ -114,7 +114,7 @@ def main():
     consumableText = text.text("Hmm, that's good stuff!", 0, 200, 450, 400, 50)
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites) = rendering.create_resources(renderer)
 
-    (world_map, doorLocations, door_map, wall_map) = imageToMap.generateWorld("resources\map9.png", factory, ManagerFont, textures, renderer)
+    (world_map, doorLocations, door_map, wall_map, spriteList) = imageToMap.generateWorld("resources\map9.png", factory, resources, textures, renderer, ManagerFont)
 
     p_speler = np.array([float(world_map.shape[1])/2, float(world_map.shape[0])/2])
 
@@ -140,7 +140,6 @@ def main():
                   ]
     timeCycle = 28
     #winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
-    spriteList = []
 
     spriteList.append(sprites.Sprite(28.0, 17.0, 1, 0, "burger.png", 0.5, 0.5, 1, False, False, False, True, 10, 0, 5, resources, factory))
     spriteList.append(sprites.Sprite(25.0, 25.0, 1, 0, "medkit.png", 0.5, 0.5, 1, False, True, True, True, 0, 0, 30, resources, factory))   #doet damage van -30 -> healt en volgt met speed 0, dus volgt niet
@@ -184,7 +183,8 @@ def main():
                 door_map[doorLocations[i][0], doorLocations[i][1]].updateState(delta)
 
         for sprite in spriteList:
-            sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
+            if np.linalg.norm(p_speler-sprite.p_sprite) <= 6:
+                sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
             sprite.moveToPlayer(p_speler, delta, world_map)
             (hunger, hp, destroy, timeToAttack, equiplist) = sprite.checkInteractie(hunger, hp, p_speler, delta, damage, timeToAttack, pakOp, equiplist, equiped)
             if destroy:
@@ -220,10 +220,12 @@ def main():
         (r_speler, r_cameravlak, damage) = movement.draaien(r_speler, r_cameravlak)
 
 
-        if hunger >= 0:
+        if hunger > 0:
             hunger -= delta * HUNGERMODIFIER
-        elif hp >= 0:
-            hp -= delta * HUNGERHPLOSSMODIFIER
+        else:
+            hunger = 0
+            hp -=delta * HUNGERHPLOSSMODIFIER
+
         if hp <= 0:
             rendering.render_GameOVer(renderer, factory)
             playsound.playsound(GAMEOVERSOUND, True)

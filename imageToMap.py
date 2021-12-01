@@ -4,6 +4,7 @@ import doors
 import main
 import random
 import time
+import sprites
 
 MUUR = 1
 TIMEDDEUR = 2
@@ -20,7 +21,7 @@ TIPS = ["Watch out! At night the doors will close and monster will appear!",
         "Watch out to not get crushed by closing doors, they will not wait for you!"
         ]
 
-def generateWorld(afbeelding, factory, resources, textures, renderer):
+def generateWorld(afbeelding, factory, resources, textures, renderer, fontManager):
     input_image = Image.open(afbeelding)
     r_image_in, g_image_in, b_image_in = input_image.split()
     r_in = np.uint32(np.array(r_image_in))
@@ -31,6 +32,7 @@ def generateWorld(afbeelding, factory, resources, textures, renderer):
     door_map = np.empty((r_in.shape[0], r_in.shape[1]), object)
     wall_map = np.empty((r_in.shape[0], r_in.shape[1]), object)
     doorLocation = []
+    spriteList = []
     timeIndex = random.randint(0, len(TIPS)-1)
     starttime = time.time()
     for i in range(r_in.shape[0]):
@@ -62,6 +64,14 @@ def generateWorld(afbeelding, factory, resources, textures, renderer):
                 door_map[i, j] = doors.interactableDoor((j, i), RIGHT, textures[1])
                 doorLocation.append((i, j))
 
+            elif b_in[i, j] == 50 and r_in[i, j] == 117 and g_in[i, j] == 116:
+                world_map[i, j] = 0
+                spriteList.append(sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "burger.png", 0.5, 0.5, 1, False, False, False, True, 10, 0, 5, resources, factory))
+
+            elif b_in[i, j] == 50 and r_in[i, j] == 117 and g_in[i, j] == 50:
+                world_map[i, j] = 0
+                spriteList.append(sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "medkit.png", 0.5, 0.5, 1, False, False, False, True, 0, 0, 10, resources, factory))
+
 
             #witte pixel ==> openruimte
             else:
@@ -71,9 +81,9 @@ def generateWorld(afbeelding, factory, resources, textures, renderer):
         if (endtime - starttime) >= 2:
             starttime += 5
             timeIndex = random.randint(0, len(TIPS)-1)
-        renderLoadingScreen(resources, factory, renderer, i, r_in.shape[0], timeIndex)
+        renderLoadingScreen(fontManager, factory, renderer, i, r_in.shape[0], timeIndex)
 
-    return(world_map, doorLocation, door_map, wall_map)
+    return(world_map, doorLocation, door_map, wall_map, spriteList)
 
 
 class Wall:
