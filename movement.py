@@ -112,11 +112,12 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, doo
 
 
 def draaien(r_speler, r_cameravlak):
+    muisGeklikt = False
     events = sdl2.ext.get_events()
     damage = 0
     for event in events:
         if event.type == sdl2.SDL_MOUSEBUTTONDOWN:
-            damage = 15
+            muisGeklikt = True
         if event.type == sdl2.SDL_MOUSEMOTION:
             beweging = (-1) * event.motion.xrel * main.SENSITIVITY
             rot = np.array(((np.cos(beweging), -np.sin(beweging)),
@@ -124,4 +125,4 @@ def draaien(r_speler, r_cameravlak):
             r_speler = np.dot(r_speler, rot)
             r_cameravlak = np.array([r_speler[1], -1 * r_speler[0]])
 
-    return(r_speler, r_cameravlak, damage)
+    return(r_speler, r_cameravlak, muisGeklikt)

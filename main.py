@@ -20,7 +20,7 @@ hp = 100
 stamina = 100
 hunger = 100
 
-HUNGERMODIFIER = 6 #snelheid waarmee hunger daalt
+HUNGERMODIFIER = 2 #snelheid waarmee hunger daalt
 SPRINTINGHUNGERMODIFIER = 0.15 #snelheid waarmee hunger extra daal tijdens het sprinten
 STAMINALOSSMODIFIER = 5 #snelheid waarmee stamina verloren gaat tijdens sprinten
 STAMINAREGENMODIFIER = 3 #snelheid waarmee stamina regenereert
@@ -109,9 +109,10 @@ def main():
     # Maak een renderer aan zodat we in ons venster kunnen renderen
     renderer = sdl2.ext.Renderer(window)
 
-
-    beginText = text.text("Wie ben ik? Wat doe ik hier?", 10, 50, 450, 700, 50)
-    consumableText = text.text("Hmm, that's good stuff!", 0, 200, 450, 400, 50)
+    tekstList = []
+    beginText = text.text("Wie ben ik? Wat doe ik hier?", 50, 450, 700, 50)
+    consumableText = text.text("Hmm, that's good stuff!", 200, 450, 400, 50)
+    slaapText = text.text("Even over Jonas dromen", 200, 450, 400, 50)
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites) = rendering.create_resources(renderer)
 
     (world_map, doorLocations, door_map, wall_map, spriteList) = imageToMap.generateWorld("resources\map9.png", factory, resources, textures, renderer, ManagerFont)
@@ -119,7 +120,7 @@ def main():
     p_speler = np.array([float(world_map.shape[1])/2, float(world_map.shape[0])/2])
 
     delta = 1
-    damage = 0
+    geklikt = False
     timeToAttack = 0
     interact = False
     pakOp = False
@@ -128,21 +129,20 @@ def main():
     muis_pos = np.array([BREEDTE//2, HOOGTE//2])
     craftingIndex1 = None
     craftingIndex2 = None
+    beginText.textTimer = 10
 
-    start_time = time.time()
+    start_time = time.time()                    #wanneer oppakbare sprite wordt opgepakt gaat hij uit de spritelist en in de equiplist
     equiplist = [equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
                  equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
                  equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
                  equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1")]
-
-    craftables = [crafts.Craftable(renderer, factory, resources, "medkit2.png", "H1", "H1", "H2", 0, 25, 0),
-                  crafts.Craftable(renderer, factory, resources, "medkit3.png", "H2", "H2", "H3", 0, 60, 0),
-                  ]
+    craftables = [crafts.Craftable(renderer, factory, resources, "medkit.png", "H1", "H1", "H2", 0, 25, 0)]
     timeCycle = 28
     #winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
 
-    spriteList.append(sprites.Sprite(28.0, 17.0, 1, 0, "burger.png", 0.5, 0.5, 1, False, False, False, True, 10, 0, 5, resources, factory))
-    spriteList.append(sprites.Sprite(25.0, 25.0, 1, 0, "medkit.png", 0.5, 0.5, 1, False, True, True, True, 0, 0, 30, resources, factory))   #doet damage van -30 -> healt en volgt met speed 0, dus volgt niet
+    spriteList.append(sprites.Sprite(28.0, 17.0, 1, 0, "burger.png", 0.5, 0.5, 1, False, False, False, True, 10, 0, 5, resources, factory, None))
+    spriteList.append(sprites.Sprite(25.0, 25.0, 1, 0, "medkit.png", 0.5, 0.5, 1, False, True, True, True, 0, 0, 30, resources, factory, None))   #doet damage van -30 -> healt en volgt met speed 0, dus volgt niet
+    spriteList.append(sprites.Sprite(512.0, 512.0, 1, 1, "bonfire.png", 0.5, 0.5, 1, False, False, False, False, 0, 0, 0, resources, factory, slaapText))
 
     spriteListNacht = []
     #spriteListNacht.append(sprites.Sprite(32.0, 32.0, 1, 0, "spellun-sprite.png", 4.0, 1.2, 1, True, False, False, False, 0, 50, 10, resources, factory))
@@ -176,17 +176,15 @@ def main():
                 hp = -1
 
 
-
         for i in range(len(doorLocations)):
             if world_map[doorLocations[i][0], doorLocations[i][1]] == 3:
                 door_map[doorLocations[i][0], doorLocations[i][1]].interact(pakOp, p_speler, equiplist, equiped)
                 door_map[doorLocations[i][0], doorLocations[i][1]].updateState(delta)
 
         for sprite in spriteList:
-            if np.linalg.norm(p_speler-sprite.p_sprite) <= 6:
-                sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
+            sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
             sprite.moveToPlayer(p_speler, delta, world_map)
-            (hunger, hp, destroy, timeToAttack, equiplist) = sprite.checkInteractie(hunger, hp, p_speler, delta, damage, timeToAttack, pakOp, equiplist, equiped)
+            (hunger, hp, destroy, timeToAttack, equiplist, timeCycle, sprite.tekst) = sprite.checkInteractie(hunger, hp, p_speler, delta, geklikt, timeToAttack, pakOp, equiplist, equiped, factory, timeCycle, resources, renderer, sprite.tekst)
             if destroy:
                 spriteList.remove(sprite)
 
@@ -194,7 +192,7 @@ def main():
             for sprite in spriteListNacht:
                 sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
                 sprite.moveToPlayer(p_speler, delta, world_map)
-                (hunger, hp, destroy, timeToAttack, equiplist) = sprite.checkInteractie(hunger, hp, p_speler, delta, damage, timeToAttack, pakOp, equiplist, equiped)
+                (hunger, hp, destroy, timeToAttack, equiplist, timeCycle) = sprite.checkInteractie(hunger, hp, p_speler, delta, geklikt, timeToAttack, pakOp, equiplist, equiped, factory, timeCycle, resources, renderer)
                 if destroy or timeCycle == 0:
                     spriteList.remove(sprite)
 
@@ -216,7 +214,7 @@ def main():
             equiplist[equiped].drop(spriteList, p_speler, resources, factory)
             equiplist[equiped] = None
 
-        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map, wall_map)
+        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map)
         (r_speler, r_cameravlak, damage) = movement.draaien(r_speler, r_cameravlak)
 
 
@@ -233,8 +231,8 @@ def main():
 
         rendering.dim_image(renderer, dimmer, timeCycle)
         rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist)
-        beginText.renderText(delta, renderer, factory)
-        consumableText.renderText(delta, renderer, factory)
+        for tekst in tekstList:
+            tekst.renderText(delta, renderer, factory)
         rendering.render_FPS(delta, renderer, factory, ManagerFont)
         renderer.present()
 

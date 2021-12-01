@@ -18,7 +18,8 @@ TIPS = ["Watch out! At night the doors will close and monster will appear!",
         "Consumables and other items can be picked up and dropped using F and G.",
         "Certain doors can be opened with a key or the right passcode.",
         "Items can be crafted by combining specific items at the crafting station and pressing I",
-        "Watch out to not get crushed by closing doors, they will not wait for you!"
+        "Watch out to not get crushed by closing doors, they will not wait for you!",
+        "To turn 180 degrees, press c."
         ]
 
 def generateWorld(afbeelding, factory, resources, textures, renderer, fontManager):
@@ -66,11 +67,11 @@ def generateWorld(afbeelding, factory, resources, textures, renderer, fontManage
 
             elif b_in[i, j] == 50 and r_in[i, j] == 117 and g_in[i, j] == 116:
                 world_map[i, j] = 0
-                spriteList.append(sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "burger.png", 0.5, 0.5, 1, False, False, False, True, 10, 0, 5, resources, factory))
+                spriteList.append(sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "burger.png", 0.5, 0.5, 1, False, False, False, True, 10, 0, 5, resources, factory, None))
 
             elif b_in[i, j] == 50 and r_in[i, j] == 117 and g_in[i, j] == 50:
                 world_map[i, j] = 0
-                spriteList.append(sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "medkit.png", 0.5, 0.5, 1, False, False, False, True, 0, 0, 10, resources, factory))
+                spriteList.append(sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "medkit.png", 0.5, 0.5, 1, False, False, False, True, 0, 0, 10, resources, factory, None))
 
 
             #witte pixel ==> openruimte

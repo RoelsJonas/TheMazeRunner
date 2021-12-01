@@ -1,6 +1,8 @@
 import numpy as np
 import main
 import equips
+import text
+import rendering
 
 
 def sortSprites(list, p_speler):
@@ -34,8 +36,9 @@ class Sprite:
     renderer = ""
     resources = ""
     afbeeldingLink = ""
+    tekst = ""
 
-    def __init__(self, x, y, richting_x,richting_y, png, h, b, speed, volgIk, eet, healer, collectible, waarde, health, damage, resources, factory):
+    def __init__(self, x, y, richting_x,richting_y, png, h, b, speed, volgIk, eet, healer, collectible, waarde, health, damage, resources, factory, tekst):
         self.p_sprite = np.array([[x], [y]])
         self.afbeeldingLink = png
         self.afbeelding = factory.from_image(resources.get_path(png))
@@ -52,6 +55,7 @@ class Sprite:
         self.collectible = collectible
         self.factory = factory
         self.resources = resources
+        self.tekst = tekst
 
     def move(self, delta_x, delta_y):
         self.p_sprite += np.array([delta_x, delta_y])
@@ -135,8 +139,10 @@ class Sprite:
         self.d_speler = np.linalg.norm(d)
 
 
-    def checkInteractie(self, hunger, hp, p_speler, delta, damage, timeToAttack, interaction, equiplist, equiped):
+    def checkInteractie(self, hunger, hp, p_speler, delta, geklikt, timeToAttack, interaction, equiplist, equiped, factory, timeCycle, resources, renderer, tekst):
         destroy = False
+        if (geklikt == True):
+            spelerDamage = 15
         if self.eetbaar:
             p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
             p_sprite[0] -= p_speler[0]
@@ -153,6 +159,11 @@ class Sprite:
                     hunger += self.hungerValue
                     destroy = True
 
+        if (self.afbeeldingLink == "bonfire.png" and timeCycle > ((main.DAGNACHTCYCLUSTIJD//2) + 10) and geklikt == True):
+            timeCycle = 0
+            tekst.textTimer = 10
+
+
 
         if self.volgt:
             if self.hp < 0:
@@ -165,7 +176,7 @@ class Sprite:
             if p_sprite < main.INTERACTIONDISTANCE:
                 hp -= self.DPS * delta
                 if timeToAttack < 0:
-                    self.hp -= damage
+                    self.hp -= spelerDamage
                     timeToAttack = .5
 
         if self.collectible and interaction:
@@ -178,7 +189,7 @@ class Sprite:
                 destroy = True
 
 
-        return(hunger, hp, destroy, timeToAttack, equiplist)
+        return(hunger, hp, destroy, timeToAttack, equiplist, timeCycle, tekst)
 
 
 
