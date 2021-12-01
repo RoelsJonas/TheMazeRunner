@@ -247,6 +247,6 @@ def main():
     # Sluit SDL2 af
     sdl2.ext.quit()
 
-
+#faah
 if __name__ == '__main__':
     main()
