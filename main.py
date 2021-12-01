@@ -115,7 +115,7 @@ def main():
     slaapText = text.text("Even over Jonas dromen", 200, 450, 400, 50)
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites) = rendering.create_resources(renderer)
 
-    (world_map, doorLocations, door_map, wall_map, spriteList) = imageToMap.generateWorld("resources\map9.png", factory, resources, textures, renderer, ManagerFont)
+    (world_map, doorLocations, door_map, wall_map, spriteList) = imageToMap.generateWorld("resources\map7.png", factory, resources, textures, renderer, ManagerFont)
 
     p_speler = np.array([float(world_map.shape[1])/2, float(world_map.shape[0])/2])
 
@@ -182,7 +182,8 @@ def main():
                 door_map[doorLocations[i][0], doorLocations[i][1]].updateState(delta)
 
         for sprite in spriteList:
-            sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
+            if np.linalg.norm(p_speler-sprite.p_sprite) <= 6:
+                sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
             sprite.moveToPlayer(p_speler, delta, world_map)
             (hunger, hp, destroy, timeToAttack, equiplist, timeCycle, sprite.tekst) = sprite.checkInteractie(hunger, hp, p_speler, delta, geklikt, timeToAttack, pakOp, equiplist, equiped, factory, timeCycle, resources, renderer, sprite.tekst)
             if destroy:
@@ -214,7 +215,7 @@ def main():
             equiplist[equiped].drop(spriteList, p_speler, resources, factory)
             equiplist[equiped] = None
 
-        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map)
+        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map, wall_map)
         (r_speler, r_cameravlak, damage) = movement.draaien(r_speler, r_cameravlak)
 
 
