@@ -134,7 +134,10 @@ def main():
                  equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
                  equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
                  equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1")]
-    craftables = [crafts.Craftable(renderer, factory, resources, "medkit.png", "H1", "H1", "H2", 0, 25, 0)]
+
+    craftables = [crafts.Craftable(renderer, factory, resources, "medkit2.png", "H1", "H1", "H2", 0, 25, 0),
+                  crafts.Craftable(renderer, factory, resources, "medkit3.png", "H2", "H2", "H3", 0, 60, 0),
+                  ]
     timeCycle = 28
     #winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
     spriteList = []
