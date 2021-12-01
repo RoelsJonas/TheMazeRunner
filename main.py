@@ -6,7 +6,6 @@ import sdl2.ext
 import sdl2.sdlttf
 import playsound
 
-
 import rendering
 import raycast
 import movement
@@ -15,6 +14,7 @@ import winsound
 import imageToMap
 import equips
 import text
+import crafting as crafts
 #begin waarden instellen
 hp = 100
 stamina = 100
@@ -114,7 +114,7 @@ def main():
     consumableText = text.text("Hmm, that's good stuff!", 0, 200, 450, 400, 50)
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites) = rendering.create_resources(renderer)
 
-    (world_map, doorLocations, door_map, wall_map) = imageToMap.generateWorld("resources\map7.png", factory, ManagerFont, textures, renderer)
+    (world_map, doorLocations, door_map, wall_map) = imageToMap.generateWorld("resources\map9.png", factory, ManagerFont, textures, renderer)
 
     p_speler = np.array([float(world_map.shape[1])/2, float(world_map.shape[0])/2])
 
@@ -130,7 +130,11 @@ def main():
     craftingIndex2 = None
 
     start_time = time.time()
-    equiplist = [equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H"),equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H"), equips.equip(factory, resources, "medkit.png", 0, 0, 10, True), equips.equip(factory, resources, "medkit.png", 0, 0, 10)]
+    equiplist = [equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
+                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
+                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
+                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1")]
+    craftables = [crafts.Craftable(renderer, factory, resources, "medkit.png", "H1", "H1", "H2", 0, 25, 0)]
     timeCycle = 28
     #winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
     spriteList = []
