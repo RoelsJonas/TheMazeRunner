@@ -235,7 +235,7 @@ def main():
 
         highlighted = [False, False, False, False]
         while crafting:
-            (muis_pos, equiplist, equiped, crafting, highlighted, craftingIndex1, craftingIndex2) = rendering.render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted, craftingIndex1, craftingIndex2)
+            (muis_pos, equiplist, equiped, crafting, highlighted, craftingIndex1, craftingIndex2) = rendering.render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted, craftingIndex1, craftingIndex2, craftables)
             start_time = time.time()
 
     # Sluit SDL2 af
