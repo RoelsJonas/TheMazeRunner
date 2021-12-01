@@ -38,12 +38,12 @@ def generateWorld(afbeelding, factory, resources, textures, renderer):
             #zwarte pixe ==> muur met texture[0]
             if r_in[i, j] == 0 and b_in[i, j] == 0 and g_in[i, j] == 0:
                 world_map[i, j] = MUUR
-                wall_map[i, j] = Wall(i, j, textures[0])
+                wall_map[i, j] = Wall(i, j, textures[0], "wall")
 
-                #grijze pixel ==> muur met texture[1]
+                #grijze pixel ==> craftingbench
             elif r_in[i, j] == 128 and b_in[i, j] == 128 and g_in[i, j] == 128:
                 world_map[i, j] = MUUR
-                wall_map[i, j] = Wall(i, j, textures[1])
+                wall_map[i, j] = Wall(i, j, textures[2], "crafting bench")
 
             #blauwwe pixel ==> timed deur die van links opent
             elif b_in[i, j] == 255 and r_in[i, j] == 0 and g_in[i, j] == 0:
@@ -81,7 +81,7 @@ class Wall:
     posWorldCoordinates = np.array([0.0, 0.0])
     type = "wall"
 
-    def __init__(self, x, y, image, *type):
+    def __init__(self, x, y, image, type):
         self.posWorldCoordinates = np.array([x, y])
         self.image = image
         self.type = type

@@ -78,6 +78,7 @@ def create_resources(renderer):
 
     muur = factory.from_image(resources.get_path("wall-concrete1.png"))
     muur2 = factory.from_image(resources.get_path("fisheyetest.png"))
+    craftingBench = factory.from_image(resources.get_path("craftingBench.png"))
     hud = factory.from_image(resources.get_path("hud.png"))
     crosshair = factory.from_image(resources.get_path("crosshair.png"))
     dimmer = factory.from_image((resources.get_path("dimmer.png")))
@@ -92,6 +93,7 @@ def create_resources(renderer):
     textures = []
     textures.append(muur)
     textures.append(muur2)
+    textures.append(craftingBench)
 
     afbeeldingen_sprites = []
     afbeeldingen_sprites.append(factory.from_image((resources.get_path("spellun-sprite.png"))))

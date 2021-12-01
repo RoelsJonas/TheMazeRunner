@@ -114,7 +114,7 @@ def main():
     consumableText = text.text("Hmm, that's good stuff!", 0, 200, 450, 400, 50)
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites) = rendering.create_resources(renderer)
 
-    (world_map, doorLocations, door_map, wall_map) = imageToMap.generateWorld("resources\map7.png", factory, ManagerFont, textures, renderer)
+    (world_map, doorLocations, door_map, wall_map) = imageToMap.generateWorld("resources\map9.png", factory, ManagerFont, textures, renderer)
 
     p_speler = np.array([float(world_map.shape[1])/2, float(world_map.shape[0])/2])
 
@@ -216,7 +216,7 @@ def main():
             equiplist[equiped].drop(spriteList, p_speler, resources, factory)
             equiplist[equiped] = None
 
-        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map)
+        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map, wall_map)
         (r_speler, r_cameravlak, damage) = movement.draaien(r_speler, r_cameravlak)
 
 
@@ -240,6 +240,7 @@ def main():
         while crafting:
             (muis_pos, equiplist, equiped, crafting, highlighted, craftingIndex1, craftingIndex2) = rendering.render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted, craftingIndex1, craftingIndex2, craftables)
             start_time = time.time()
+
 
     # Sluit SDL2 af
     sdl2.ext.quit()
