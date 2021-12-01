@@ -66,7 +66,7 @@ class equip:
         if self.healing > 0:
             healer = True
 
-        spriteList.append(sprites.Sprite(p_speler[0]+0.1, p_speler[1]+.1, 0, 0, self.imagetext, self.size[0], self.size[1], 0, False, eetbaar, healer, True, self.hunger, self.healing, self.damage, resources, factory ))
+        spriteList.append(sprites.Sprite(p_speler[0]+0.1, p_speler[1]+.1, 0, 0, self.imagetext, 0.5, 0.5, 0, False, eetbaar, healer, True, self.hunger, self.healing, self.damage, resources, factory ))
 
         return(spriteList)
 
