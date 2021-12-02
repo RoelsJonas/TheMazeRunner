@@ -115,7 +115,7 @@ def main():
     slaapText = text.text("Even over Jonas dromen", 200, 450, 400, 50)
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites) = rendering.create_resources(renderer)
 
-    (world_map, doorLocations, door_map, wall_map, spriteList) = imageToMap.generateWorld("resources\map7.png", factory, resources, textures, renderer, ManagerFont)
+    (world_map, doorLocations, door_map, wall_map, spriteList) = imageToMap.generateWorld("resources\map9.png", factory, resources, textures, renderer, ManagerFont)
 
     p_speler = np.array([float(world_map.shape[1])/2, float(world_map.shape[0])/2])
 
@@ -136,7 +136,7 @@ def main():
                  equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
                  equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
                  equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1")]
-    craftables = [crafts.Craftable(renderer, factory, resources, "medkit.png", "H1", "H1", "H2", 0, 25, 0)]
+    craftables = [crafts.Craftable(renderer, factory, resources, "medkit2.png", "H1", "H1", "H2", 0, 25, 0)]
     timeCycle = 28
     #winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
 
@@ -216,7 +216,7 @@ def main():
             equiplist[equiped] = None
 
         (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map, wall_map)
-        (r_speler, r_cameravlak, damage) = movement.draaien(r_speler, r_cameravlak)
+        (r_speler, r_cameravlak, geklikt) = movement.draaien(r_speler, r_cameravlak)
 
 
         if hunger > 0:
