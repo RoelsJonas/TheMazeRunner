@@ -72,6 +72,9 @@ def generateWorld(afbeelding, factory, resources, textures, renderer, fontManage
             elif b_in[i, j] == 50 and r_in[i, j] == 117 and g_in[i, j] == 50:
                 world_map[i, j] = 0
                 spriteList.append(sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "medkit.png", 0.5, 0.5, 1, False, False, False, True, 0, 0, 10, resources, factory, None))
+            elif r_in[i, j] == 78 and g_in[i, j] == 168 and b_in[i, j] == 153:
+                world_map[i, j] = 0
+                spriteList.append(sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "stick.png", 0.5, 0.5, 1, False, False, False, True, 10, 0, 0, resources, factory, None))
 
 
             #witte pixel ==> openruimte

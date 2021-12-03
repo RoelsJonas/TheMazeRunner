@@ -192,6 +192,8 @@ class Sprite:
                     type = "H2"
                 elif self.afbeeldingLink == "medkit3.png":
                     type = "H3"
+                elif self.afbeeldingLink == "stick.png":
+                    type = "STICK"
                 equiplist[equiped] = equips.equip(self.factory, self.resources, self.afbeeldingLink, self.DPS, self.hungerValue, self.hp, True, type)
                 destroy = True
 

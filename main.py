@@ -147,7 +147,7 @@ def main():
     spriteList.append(sprites.Sprite(512.0, 512.0, 1, 1, "bonfire.png", 0.5, 0.5, 1, False, False, False, False, 0, 0, 0, resources, factory, slaapText))
 
     spriteListNacht = []
-    spriteList.append(sprites.Sprite(510.0, 510.0, 1, 0, "spellun-sprite.png", 4.0, 1.2, 1, True, False, False, False, 0, 50, 10, resources, factory, None))
+    spriteListNacht.append(sprites.Sprite(510.0, 510.0, 1, 0, "spellun-sprite.png", 4.0, 1.2, 1, True, False, False, False, 0, 50, 10, resources, factory, None))
 
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
     while not moet_afsluiten:
@@ -184,7 +184,7 @@ def main():
                 door_map[doorLocations[i][0], doorLocations[i][1]].updateState(delta)
 
         for sprite in spriteList:
-            if np.linalg.norm(p_speler-sprite.p_sprite) <= 9:
+            if sprite.d_speler <= 10:
                 sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
             sprite.moveToPlayer(p_speler, delta, world_map)
             (hunger, hp, destroy, equiplist, timeCycle) = sprite.checkInteractie(hunger, hp, p_speler, delta, geklikt, timeToAttack, pakOp, equiplist, equiped, factory, timeCycle, resources, renderer)
@@ -199,7 +199,7 @@ def main():
             for sprite in spriteListNacht:
                 sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
                 sprite.moveToPlayer(p_speler, delta, world_map)
-                (hunger, hp, destroy, timeToAttack, equiplist, timeCycle) = sprite.checkInteractie(hunger, hp, p_speler, delta, geklikt, timeToAttack, pakOp, equiplist, equiped, factory, timeCycle, resources, renderer)
+                (hunger, hp, destroy, equiplist, timeCycle) = sprite.checkInteractie(hunger, hp, p_speler, delta, geklikt, timeToAttack, pakOp, equiplist, equiped, factory, timeCycle, resources, renderer)
                 if destroy or timeCycle == 0:
                     spriteList.remove(sprite)
 
