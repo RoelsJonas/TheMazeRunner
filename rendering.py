@@ -8,7 +8,7 @@ import main
 import equips
 
 
-def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist):
+def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist, timeToAttack):
     offset = ((main.BREEDTE - 800 )//2)
 
     renderer.fill((offset + 69, main.HOOGTE - 60, int(hp), 47), main.kleuren[10])
@@ -27,7 +27,9 @@ def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokIma
     renderer.fill((offset + 200 + equiped * 75 , main.HOOGTE - 15, 55, 5), main.kleuren[1])
     for i in range (len(equiplist)):
         if equiplist[i] != None:
-            equiplist[i].render(i, renderer, offset )
+            equiplist[i].render(i, renderer, offset)
+            if equiplist[i].type in main.weaponList and timeToAttack > 0:
+                renderer.fill((offset + 205 + i * 75, main.HOOGTE - 15, 47, int(-45 * timeToAttack)), main.kleuren[1])
 
 
 def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, texture, r_straal, r_speler):
@@ -83,6 +85,7 @@ def create_resources(renderer):
     crosshair = factory.from_image(resources.get_path("crosshair.png"))
     dimmer = factory.from_image((resources.get_path("dimmer.png")))
     mist = factory.from_image((resources.get_path("tunnelVision.png")))
+    stick = factory.from_image((resources.get_path("stick.png")))
 
     klokImages = []
     for i in range(6, 12):
@@ -98,7 +101,7 @@ def create_resources(renderer):
     afbeeldingen_sprites = []
     afbeeldingen_sprites.append(factory.from_image((resources.get_path("spellun-sprite.png"))))
 
-    return(resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites)
+    return(resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites, stick)
 
 def dim_image(renderer, dimmer, timeCycle):
 

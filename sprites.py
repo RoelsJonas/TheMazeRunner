@@ -67,7 +67,7 @@ class Sprite:
                 p_sprite[0] -= p_speler[0]
                 p_sprite[1] -= p_speler[1]
                 p_sprite = np.linalg.norm(p_sprite)
-                if p_sprite < main.INTERACTIONDISTANCE:
+                if p_sprite > .75:
                     afstand = np.array([self.p_sprite[0]-p_speler[0], self.p_sprite[1]-p_speler[1]])
                     norm = np.linalg.norm(afstand)
                     afstand /= norm
@@ -97,7 +97,6 @@ class Sprite:
         determinant = ((r_cameravlak[0] * r_speler[1]) - (r_speler[0] * r_cameravlak[1]))
         adj = np.array([[r_speler[1],-r_speler[0]],[-r_cameravlak[1],r_cameravlak[0]]])
         self.drawn = False
-
         for kolom in range(0, breed):
             p_kolom = np.array([self.p_sprite[0], self.p_sprite[1]])
             #bepaal de coordinaten van de kolom ten opzichte van de speler
@@ -139,10 +138,14 @@ class Sprite:
         self.d_speler = np.linalg.norm(d)
 
 
-    def checkInteractie(self, hunger, hp, p_speler, delta, geklikt, timeToAttack, interaction, equiplist, equiped, factory, timeCycle, resources, renderer, tekst):
+    def checkInteractie(self, hunger, hp, p_speler, delta, geklikt, timeToAttack, interaction, equiplist, equiped, factory, timeCycle, resources, renderer):
         destroy = False
-        if (geklikt == True):
-            spelerDamage = 15
+        spelerDamage = 0
+
+        if (geklikt == True and equiplist[equiped] != None):
+            if equiplist[equiped].type in main.weaponList:
+                spelerDamage = equiplist[equiped].damage
+
         if self.eetbaar:
             p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
             p_sprite[0] -= p_speler[0]
@@ -161,23 +164,20 @@ class Sprite:
 
         if (self.afbeeldingLink == "bonfire.png" and timeCycle > ((main.DAGNACHTCYCLUSTIJD//2) + 10) and geklikt == True):
             timeCycle = 0
-            tekst.textTimer = 10
-
-
+            self.tekst.textTimer = 10
 
         if self.volgt:
-            if self.hp < 0:
+            if self.hp <= 0:
                 destroy = True
 
             p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
             p_sprite[0] -= p_speler[0]
             p_sprite[1] -= p_speler[1]
             p_sprite = np.linalg.norm(p_sprite)
-            if p_sprite < main.INTERACTIONDISTANCE:
+            if self.d_speler < main.INTERACTIONDISTANCE:
                 hp -= self.DPS * delta
-                if timeToAttack < 0:
-                    self.hp -= spelerDamage
-                    timeToAttack = .5
+                if timeToAttack < 0 and geklikt and equiplist[equiped] != None:
+                    self.hp -= equiplist[equiped].damage
 
         if self.collectible and interaction:
             p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
@@ -185,11 +185,17 @@ class Sprite:
             p_sprite[1] -= p_speler[1]
             p_sprite = np.linalg.norm(p_sprite)
             if equiplist[equiped] == None and p_sprite < 1:
-                equiplist[equiped] = equips.equip(self.factory, self.resources, self.afbeeldingLink, self.DPS, self.hungerValue, self.hp, True)
+                type = ""
+                if self.afbeeldingLink == "medkit.png":
+                    type = "H1"
+                elif self.afbeeldingLink == "medkit2.png":
+                    type = "H2"
+                elif self.afbeeldingLink == "medkit3.png":
+                    type = "H3"
+                equiplist[equiped] = equips.equip(self.factory, self.resources, self.afbeeldingLink, self.DPS, self.hungerValue, self.hp, True, type)
                 destroy = True
 
-
-        return(hunger, hp, destroy, timeToAttack, equiplist, timeCycle, tekst)
+        return(hunger, hp, destroy, equiplist, timeCycle)
 
 
 
