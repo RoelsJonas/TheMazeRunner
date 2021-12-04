@@ -65,7 +65,7 @@ D_CAMERA = 1/np.tan(np.deg2rad(90)/2)
 
 # wordt op True gezet als het spel afgesloten moet worden
 moet_afsluiten = False
-
+start = False
 # de "wereldkaart". Dit is een 2d matrix waarin elke cel een type van muur voorstelt
 # Een 0 betekent dat op deze plaats in de game wereld geen muren aanwezig zijn
 
@@ -99,6 +99,8 @@ def main():
     global moet_afsluiten
     global r_speler
     global r_cameravlak
+    global start
+    muis_pos = np.array([BREEDTE//2, HOOGTE//2])
 
 
     # Maak een venster aan om de game te renderen
@@ -116,6 +118,13 @@ def main():
     consumableText = text.text("Hmm, that's good stuff!", 200, 450, 400, 50)
     slaapText = text.text("Even over Jonas dromen", 200, 450, 400, 50)
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites, stick, rock) = rendering.create_resources(renderer)
+    while not start:
+        (muis_pos,afsluiten,start) = rendering.render_StartScreen(renderer, factory, muis_pos, resources)
+        renderer.present()
+        if afsluiten:
+            sdl2.ext.quit()
+            moet_afsluiten = True
+            break
 
     (world_map, doorLocations, door_map, wall_map, spriteList) = imageToMap.generateWorld("resources\map9.png", factory, resources, textures, renderer, ManagerFont)
 
@@ -154,9 +163,18 @@ def main():
     spriteListNacht.append(sprites.Sprite(510.0, 510.0, 1, 0, "spellun-sprite.png", 4.0, 1.2, 1, True, False, False, False, 0, 50, 10, resources, factory, None))
 
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
+    renderer.clear()
     while not moet_afsluiten:
-        # Reset de rendering context
-        #renderer.clear() lijkt onnodig
+        while not start:
+            (muis_pos, afsluiten, start) = rendering.render_ResumeScreen(renderer, factory, muis_pos, resources)
+            renderer.present()
+            start_time = time.time()
+            if afsluiten:
+                sdl2.ext.quit()
+                moet_afsluiten = True
+                break
+
+
 
         #maak lege z buffer aan:
         z_buffer = np.zeros(BREEDTE, float)
@@ -230,7 +248,7 @@ def main():
                 renderer.copy(equiplist[equiped].image, srcrect=(0, 0, equiplist[equiped].image.size[0], equiplist[equiped].image.size[1]), dstrect=(BREEDTE - 300, HOOGTE - 300, 250, 250))
 
 
-        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map, wall_map)
+        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting,start) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map, wall_map)
         (r_speler, r_cameravlak, geklikt) = movement.draaien(r_speler, r_cameravlak)
 
 

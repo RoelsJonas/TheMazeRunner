@@ -44,6 +44,7 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, doo
     pakOp = False
     drop = False
     crafting = False
+    start = True
 
     if key_states[sdl2.SDL_SCANCODE_LSHIFT] and stamina > 0:
         delta = delta * main.SPRINT_SPEED
@@ -106,9 +107,9 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, doo
         p_speler = bewegen(delta, delta_p, r_speler, r_cameravlak, p_speler, door_map, world_map)
 
     if key_states[sdl2.SDL_SCANCODE_ESCAPE]:
-        moet_afsluiten = True
+        start = False
 
-    return(p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting)
+    return(p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting, start)
 
 
 def draaien(r_speler, r_cameravlak):

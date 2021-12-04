@@ -10,7 +10,7 @@ import equips
 
 def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist, timeToAttack):
     offset = ((main.BREEDTE - 800 )//2)
-
+    renderer.fill((0,main.HOOGTE - 75, main.BREEDTE, main.HOOGTE),main.kleuren[5])
     renderer.fill((offset + 69, main.HOOGTE - 60, int(hp), 47), main.kleuren[10])
     renderer.fill((offset + 688, main.HOOGTE - 65, int(stamina), 22), main.kleuren[9])
     renderer.fill((offset + 688, main.HOOGTE - 35, int(hunger), 22), main.kleuren[8])
@@ -53,6 +53,102 @@ def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, text
 def render_lucht_en_vloer(renderer, timecycle):
     renderer.fill((0, 0, main.BREEDTE, int(main.HOOGTE / 2)-100), main.kleuren[11])
     renderer.fill((0, main.HOOGTE, main.BREEDTE, int(-main.HOOGTE / 2 -100)), main.kleuren[6])
+
+
+def render_StartScreen(renderer,factory,muis_pos,resources):
+    afsluiten = False
+    starten = False
+    events=sdl2.ext.get_events()
+    for event in events:
+        if event.type == sdl2.SDL_MOUSEMOTION:
+            muis_pos[0] += event.motion.xrel
+            if muis_pos[0] < 0:
+                muis_pos[0] = 0
+            elif muis_pos[0] > main.BREEDTE:
+                muis_pos[0] = main.BREEDTE
+
+            muis_pos[1] += event.motion.yrel
+            if muis_pos[1] < 0:
+                muis_pos[1] = 0
+            elif muis_pos[1] > main.HOOGTE:
+                muis_pos[1] = main.HOOGTE
+
+        if event.type == sdl2.SDL_MOUSEBUTTONDOWN:
+            if main.BREEDTE//2 - 125 <= muis_pos[0] <= main.BREEDTE//2 + 125:
+                if main.HOOGTE//2 + 25 <= muis_pos[1] <= main.HOOGTE//2 + 225:
+                    afsluiten = True
+                elif main.HOOGTE//2 - 275 <= muis_pos[1] <= main.HOOGTE//2 - 75:
+                    starten = True
+
+
+
+    renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[5])
+    renderer.copy(factory.from_image(resources.get_path("crosshair.png")),
+                  srcrect = (0,0,50,50),
+                  dstrect = (muis_pos[0] - main.CROSSHAIRGROOTTE//2, muis_pos[1] - main.CROSSHAIRGROOTTE//2,
+                             main.CROSSHAIRGROOTTE,main.CROSSHAIRGROOTTE))
+
+    ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf",size = 50,color = main.kleuren[7])
+    Line1_text = "start"
+    Line2_text = "settings"
+    Line3_text = "quit"
+    StartScreen_render_Line1 = factory.from_text(Line1_text,fontmanager=ManagerFont)
+    StartScreen_render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont)
+    StartScreen_render_Line3 = factory.from_text(Line3_text, fontmanager=ManagerFont)
+
+    renderer.copy(StartScreen_render_Line1,dstrect=(main.BREEDTE//2 - 125,main.HOOGTE//2 - 275,250,200))
+    renderer.copy(StartScreen_render_Line2, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 125, 250, 200))
+    renderer.copy(StartScreen_render_Line3, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 +25, 250, 200))
+
+    return(muis_pos, afsluiten, starten)
+
+
+def render_ResumeScreen(renderer,factory,muis_pos,resources):
+    afsluiten = False
+    starten = False
+    events=sdl2.ext.get_events()
+    for event in events:
+        if event.type == sdl2.SDL_MOUSEMOTION:
+            muis_pos[0] += event.motion.xrel
+            if muis_pos[0] < 0:
+                muis_pos[0] = 0
+            elif muis_pos[0] > main.BREEDTE:
+                muis_pos[0] = main.BREEDTE
+
+            muis_pos[1] += event.motion.yrel
+            if muis_pos[1] < 0:
+                muis_pos[1] = 0
+            elif muis_pos[1] > main.HOOGTE:
+                muis_pos[1] = main.HOOGTE
+
+        if event.type == sdl2.SDL_MOUSEBUTTONDOWN:
+            if main.BREEDTE//2 - 125 <= muis_pos[0] <= main.BREEDTE//2 + 125:
+                if main.HOOGTE//2 + 25 <= muis_pos[1] <= main.HOOGTE//2 + 225:
+                    afsluiten = True
+                elif main.HOOGTE//2 - 275 <= muis_pos[1] <= main.HOOGTE//2 - 75:
+                    starten = True
+
+
+
+    renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[5])
+    renderer.copy(factory.from_image(resources.get_path("crosshair.png")),
+                  srcrect = (0,0,50,50),
+                  dstrect = (muis_pos[0] - main.CROSSHAIRGROOTTE//2, muis_pos[1] - main.CROSSHAIRGROOTTE//2,
+                             main.CROSSHAIRGROOTTE,main.CROSSHAIRGROOTTE))
+
+    ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf",size = 50,color = main.kleuren[7])
+    Line1_text = "resume"
+    Line2_text = "settings"
+    Line3_text = "quit"
+    StartScreen_render_Line1 = factory.from_text(Line1_text,fontmanager=ManagerFont)
+    StartScreen_render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont)
+    StartScreen_render_Line3 = factory.from_text(Line3_text, fontmanager=ManagerFont)
+
+    renderer.copy(StartScreen_render_Line1,dstrect=(main.BREEDTE//2 - 125,main.HOOGTE//2 - 275,250,200))
+    renderer.copy(StartScreen_render_Line2, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 125, 250, 200))
+    renderer.copy(StartScreen_render_Line3, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 +25, 250, 200))
+
+    return(muis_pos, afsluiten, starten)
 
 
 
