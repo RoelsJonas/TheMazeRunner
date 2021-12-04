@@ -115,7 +115,6 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, doo
 def draaien(r_speler, r_cameravlak):
     muisGeklikt = False
     events = sdl2.ext.get_events()
-    damage = 0
     for event in events:
         if event.type == sdl2.SDL_MOUSEBUTTONDOWN:
             muisGeklikt = True

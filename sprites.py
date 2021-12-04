@@ -3,6 +3,7 @@ import main
 import equips
 import text
 import rendering
+import playsound
 
 
 def sortSprites(list, p_speler):
@@ -163,8 +164,14 @@ class Sprite:
                     destroy = True
 
         if (self.afbeeldingLink == "bonfire.png" and timeCycle > ((main.DAGNACHTCYCLUSTIJD//2) + 10) and geklikt == True):
-            timeCycle = 0
-            self.tekst.textTimer = 10
+            p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
+            p_sprite[0] -= p_speler[0]
+            p_sprite[1] -= p_speler[1]
+            p_sprite = np.linalg.norm(p_sprite)
+            if p_sprite < main.INTERACTIONDISTANCE:
+                timeCycle = 0
+                playsound.playsound(main.GATESOUND, False)
+                self.tekst.textTimer = 10
 
         if self.volgt:
             if self.hp <= 0:
