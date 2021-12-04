@@ -5,6 +5,7 @@ import sdl2
 import sdl2.ext
 import sdl2.sdlttf
 import playsound
+import sys
 
 import rendering
 import raycast
@@ -124,6 +125,7 @@ def main():
         if afsluiten:
             sdl2.ext.quit()
             moet_afsluiten = True
+            sys.exit()
             break
 
     (world_map, doorLocations, door_map, wall_map, spriteList) = imageToMap.generateWorld("resources\map9.png", factory, resources, textures, renderer, ManagerFont)
@@ -172,7 +174,9 @@ def main():
             if afsluiten:
                 sdl2.ext.quit()
                 moet_afsluiten = True
+                sys.exit()
                 break
+
 
 
 
