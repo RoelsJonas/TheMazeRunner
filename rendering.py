@@ -86,6 +86,7 @@ def create_resources(renderer):
     dimmer = factory.from_image((resources.get_path("dimmer.png")))
     mist = factory.from_image((resources.get_path("tunnelVision.png")))
     stick = factory.from_image((resources.get_path("stick.png")))
+    rock  = factory.from_image((resources.get_path("rock.png")))
 
     klokImages = []
     for i in range(6, 12):
@@ -101,7 +102,7 @@ def create_resources(renderer):
     afbeeldingen_sprites = []
     afbeeldingen_sprites.append(factory.from_image((resources.get_path("spellun-sprite.png"))))
 
-    return(resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites, stick)
+    return(resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites, stick, rock)
 
 def dim_image(renderer, dimmer, timeCycle):
 
@@ -196,7 +197,6 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
             if main.HOOGTE//2 - 50 <= muis_pos[1] <= main.HOOGTE//2 + 50:
                 if main.BREEDTE//2 - 50 <= muis_pos[0] <= main.BREEDTE//2 + 50:
                     if correctRecipe != None:
-                        print("a")
                         equiplist[craftingIndex1] = correctRecipe.crafted()#equips.equip(correctRecipe.factory, correctRecipe.resources, correctRecipe.image_text, correctRecipe.damage, correctRecipe.hunger, correctRecipe.hp, correctRecipe.consumable, correctRecipe.type)
                         equiplist[craftingIndex2] = None
                         craftingIndex2 = None

@@ -20,13 +20,13 @@ hp = 100
 stamina = 100
 hunger = 100
 
-weaponList = ["STICK"]
+weaponList = ["STICK", "SPEAR"]
 
-HUNGERMODIFIER = 2 #snelheid waarmee hunger daalt
+HUNGERMODIFIER = 0.5 #snelheid waarmee hunger daalt
 SPRINTINGHUNGERMODIFIER = 0.15 #snelheid waarmee hunger extra daal tijdens het sprinten
 STAMINALOSSMODIFIER = 5 #snelheid waarmee stamina verloren gaat tijdens sprinten
 STAMINAREGENMODIFIER = 3 #snelheid waarmee stamina regenereert
-HUNGERHPLOSSMODIFIER = 0.1 #snelheid waarmee hp verloren gaat wanneer hunger = 0
+HUNGERHPLOSSMODIFIER = 0.5 #snelheid waarmee hp verloren gaat wanneer hunger = 0
 CROSSHAIRGROOTTE = 26
 SENSITIVITY = 0.001
 INTERACTIONDISTANCE = .9
@@ -115,7 +115,7 @@ def main():
     beginText = text.text("Wie ben ik? Wat doe ik hier?", 50, 450, 700, 50)
     consumableText = text.text("Hmm, that's good stuff!", 200, 450, 400, 50)
     slaapText = text.text("Even over Jonas dromen", 200, 450, 400, 50)
-    (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites, stick) = rendering.create_resources(renderer)
+    (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites, stick, rock) = rendering.create_resources(renderer)
 
     (world_map, doorLocations, door_map, wall_map, spriteList) = imageToMap.generateWorld("resources\map9.png", factory, resources, textures, renderer, ManagerFont)
 
@@ -135,10 +135,14 @@ def main():
 
     start_time = time.time()                    #wanneer oppakbare sprite wordt opgepakt gaat hij uit de spritelist en in de equiplist
     equiplist = [equips.equip(factory, resources, "stick.png", 10, 0, 0, False, "STICK"),
-                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
+                 equips.equip(factory, resources, "rock.png", 0, 0, 0, False, "ROCK"),
                  equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
                  equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1")]
-    craftables = [crafts.Craftable(renderer, factory, resources, "medkit2.png", "H1", "H1", "H2", 0, 25, 0)]
+
+    craftables = [crafts.Craftable(renderer, factory, resources, "medkit2.png", "H1", "H1", "H2", 0, 25, 0), #medkit upgrade van level 1 naar level 2 (10 ==> 25 hp regen)
+                  crafts.Craftable(renderer, factory, resources, "medkit3.png", "H2", "H2", "H3", 0, 60, 0), #medkit upgrade van level 2 naar level 3 ( 25 ==> 60 hp regen)
+                  crafts.Craftable(renderer, factory, resources, "spear.png", "STICK", "ROCK", "SPEAR", 17, 0, 0), #combinatie van stick en rock wordt speer (damage van 10 ==> 17) (van 5 maal slaan naar 3 maal slaan voor monster te vermoorden)
+                  ]
     timeCycle = 28
     #winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
 
@@ -180,7 +184,7 @@ def main():
 
         for i in range(len(doorLocations)):
             if world_map[doorLocations[i][0], doorLocations[i][1]] == 3:
-                door_map[doorLocations[i][0], doorLocations[i][1]].interact(pakOp, p_speler, equiplist, equiped)
+                door_map[doorLocations[i][0], doorLocations[i][1]].interact(renderer, factory, resources, pakOp, p_speler, equiplist, equiped)
                 door_map[doorLocations[i][0], doorLocations[i][1]].updateState(delta)
 
         for sprite in spriteList:
