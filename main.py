@@ -157,12 +157,10 @@ def main():
     timeCycle = 28
     #winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
 
-    spriteList.append(sprites.Sprite(28.0, 17.0, 1, 0, "burger.png", 0.5, 0.5, 1, False, False, False, True, 10, 0, 5, resources, factory, None))
-    spriteList.append(sprites.Sprite(25.0, 25.0, 1, 0, "medkit.png", 0.5, 0.5, 1, False, True, True, True, 0, 0, 30, resources, factory, None))   #doet damage van -30 -> healt en volgt met speed 0, dus volgt niet
-    spriteList.append(sprites.Sprite(512.0, 512.0, 1, 1, "bonfire.png", 0.5, 0.5, 1, False, False, False, False, 0, 0, 0, resources, factory, slaapText))
+    spriteList.append(sprites.Sprite(512.2, 512.2, 1, 1, "bonfire.png", 0.5, 0.5, 1, False, False, False, False, 0, 0, 0, resources, factory, slaapText))
 
     spriteListNacht = []
-    spriteListNacht.append(sprites.Sprite(510.0, 510.0, 1, 0, "spellun-sprite.png", 4.0, 1.2, 1, True, False, False, False, 0, 50, 10, resources, factory, None))
+    spriteListNacht.append(sprites.Sprite(510.1, 510.1, 1, 0, "spellun-sprite.png", 4.0, 1.2, 1, True, False, False, False, 0, 50, 10, resources, factory, None))
 
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
     renderer.clear()
@@ -217,9 +215,6 @@ def main():
             if destroy:
                 spriteList.remove(sprite)
 
-        if geklikt and timeToAttack < 0 and equiplist[equiped].type in weaponList:
-            timeToAttack = 1
-
 
         if timeCycle > (DAGNACHTCYCLUSTIJD//2) + 10:
             for sprite in spriteListNacht:
@@ -227,9 +222,10 @@ def main():
                 sprite.moveToPlayer(p_speler, delta, world_map)
                 (hunger, hp, destroy, equiplist, timeCycle) = sprite.checkInteractie(hunger, hp, p_speler, delta, geklikt, timeToAttack, pakOp, equiplist, equiped, factory, timeCycle, resources, renderer)
                 if destroy or timeCycle == 0:
-                    spriteList.remove(sprite)
+                    spriteListNacht.remove(sprite)
 
-
+        if geklikt and timeToAttack < 0 and equiplist[equiped].type in weaponList:
+            timeToAttack = 1
 
         timeToAttack -= delta
 
