@@ -110,6 +110,7 @@ class interactableDoor:
     texture = ""
     updated = False
     passCode = "1234"
+    instructionText = "Give the password"
 
     def __init__(self, p, kant, texture):
         self.p_door = np.array([p[0], p[1]])
@@ -131,6 +132,10 @@ class interactableDoor:
                 self.state = 1 #stel de deur op volleidg gesloten in
                 self.opening = 0 #stop het sluiten van de deur
         self.updated = True
+
+    def setPassCode(self, code, instruction):
+        self.passCode = code
+        self.instructionText = instruction
 
     def render(self, renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, z_buffer, p_speler, delta):
         # render niets als deur volledig open is
@@ -187,9 +192,9 @@ class interactableDoor:
             if d_deur < 1.25:
                 inPuzzle = True
                 solved = False
-                userInput = " "
+                userInput = ""
                 ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(255, 255, 255))
-                text = "puzzel hier"
+                text = self.instructionText
                 answerText = factory.from_text("Answer:", fontmanager = ManagerFont)
                 textRender = factory.from_text(text, fontmanager = ManagerFont)
                 muis_pos = np.array([main.BREEDTE//2, main.HOOGTE//2])
@@ -204,13 +209,13 @@ class interactableDoor:
                     if key_states[sdl2.SDL_SCANCODE_TAB]:
                         inPuzzle = False
 
-                    text = "puzzel hier"
-                    answerText = factory.from_text("Answer:", fontmanager = ManagerFont)
-                    textRender = factory.from_text(text, fontmanager = ManagerFont)
                     renderer.copy(textRender, dstrect=(main.BREEDTE//2 - len(text) * 4, 100, len(text) * 8, 60))
                     renderer.copy(answerText, dstrect=(main.BREEDTE//2 - len(text) * 4, 180, len(text) * 8, 60))
-                    inputText = factory.from_text(userInput, fontmanager = ManagerFont)
-                    renderer.copy(inputText, dstrect=(main.BREEDTE//2 - len(text) * 4, 260, len(text) * 8, 60))
+                    if userInput == "":
+                        inputText = factory.from_text(" ", fontmanager = ManagerFont)
+                    else:
+                        inputText = factory.from_text(userInput, fontmanager = ManagerFont)
+                    renderer.copy(inputText, dstrect=(main.BREEDTE//2 - len(userInput) * 8, 260, len(userInput) * 16, 120))
 
                     for event in events:
                         if event.type == sdl2.SDL_MOUSEMOTION:
@@ -257,8 +262,8 @@ class interactableDoor:
                             pressTime = time.time()
                             userInput += "9"
                         if key_states[sdl2.SDL_SCANCODE_BACKSPACE]:
-                            newUserInput = " "
-                            for i in range(1, len(userInput) - 1):
+                            newUserInput = ""
+                            for i in range(0, len(userInput) - 1):
                                 newUserInput += userInput[i]
                             userInput = newUserInput
                             pressTime = time.time()
@@ -268,7 +273,7 @@ class interactableDoor:
                                   dstrect=(muis_pos[0] - main.CROSSHAIRGROOTTE // 2, muis_pos[1] - main.CROSSHAIRGROOTTE // 2,
                                            main.CROSSHAIRGROOTTE, main.CROSSHAIRGROOTTE))
 
-                    if(userInput == " " + self.passCode):
+                    if(userInput ==  self.passCode):
                         if not solved:
                             solvetime = time.time()
                             solved = True
