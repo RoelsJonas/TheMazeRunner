@@ -1,10 +1,12 @@
 import numpy as np
+import keyBoardInput
 import main
 import playsound
 import sdl2
 import sdl2.ext
 import sdl2.sdlttf
 import time
+import random
 
 
 def rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, texture, r_straal, r_speler, offset):
@@ -133,9 +135,12 @@ class interactableDoor:
                 self.opening = 0 #stop het sluiten van de deur
         self.updated = True
 
-    def setPassCode(self, code, instruction):
-        self.passCode = code
-        self.instructionText = instruction
+    def setPassCode(self, codeList, instructionsList):
+        index = random.randint(0,10)    #random index nemen om random vraag uit vraaglijst te nemen
+        self.passCode = codeList[index]
+        print(self.passCode)
+        self.instructionText = instructionsList[index]
+        print(self.instructionText)
 
     def render(self, renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, z_buffer, p_speler, delta):
         # render niets als deur volledig open is
@@ -181,13 +186,12 @@ class interactableDoor:
         return (z_buffer)
 
 
-    def interact(self, renderer, factory, resources, interaction, p_speler, equiplist, equiped):
+    def interact(self, renderer, factory, resources, interaction, p_speler, equiplist, equiped, setting):
         if interaction:
             d_deur = np.array([self.p_door[0], self.p_door[1]])
             d_deur[0] -= p_speler[0]
             d_deur[1] -= p_speler[1]
             d_deur = np.linalg.norm(d_deur)
-            playsound.playsound(main.GATESOUND, False)         #sound moet nog geeddit worden
 
             if d_deur < 1.25:
                 inPuzzle = True
@@ -230,43 +234,8 @@ class interactableDoor:
                                 muis_pos[1] = 0
                             elif muis_pos[1] > main.HOOGTE:
                                 muis_pos[1] = main.HOOGTE
-                    if time.time() - pressTime > 0.2:
-                        if key_states[sdl2.SDL_SCANCODE_0 or key_states[sdl2.SDL_SCANCODE_KP_0]]:
-                            pressTime = time.time()
-                            userInput += "0"
-                        if key_states[sdl2.SDL_SCANCODE_1 or key_states[sdl2.SDL_SCANCODE_KP_1]]:
-                            pressTime = time.time()
-                            userInput += "1"
-                        if key_states[sdl2.SDL_SCANCODE_2 or key_states[sdl2.SDL_SCANCODE_KP_2]]:
-                            pressTime = time.time()
-                            userInput += "2"
-                        if key_states[sdl2.SDL_SCANCODE_3 or key_states[sdl2.SDL_SCANCODE_KP_3]]:
-                            pressTime = time.time()
-                            userInput += "3"
-                        if key_states[sdl2.SDL_SCANCODE_4 or key_states[sdl2.SDL_SCANCODE_KP_4]]:
-                            pressTime = time.time()
-                            userInput += "4"
-                        if key_states[sdl2.SDL_SCANCODE_5 or key_states[sdl2.SDL_SCANCODE_KP_5]]:
-                            pressTime = time.time()
-                            userInput += "5"
-                        if key_states[sdl2.SDL_SCANCODE_6 or key_states[sdl2.SDL_SCANCODE_KP_6]]:
-                            pressTime = time.time()
-                            userInput += "6"
-                        if key_states[sdl2.SDL_SCANCODE_7 or key_states[sdl2.SDL_SCANCODE_KP_7]]:
-                            pressTime = time.time()
-                            userInput += "7"
-                        if key_states[sdl2.SDL_SCANCODE_8 or key_states[sdl2.SDL_SCANCODE_KP_8]]:
-                            pressTime = time.time()
-                            userInput += "8"
-                        if key_states[sdl2.SDL_SCANCODE_9 or key_states[sdl2.SDL_SCANCODE_KP_9]]:
-                            pressTime = time.time()
-                            userInput += "9"
-                        if key_states[sdl2.SDL_SCANCODE_BACKSPACE]:
-                            newUserInput = ""
-                            for i in range(0, len(userInput) - 1):
-                                newUserInput += userInput[i]
-                            userInput = newUserInput
-                            pressTime = time.time()
+
+                    (userInput, pressTime) = keyBoardInput.keyBoardInput(key_states, pressTime, userInput, setting)
 
                     renderer.copy(factory.from_image(resources.get_path("crosshair.png")),
                                   srcrect=(0, 0, 50, 50),
@@ -290,6 +259,7 @@ class interactableDoor:
                         self.opening = 2
                     if self.state == 1:
                         self.opening = 1
+                    playsound.playsound(main.GATESOUND, False)
 
 
 

@@ -14,10 +14,10 @@ RIGHT = 1
 
 TIPS = ["Watch out! At night the doors will close and monster will appear!",
         "If your hunger drops to 0 you will die a slow and painful death!",
-        "By sprinting you can cover more ground but consume more hunger.",
+        "By sprinting you can cover more ground but your hunger bar wil drop faster.",
         "Consumables and other items can be picked up and dropped using F and G.",
-        "Certain doors can be opened with a key or the right passcode.",
-        "Items can be crafted by combining specific items at the crafting station and pressing I",
+        "Certain doors can be opened by answering the question with wisdom and strength.",
+        "Items can be crafted by combining specific items at the crafting station and pressing F",
         "Watch out to not get crushed by closing doors, they will not wait for you!",
         "To turn 180 degrees, press c."
         ]
@@ -38,7 +38,7 @@ def generateWorld(afbeelding, factory, resources, textures, renderer, fontManage
     starttime = time.time()
     for i in range(r_in.shape[0]):
         for j in range(r_in.shape[1]):
-            #zwarte pixe ==> muur met texture[0]
+            #zwarte pixel ==> muur met texture[0]
             if r_in[i, j] == 0 and b_in[i, j] == 0 and g_in[i, j] == 0:
                 world_map[i, j] = MUUR
                 wall_map[i, j] = Wall(i, j, textures[0], "wall")
@@ -63,6 +63,7 @@ def generateWorld(afbeelding, factory, resources, textures, renderer, fontManage
             elif b_in[i, j] == 0 and r_in[i, j] == 255 and g_in[i, j] == 0:
                 world_map[i, j] = INTERACTABLEDEUR
                 door_map[i, j] = doors.interactableDoor((j, i), RIGHT, textures[1])
+                door_map[i, j].setPassCode(main.codeList, main.instructionsList)
                 doorLocation.append((i, j))
 
             elif b_in[i, j] == 50 and r_in[i, j] == 117 and g_in[i, j] == 116:

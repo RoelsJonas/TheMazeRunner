@@ -84,16 +84,14 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, doo
 
     if key_states[sdl2.SDL_SCANCODE_F]:
         pakOp = True
-
-    if key_states[sdl2.SDL_SCANCODE_G]:
-        drop = True
-
-    if key_states[sdl2.SDL_SCANCODE_I]:
         for i in range(-1, 2):
             for j in range(-1, 2):
                 if wall_map[int(p_speler[1] + i),int(p_speler[0] + j)] != None:
                     if wall_map[int(p_speler[1] + i), int(p_speler[0] + j)].type == "crafting bench":
                         crafting = True
+
+    if key_states[sdl2.SDL_SCANCODE_G]:
+        drop = True
 
     if delta_p[0] != 0 or delta_p[1] != 0:
 
