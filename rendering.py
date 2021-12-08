@@ -302,7 +302,9 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
     renderer.fill(((main.BREEDTE - 800) // 2 + 688, main.HOOGTE - 65, int(stamina), 22), main.kleuren[9])
     renderer.fill(((main.BREEDTE - 800) // 2 + 688, main.HOOGTE - 35, int(hunger), 22), main.kleuren[8])
     renderer.copy(factory.from_image(resources.get_path("hud.png")), srcrect=(0, 0, 800, 75), dstrect=((main.BREEDTE - 800)//2, main.HOOGTE - 75, 800, 75))
-
+    renderer.copy(factory.from_image(resources.get_path("+.png")), srcrect=(0,0,50,50), dstrect=(main.BREEDTE//2 - 15, main.HOOGTE//2 - 165, 40,40))
+    renderer.copy(factory.from_image(resources.get_path("Larrow.png")), srcrect=(0, 0, 50, 50),dstrect=(main.BREEDTE // 2 - 85, main.HOOGTE // 2 - 95, 40, 40))
+    renderer.copy(factory.from_image(resources.get_path("Rarrow.png")), srcrect=(0, 0, 50, 50),dstrect=(main.BREEDTE // 2 + 48, main.HOOGTE // 2 - 95, 40, 40))
     for i in range (len(equiplist)):
         if equiplist[i] != None:
             equiplist[i].render(i, renderer, (main.BREEDTE - 800)//2 )
