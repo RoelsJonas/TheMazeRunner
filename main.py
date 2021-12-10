@@ -111,8 +111,6 @@ def main():
     global start
     muis_pos = np.array([BREEDTE//2, HOOGTE//2])
 
-    print(codeList)
-    print(instructionsList)
     # Maak een venster aan om de game te renderen
     window = sdl2.ext.Window("Project Ingenieursbeleving 2", size=(BREEDTE, HOOGTE))
     window.show()
@@ -159,7 +157,7 @@ def main():
     start_time = time.time()                    #wanneer oppakbare sprite wordt opgepakt gaat hij uit de spritelist en in de equiplist
     equiplist = [equips.equip(factory, resources, "stick.png", 10, 0, 0, False, "STICK"),
                  equips.equip(factory, resources, "rock.png", 0, 0, 0, False, "ROCK"),
-                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
+                 equips.equip(factory, resources, "kaart.png", 0, 0, 10, False, "KAART"),
                  equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1")]
 
     craftables = [crafts.Craftable(renderer, factory, resources, "medkit2.png", "H1", "H1", "H2", 0, 25, 0), #medkit upgrade van level 1 naar level 2 (10 ==> 25 hp regen)
@@ -241,7 +239,7 @@ def main():
 
         timeToAttack -= delta
 
-        (hunger, hp, consumableText) = equips.interactions(hunger, hp, equiped, equiplist, interact, consumableText)
+        (hunger, hp, consumableText) = equips.interactions(hunger, hp, equiped, equiplist, interact, consumableText, p_speler, renderer, world_map, factory)
 
 
         timeCycle += delta
