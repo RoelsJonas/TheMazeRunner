@@ -6,7 +6,7 @@ import sdl2.ext
 import sdl2.sdlttf
 import playsound
 import sys
-
+import settings
 import rendering
 import raycast
 import movement
@@ -87,6 +87,14 @@ kleuren = [
     sdl2.ext.Color(255, 0, 0),  # 10 = Rood
     sdl2.ext.Color(19, 216, 255), #11 = blauw dag skybox
 ]
+my_file_code = open("codeList.txt", "r")
+code_content = my_file_code.read()
+codeList = code_content.split(",")
+my_file_code.close
+
+my_file = open("instructionsList.txt", "r")
+instructionsList = my_file.readlines()
+my_file.close
 
 
 
@@ -103,10 +111,12 @@ def main():
     global start
     muis_pos = np.array([BREEDTE//2, HOOGTE//2])
 
-
     # Maak een venster aan om de game te renderen
     window = sdl2.ext.Window("Project Ingenieursbeleving 2", size=(BREEDTE, HOOGTE))
     window.show()
+
+    #creer settingsobjectdingetje
+    setting = settings.setting(True)
 
     # Begin met het uitlezen van input van de muis en vraag om relatieve coordinaten
     sdl2.SDL_SetRelativeMouseMode(True)
@@ -147,7 +157,7 @@ def main():
     start_time = time.time()                    #wanneer oppakbare sprite wordt opgepakt gaat hij uit de spritelist en in de equiplist
     equiplist = [equips.equip(factory, resources, "stick.png", 10, 0, 0, False, "STICK"),
                  equips.equip(factory, resources, "rock.png", 0, 0, 0, False, "ROCK"),
-                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
+                 equips.equip(factory, resources, "kaart.png", 0, 0, 10, False, "KAART"),
                  equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1")]
 
     craftables = [crafts.Craftable(renderer, factory, resources, "medkit2.png", "H1", "H1", "H2", 0, 25, 0), #medkit upgrade van level 1 naar level 2 (10 ==> 25 hp regen)
@@ -160,7 +170,7 @@ def main():
     spriteList.append(sprites.Sprite(512.2, 512.2, 1, 1, "bonfire.png", 0.5, 0.5, 1, False, False, False, False, 0, 0, 0, resources, factory, slaapText))
 
     spriteListNacht = []
-    spriteListNacht.append(sprites.Sprite(510.1, 510.1, 1, 0, "spellun-sprite.png", 4.0, 1.2, 1, True, False, False, False, 0, 50, 10, resources, factory, None))
+    #spriteListNacht.append(sprites.Sprite(510.1, 510.1, 1, 0, "spellun-sprite.png", 4.0, 1.2, 1, True, False, False, False, 0, 50, 10, resources, factory, None))
 
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
     renderer.clear()
@@ -204,7 +214,7 @@ def main():
 
         for i in range(len(doorLocations)):
             if world_map[doorLocations[i][0], doorLocations[i][1]] == 3:
-                door_map[doorLocations[i][0], doorLocations[i][1]].interact(renderer, factory, resources, pakOp, p_speler, equiplist, equiped)
+                door_map[doorLocations[i][0], doorLocations[i][1]].interact(renderer, factory, resources, pakOp, p_speler, equiplist, equiped, setting)
                 door_map[doorLocations[i][0], doorLocations[i][1]].updateState(delta)
 
         for sprite in spriteList:
@@ -229,7 +239,7 @@ def main():
 
         timeToAttack -= delta
 
-        (hunger, hp, consumableText) = equips.interactions(hunger, hp, equiped, equiplist, interact, consumableText)
+        (hunger, hp, consumableText) = equips.interactions(hunger, hp, equiped, equiplist, interact, consumableText, p_speler, renderer, world_map, factory)
 
 
         timeCycle += delta

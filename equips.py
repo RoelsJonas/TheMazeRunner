@@ -1,16 +1,26 @@
+import sdl2
+import sdl2.ext
+import sdl2.sdlttf
 import main
 import numpy as np
 import text
 import sprites
 import playsound
+import time
 
-def interactions(hunger, hp, equiped, equiplist, interact, consumableText):
+def interactions(hunger, hp, equiped, equiplist, interact, consumableText, p_speler, renderer, world_map, factory):
     if equiplist[equiped] != None:
         if interact and equiplist[equiped].consumable:
-            (hunger, hp) = equiplist[equiped].interact(hunger, hp)
+            (hunger, hp) = equiplist[equiped].interact(hunger, hp, p_speler, renderer)
             equiplist[equiped] = None
             consumableText.textTimer = 10
             playsound.playsound(main.CONSUMESOUND, False)
+        if(interact and equiplist[equiped].type == "KAART"):
+            statusKaart = True
+            muis_pos = np.array([0,0])
+            while statusKaart:
+                (statusKaart, muis_pos) = openKaart(renderer, p_speler, world_map, statusKaart, muis_pos, factory)
+
     return(hunger, hp, consumableText)
 
 
@@ -44,7 +54,7 @@ class equip:
         y = main.HOOGTE - 58
         renderer.copy(self.image, srcrect=(0, 0, self.b, self.h), dstrect=(x, y, 40, 40))
 
-    def interact(self, hunger, hp):
+    def interact(self, hunger, hp, renderer, factory):
         if self.consumable:
             hp += self.healing
             hunger += self.hunger
@@ -70,3 +80,38 @@ class equip:
 
         return(spriteList)
 
+def openKaart(renderer, p_speler, world_map, statusKaart, muis_pos, factory):
+    p_speler_temp = np.array([p_speler[0]-20, p_speler[1]-15])
+    renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[6])
+    for i in range(int(p_speler_temp[0]), int(p_speler_temp[0])+40):
+        for j in range(int(p_speler_temp[1]), int(p_speler_temp[1])+30):
+            if world_map[j,i] == 1:
+                renderer.fill(((i-int(p_speler_temp[0]))*20,(j-int(p_speler_temp[1]))*20,20,20),main.kleuren[0])
+            elif world_map[j,i] > 1:
+                renderer.fill(((i-int(p_speler_temp[0]))*20,(j-int(p_speler_temp[1]))*20,20,20),main.kleuren[1])
+    key_states = sdl2.SDL_GetKeyboardState(None)
+    events = sdl2.ext.get_events()
+    for event in events:
+        if event.type == sdl2.SDL_MOUSEMOTION:
+            muis_pos[0] += event.motion.xrel
+            if muis_pos[0] < 0:
+                muis_pos[0] = 0
+            elif muis_pos[0] > main.BREEDTE:
+                muis_pos[0] = main.BREEDTE
+
+            muis_pos[1] += event.motion.yrel
+            if muis_pos[1] < 0:
+                muis_pos[1] = 0
+            elif muis_pos[1] > main.HOOGTE:
+                muis_pos[1] = main.HOOGTE
+
+    renderer.copy(factory.from_image("resources/crosshair.png"),
+                  srcrect=(0, 0, 50, 50),
+                  dstrect=(muis_pos[0] - main.CROSSHAIRGROOTTE // 2, muis_pos[1] - main.CROSSHAIRGROOTTE // 2,
+                           main.CROSSHAIRGROOTTE, main.CROSSHAIRGROOTTE))
+
+    if key_states[sdl2.SDL_SCANCODE_TAB]:
+        statusKaart = False
+    renderer.fill((main.BREEDTE//2+5, main.HOOGTE//2+5, 10, 10), main.kleuren[3])
+    renderer.present()
+    return (statusKaart, muis_pos)
