@@ -8,14 +8,14 @@ import sprites
 import playsound
 import time
 
-def interactions(hunger, hp, equiped, equiplist, interact, consumableText, p_speler, renderer, world_map, factory):
-    if equiplist[equiped] != None:
-        if interact and equiplist[equiped].consumable:
-            (hunger, hp) = equiplist[equiped].interact(hunger, hp, p_speler, renderer)
-            equiplist[equiped] = None
+def interactions(hunger, hp, obj , interact, consumableText, p_speler, renderer, world_map, factory):
+    if obj != None:
+        if interact and obj.consumable:
+            (hunger, hp) = obj.interact(hunger, hp, p_speler, renderer)
+            obj = None
             consumableText.textTimer = 10
             playsound.playsound(main.CONSUMESOUND, False)
-        if(interact and equiplist[equiped].type == "KAART"):
+        if interact and obj.getType() == "KAART":
             statusKaart = True
             muis_pos = np.array([0,0])
             while statusKaart:
@@ -25,7 +25,6 @@ def interactions(hunger, hp, equiped, equiplist, interact, consumableText, p_spe
 
 
 class equip:
-
     type = ""
     damage = 0
     hunger = 0
@@ -37,6 +36,7 @@ class equip:
     tekst = ""
     imagetext = ""
     size = (1,1)
+    wat = ""
 
     def __init__(self, factory, resources, afbeelding, damage, hunger, healing, consumeerbaar, type):
         self.damage = damage
@@ -44,10 +44,14 @@ class equip:
         self.healing = healing
         self.consumable = consumeerbaar
         self.type = type
+        self.wat = type
         self.imagetext = afbeelding
         self.image = factory.from_image(resources.get_path(afbeelding))
         self.b = int(self.image.size[0])
         self.h = int(self.image.size[1])
+
+    def getType(self):
+        return(self.type)
 
     def render(self, slot, renderer, offset):
         x = offset + 208 + (slot * 75)

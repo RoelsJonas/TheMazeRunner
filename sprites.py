@@ -193,15 +193,28 @@ class Sprite:
             p_sprite = np.linalg.norm(p_sprite)
             if equiplist[equiped] == None and p_sprite < 1:
                 type = ""
+                consum = False
+
                 if self.afbeeldingLink == "medkit.png":
                     type = "H1"
+                    consum = True
                 elif self.afbeeldingLink == "medkit2.png":
                     type = "H2"
+                    consum = True
                 elif self.afbeeldingLink == "medkit3.png":
                     type = "H3"
+                    consum = True
                 elif self.afbeeldingLink == "stick.png":
                     type = "STICK"
-                equiplist[equiped] = equips.equip(self.factory, self.resources, self.afbeeldingLink, self.DPS, self.hungerValue, self.hp, True, type)
+                    consum = False
+                elif self.afbeeldingLink == "rock.png":
+                    type = "ROCK"
+                    consum = False
+                elif self.afbeeldingLink == "kaart.png":
+                    type = "KAART"
+                    consum = False
+
+                equiplist[equiped] = equips.equip(self.factory, self.resources, self.afbeeldingLink, self.DPS, self.hungerValue, self.hp, consum, type)
                 destroy = True
 
         return(hunger, hp, destroy, equiplist, timeCycle)

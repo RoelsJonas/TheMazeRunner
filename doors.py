@@ -138,9 +138,7 @@ class interactableDoor:
     def setPassCode(self, codeList, instructionsList):
         index = random.randint(0,10)    #random index nemen om random vraag uit vraaglijst te nemen
         self.passCode = codeList[index]
-        print(self.passCode)
         self.instructionText = instructionsList[index]
-        print(self.instructionText)
 
     def render(self, renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, z_buffer, p_speler, delta):
         # render niets als deur volledig open is

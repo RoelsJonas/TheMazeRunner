@@ -39,7 +39,7 @@ GATESOUND = "GateSound.wav"
 
 
 
-DAGNACHTCYCLUSTIJD = 60 # aantal seconden dat 1 dag nacht cyclus duurt
+DAGNACHTCYCLUSTIJD = 360 # aantal seconden dat 1 dag nacht cyclus duurt
 KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24     # om te weten om de hoeveel tijd de klok een uur moet opschuiven
 
 MUURHOOGTE = 1.5
@@ -112,7 +112,7 @@ def main():
     muis_pos = np.array([BREEDTE//2, HOOGTE//2])
 
     # Maak een venster aan om de game te renderen
-    window = sdl2.ext.Window("Project Ingenieursbeleving 2", size=(BREEDTE, HOOGTE))
+    window = sdl2.ext.Window("The Maze Runner", size=(BREEDTE, HOOGTE))
     window.show()
 
     #creer settingsobjectdingetje
@@ -125,9 +125,9 @@ def main():
     renderer = sdl2.ext.Renderer(window)
 
     tekstList = []
-    beginText = text.text("Wie ben ik? Wat doe ik hier?", 50, 450, 700, 50)
+    beginText = text.text("Who am I? What am I doing here?!?", 50, 450, 700, 50)
     consumableText = text.text("Hmm, that's good stuff!", 200, 450, 400, 50)
-    slaapText = text.text("Even over Jonas dromen", 200, 450, 400, 50)
+    slaapText = text.text("Catching some Z's", 200, 450, 400, 50)
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites, stick, rock) = rendering.create_resources(renderer)
     while not start:
         (muis_pos,afsluiten,start) = rendering.render_StartScreen(renderer, factory, muis_pos, resources)
@@ -138,9 +138,9 @@ def main():
             sys.exit()
             break
 
-    (world_map, doorLocations, door_map, wall_map, spriteList) = imageToMap.generateWorld("resources\map9.png", factory, resources, textures, renderer, ManagerFont)
+    (world_map, doorLocations, door_map, wall_map, spriteList) = imageToMap.generateWorld("resources\map10.png", factory, resources, textures, renderer, ManagerFont)
 
-    p_speler = np.array([float(world_map.shape[1])/2, float(world_map.shape[0])/2])
+    p_speler = np.array([151.5, 137.5])
 
     delta = 1
     geklikt = False
@@ -167,7 +167,7 @@ def main():
     timeCycle = 28
     #winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
 
-    spriteList.append(sprites.Sprite(512.2, 512.2, 1, 1, "bonfire.png", 0.5, 0.5, 1, False, False, False, False, 0, 0, 0, resources, factory, slaapText))
+    spriteList.append(sprites.Sprite(151.2, 137.2, 1, 1, "bonfire.png", 0.5, 0.5, 1, False, False, False, False, 0, 0, 0, resources, factory, slaapText))
 
     spriteListNacht = []
     #spriteListNacht.append(sprites.Sprite(510.1, 510.1, 1, 0, "spellun-sprite.png", 4.0, 1.2, 1, True, False, False, False, 0, 50, 10, resources, factory, None))
@@ -239,7 +239,7 @@ def main():
 
         timeToAttack -= delta
 
-        (hunger, hp, consumableText) = equips.interactions(hunger, hp, equiped, equiplist, interact, consumableText, p_speler, renderer, world_map, factory)
+        (hunger, hp, consumableText) = equips.interactions(hunger, hp,  equiplist[equiped], interact, consumableText, p_speler, renderer, world_map, factory)
 
 
         timeCycle += delta
