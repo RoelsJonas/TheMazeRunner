@@ -12,7 +12,7 @@ def bewegen(delta, delta_p, r_speler, r_cameravlak, p_speler, door_map, world_ma
     p_speler_nieuw += delta * delta_p[0] * r_speler
     p_speler_nieuw += delta * delta_p[1] * r_cameravlak
 
-    if world_map[int(p_speler_nieuw[1]), int(p_speler_nieuw[0])] == 0:
+    if world_map[int(p_speler_nieuw[1]), int(p_speler_nieuw[0])] == 0 or world_map[int(p_speler_nieuw[1]), int(p_speler_nieuw[0])] == 10:
         p_speler = p_speler_nieuw
         return (p_speler)
 
@@ -25,10 +25,10 @@ def bewegen(delta, delta_p, r_speler, r_cameravlak, p_speler, door_map, world_ma
     elif (world_map[int(p_speler_nieuw[1]), int(p_speler[0])] == 2 or world_map[int(p_speler_nieuw[1]), int(p_speler[0])] == 3) and door_map[int(p_speler_nieuw[1]), int(p_speler[0])].state == 0:
         p_speler[1] = p_speler_nieuw[1]
 
-    elif world_map[int(p_speler[1]), int(p_speler_nieuw[0])] == 0:
+    elif world_map[int(p_speler[1]), int(p_speler_nieuw[0])] == 0 or  world_map[int(p_speler[1]), int(p_speler_nieuw[0])] == 10:
         p_speler[0] = p_speler_nieuw[0]
         return (p_speler)
-    elif world_map[int(p_speler_nieuw[1]), int(p_speler[0])] == 0:
+    elif world_map[int(p_speler_nieuw[1]), int(p_speler[0])] == 0 or world_map[int(p_speler_nieuw[1]), int(p_speler[0])] == 10:
         p_speler[1] = p_speler_nieuw[1]
         return (p_speler)
 

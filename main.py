@@ -125,9 +125,10 @@ def main():
     renderer = sdl2.ext.Renderer(window)
 
     tekstList = []
-    beginText = text.text("Who am I? What am I doing here?!?", 50, 450, 700, 50)
-    consumableText = text.text("Hmm, that's good stuff!", 200, 450, 400, 50)
-    slaapText = text.text("Catching some Z's", 200, 450, 400, 50)
+    beginText = text.text("Who am I? What am I doing here?!?", BREEDTE//2 - 350, 450, 700, 50)
+    consumableText = text.text("Hmm, that's good stuff!", BREEDTE//2 - 200, 450, 400, 50)
+    slaapText = text.text("Catching some Z's", BREEDTE//2 - 200, 450, 400, 50)
+    completionText = text.text("Congratulations! You have found a way out!", BREEDTE//2 - 350, 450, 700, 60)
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites, stick, rock) = rendering.create_resources(renderer)
     while not start:
         (muis_pos,afsluiten,start) = rendering.render_StartScreen(renderer, factory, muis_pos, resources)
@@ -239,7 +240,7 @@ def main():
 
         timeToAttack -= delta
 
-        (hunger, hp, consumableText) = equips.interactions(hunger, hp,  equiplist[equiped], interact, consumableText, p_speler, renderer, world_map, factory)
+        (hunger, hp, consumableText, equiplist[equiped]) = equips.interactions(hunger, hp,  equiplist[equiped], interact, consumableText, p_speler, renderer, world_map, factory)
 
 
         timeCycle += delta
@@ -273,10 +274,15 @@ def main():
             playsound.playsound(GAMEOVERSOUND, True)
             moet_afsluiten = True
 
+        if world_map[int(p_speler[1]), int(p_speler[0])] == 10:
+            completionText.textTimer = 10
+
+
         rendering.dim_image(renderer, dimmer, timeCycle)
         rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist, timeToAttack)
-        for tekst in tekstList:
-            tekst.renderText(delta, renderer, factory)
+        beginText.renderText(delta, renderer, factory)
+        consumableText.renderText(delta, renderer, factory)
+        completionText.renderText(delta, renderer, factory)
         rendering.render_FPS(delta, renderer, factory, ManagerFont)
         renderer.present()
 

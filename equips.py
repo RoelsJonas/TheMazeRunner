@@ -15,13 +15,16 @@ def interactions(hunger, hp, obj , interact, consumableText, p_speler, renderer,
             obj = None
             consumableText.textTimer = 10
             playsound.playsound(main.CONSUMESOUND, False)
+            interact = False
+
         if interact and obj.getType() == "KAART":
             statusKaart = True
             muis_pos = np.array([0,0])
             while statusKaart:
                 (statusKaart, muis_pos) = openKaart(renderer, p_speler, world_map, statusKaart, muis_pos, factory)
+            interact = False
 
-    return(hunger, hp, consumableText)
+    return(hunger, hp, consumableText, obj)
 
 
 class equip:
