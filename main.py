@@ -301,7 +301,22 @@ def main():
         if timeCycle >= DAGNACHTCYCLUSTIJD:
             spriteListNacht = []
             for location in spawnLocations:
-                spriteListNacht.append(sprites.Sprite(location[1], location[0], 1, 0, "spellun-sprite.png", 8.4, 2.4, 1, True, False,False, False, 0, 50, 5, resources, factory, None))
+                if difficulty == "hard":
+                    spriteListNacht.append(
+                        sprites.Sprite(location[1], location[0], 1, 0, "spellun-sprite.png", 8.4, 2.4, 1, True, False,
+                                       False,
+                                       False, 0, 50, 7, resources, factory, None))
+                elif difficulty == "normal":
+                    spriteListNacht.append(
+                        sprites.Sprite(location[1], location[0], 1, 0, "spellun-sprite.png", 8.4, 2.4, 1, True, False,
+                                       False,
+                                       False, 0, 50, 5, resources, factory, None))
+                elif difficulty == 'easy':
+                    spriteListNacht.append(
+                        sprites.Sprite(location[1], location[0], 1, 0, "spellun-sprite.png", 8.4, 2.4, 1, True, False,
+                                       False,
+                                       False, 0, 50, 3, resources, factory, None))
+
             timeCycle = 0
             playsound.playsound(GATESOUND, False)
 
