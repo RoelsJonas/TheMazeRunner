@@ -182,8 +182,8 @@ def main():
                   crafts.Craftable(renderer, factory, resources, "medkit3.png", "H2", "H2", "H3", 0, 60, 0), #medkit upgrade van level 2 naar level 3 ( 25 ==> 60 hp regen)
                   crafts.Craftable(renderer, factory, resources, "spear.png", "STICK", "ROCK", "SPEAR", 17, 0, 0), #combinatie van stick en rock wordt speer (damage van 10 ==> 17) (van 5 maal slaan naar 3 maal slaan voor monster te vermoorden)
                   ]
-    timeCycle = 28
-    #winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
+    timeCycle = 170
+    winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
 
     spriteList.append(sprites.Sprite(151.2, 137.2, 1, 1, "bonfire.png", 0.5, 0.5, 1, False, False, False, False, 0, 0, 0, resources, factory, slaapText))
 
@@ -204,8 +204,6 @@ def main():
                 moet_afsluiten = True
                 sys.exit()
                 break
-
-
 
 
         #maak lege z buffer aan:
@@ -266,6 +264,9 @@ def main():
         if round(timeCycle) == DAGNACHTCYCLUSTIJD/2 + 5:
             playsound.playsound(GATESOUND, False)
         if timeCycle >= DAGNACHTCYCLUSTIJD:
+            spriteListNacht = []
+            for location in spawnLocations:
+                spriteListNacht.append(sprites.Sprite(location[1], location[0], 1, 0, "spellun-sprite.png", 8.4, 2.4, 1, True, False,False, False, 0, 50, 5, resources, factory, None))
             timeCycle = 0
             playsound.playsound(GATESOUND, False)
 
