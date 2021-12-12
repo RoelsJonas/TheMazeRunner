@@ -334,7 +334,7 @@ def create_resources(renderer):
     ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(255, 255, 255))
 
     muur = factory.from_image(resources.get_path("wall-concrete1.png"))
-    muur2 = factory.from_image(resources.get_path("fisheyetest.png"))
+    muur2 = factory.from_image(resources.get_path("metal.png"))
     craftingBench = factory.from_image(resources.get_path("craftingBench.png"))
     hud = factory.from_image(resources.get_path("hud.png"))
     crosshair = factory.from_image(resources.get_path("crosshair.png"))

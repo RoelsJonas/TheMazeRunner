@@ -40,14 +40,14 @@ spawnLocations = [(139.5, 109.5),
                   (192.5, 192.5),
                   ]
 
-HUNGERMODIFIER = 0.5 #snelheid waarmee hunger daalt
-SPRINTINGHUNGERMODIFIER = 0.15 #snelheid waarmee hunger extra daal tijdens het sprinten
+HUNGERMODIFIER = 0.15 #snelheid waarmee hunger daalt
+SPRINTINGHUNGERMODIFIER = 0.1 #snelheid waarmee hunger extra daal tijdens het sprinten
 STAMINALOSSMODIFIER = 5 #snelheid waarmee stamina verloren gaat tijdens sprinten
 STAMINAREGENMODIFIER = 3 #snelheid waarmee stamina regenereert
 HUNGERHPLOSSMODIFIER = 0.5 #snelheid waarmee hp verloren gaat wanneer hunger = 0
 CROSSHAIRGROOTTE = 26
 SENSITIVITY = 0.001
-INTERACTIONDISTANCE = .9
+INTERACTIONDISTANCE = 1.2
 HPREPLENISHMODIFIERER = 0,2
 
 CONSUMESOUND = "consumable.wav"
@@ -187,17 +187,16 @@ def main():
     beginText.textTimer = 10
 
     start_time = time.time()                    #wanneer oppakbare sprite wordt opgepakt gaat hij uit de spritelist en in de equiplist
-    equiplist = [equips.equip(factory, resources, "stick.png", 10, 0, 0, False, "STICK"),
-                 equips.equip(factory, resources, "rock.png", 0, 0, 0, False, "ROCK"),
-                 equips.equip(factory, resources, "kaart.png", 0, 0, 10, False, "KAART"),
-                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1")]
+    equiplist = [
+                 equips.equip(factory, resources, "burger.png", 0, 25, 0, True, "BURGER"),
+                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"), None, None]
 
     craftables = [crafts.Craftable(renderer, factory, resources, "medkit2.png", "H1", "H1", "H2", 0, 25, 0), #medkit upgrade van level 1 naar level 2 (10 ==> 25 hp regen)
                   crafts.Craftable(renderer, factory, resources, "medkit3.png", "H2", "H2", "H3", 0, 60, 0), #medkit upgrade van level 2 naar level 3 ( 25 ==> 60 hp regen)
                   crafts.Craftable(renderer, factory, resources, "spear.png", "STICK", "ROCK", "SPEAR", 17, 0, 0), #combinatie van stick en rock wordt speer (damage van 10 ==> 17) (van 5 maal slaan naar 3 maal slaan voor monster te vermoorden)
                   ]
-    timeCycle = 28
-    #winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
+    timeCycle = 170
+    winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
 
     spriteList.append(sprites.Sprite(151.2, 137.2, 1, 1, "bonfire.png", 0.5, 0.5, 1, False, False, False, False, 0, 0, 0, resources, factory, slaapText))
 
@@ -237,8 +236,6 @@ def main():
                 break
             settingsbool = rendering.render_SettingsScreen(renderer, factory, muis_pos, resources,setting)
             renderer.present()
-
-
 
         #maak lege z buffer aan:
         z_buffer = np.zeros(BREEDTE, float)
@@ -298,6 +295,9 @@ def main():
         if round(timeCycle) == DAGNACHTCYCLUSTIJD/2 + 5:
             playsound.playsound(GATESOUND, False)
         if timeCycle >= DAGNACHTCYCLUSTIJD:
+            spriteListNacht = []
+            for location in spawnLocations:
+                spriteListNacht.append(sprites.Sprite(location[1], location[0], 1, 0, "spellun-sprite.png", 8.4, 2.4, 1, True, False,False, False, 0, 50, 5, resources, factory, None))
             timeCycle = 0
             playsound.playsound(GATESOUND, False)
 

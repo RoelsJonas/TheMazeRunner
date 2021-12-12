@@ -8,7 +8,7 @@ Controsls (QWERTY /AZERTY mode):
   - Interact (with sprite, craftingbench, door, ...): F
   - Consume/Use (on Item in hotbar, ie: map, medkit,...): E
   - Open pause menu: ESCAPE
-  - Close crafting/door menu: TAB
+  - Close crafting/door/map menu: TAB
   - Select equiped slot: 1,2,3,4 (number row)
   - Attack: left mouse button
 
