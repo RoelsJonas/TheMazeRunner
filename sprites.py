@@ -68,7 +68,7 @@ class Sprite:
                 p_sprite[0] -= p_speler[0]
                 p_sprite[1] -= p_speler[1]
                 p_sprite = np.linalg.norm(p_sprite)
-                if p_sprite > .9:
+                if p_sprite > .75:
                     afstand = np.array([self.p_sprite[0]-p_speler[0], self.p_sprite[1]-p_speler[1]])
                     norm = np.linalg.norm(afstand)
                     afstand /= norm
