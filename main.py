@@ -23,6 +23,23 @@ hunger = 100
 
 weaponList = ["STICK", "SPEAR"]
 
+spawnLocations = [(139.5, 109.5),
+                  (157.5, 115.5),
+                  (135.5, 125.0),
+                  (133.0, 132.0),
+                  (157.0, 118.0),
+                  (180.0, 127.5),
+                  (178.0, 148.0),
+                  (138.5, 149.5),
+                  (154.0, 171.0),
+                  (128.5, 179.0),
+                  (145.0, 192.5),
+                  (177.0, 193.0),
+                  (177.0, 167.0),
+                  (169.0, 161.0),
+                  (192.5, 192.5),
+                  ]
+
 HUNGERMODIFIER = 0.5 #snelheid waarmee hunger daalt
 SPRINTINGHUNGERMODIFIER = 0.15 #snelheid waarmee hunger extra daal tijdens het sprinten
 STAMINALOSSMODIFIER = 5 #snelheid waarmee stamina verloren gaat tijdens sprinten
@@ -172,6 +189,8 @@ def main():
 
     spriteListNacht = []
     #spriteListNacht.append(sprites.Sprite(510.1, 510.1, 1, 0, "spellun-sprite.png", 4.0, 1.2, 1, True, False, False, False, 0, 50, 10, resources, factory, None))
+    for location in spawnLocations:
+        spriteListNacht.append(sprites.Sprite(location[1], location[0], 1, 0, "spellun-sprite.png", 8.4, 2.4, 1, True, False, False, False, 0, 50, 5, resources, factory, None))
 
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
     renderer.clear()
