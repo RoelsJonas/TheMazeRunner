@@ -40,14 +40,14 @@ spawnLocations = [(139.5, 109.5),
                   (192.5, 192.5),
                   ]
 
-HUNGERMODIFIER = 0.5 #snelheid waarmee hunger daalt
-SPRINTINGHUNGERMODIFIER = 0.15 #snelheid waarmee hunger extra daal tijdens het sprinten
+HUNGERMODIFIER = 0.15 #snelheid waarmee hunger daalt
+SPRINTINGHUNGERMODIFIER = 0.1 #snelheid waarmee hunger extra daal tijdens het sprinten
 STAMINALOSSMODIFIER = 5 #snelheid waarmee stamina verloren gaat tijdens sprinten
 STAMINAREGENMODIFIER = 3 #snelheid waarmee stamina regenereert
 HUNGERHPLOSSMODIFIER = 0.5 #snelheid waarmee hp verloren gaat wanneer hunger = 0
 CROSSHAIRGROOTTE = 26
 SENSITIVITY = 0.001
-INTERACTIONDISTANCE = .9
+INTERACTIONDISTANCE = 1.2
 HPREPLENISHMODIFIERER = 0,2
 
 CONSUMESOUND = "consumable.wav"
@@ -173,10 +173,9 @@ def main():
     beginText.textTimer = 10
 
     start_time = time.time()                    #wanneer oppakbare sprite wordt opgepakt gaat hij uit de spritelist en in de equiplist
-    equiplist = [equips.equip(factory, resources, "stick.png", 10, 0, 0, False, "STICK"),
-                 equips.equip(factory, resources, "rock.png", 0, 0, 0, False, "ROCK"),
-                 equips.equip(factory, resources, "kaart.png", 0, 0, 10, False, "KAART"),
-                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1")]
+    equiplist = [
+                 equips.equip(factory, resources, "burger.png", 0, 25, 0, True, "BURGER"),
+                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"), None, None]
 
     craftables = [crafts.Craftable(renderer, factory, resources, "medkit2.png", "H1", "H1", "H2", 0, 25, 0), #medkit upgrade van level 1 naar level 2 (10 ==> 25 hp regen)
                   crafts.Craftable(renderer, factory, resources, "medkit3.png", "H2", "H2", "H3", 0, 60, 0), #medkit upgrade van level 2 naar level 3 ( 25 ==> 60 hp regen)
