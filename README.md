@@ -1,5 +1,17 @@
 # TheMazeRunner
 
+Controsls (QWERTY /AZERTY mode):
+  - Walk: W / Z
+  - BACK: S
+  - LEFT: A / Q
+  - RIGHT: D
+  - Interact (with sprite, craftingbench, door, ...): F
+  - Consume/Use (on Item in hotbar, ie: map, medkit,...): E
+  - Open pause menu: ESCAPE
+  - Close crafting/door menu: TAB
+  - Select equiped slot: 1,2,3,4 (number row)
+  - Attack: left mouse button
+
 Dependencies:
   - math
   - time
