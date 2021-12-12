@@ -219,22 +219,28 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources,setting):
             if main.HOOGTE//2 - 325 <= muis_pos[1] <= main.HOOGTE//2 - 225:
                 if main.BREEDTE//2 - 125 <= muis_pos[0] <= main.BREEDTE//2:
                     main.SENSITIVITY = 0.01
+                    main.sens = "high"
 
                 if main.BREEDTE//2 + 25 <= muis_pos[0] <= main.BREEDTE//2 + 225:
                     main.SENSITIVITY = 0.001
+                    main.sens = "average"
 
                 if main.BREEDTE//2 + 250 <= muis_pos[0] <= main.BREEDTE//2 + 375:
                     main.SENSITIVITY = 0.0001
+                    main.sens = "low"
 
             if main.HOOGTE//2 - 225 <= muis_pos[1] <= main.HOOGTE//2 - 125:
-                if main.BREEDTE//2 - 125 <= muis_pos[0] <= main.BREEDTE//2:
+                if main.BREEDTE//2 - 125 <= muis_pos[0] <= main.BREEDTE//2 -50:
                     main.CROSSHAIRGROOTTE = 50
+                    main.crosshair = "big"
 
-                if main.BREEDTE//2 + 25 <= muis_pos[0] <= main.BREEDTE//2 + 225:
+                if main.BREEDTE//2 - 25 <= muis_pos[0] <= main.BREEDTE//2 + 175:
                     main.CROSSHAIRGROOTTE = 26
+                    main.crosshair = "average"
 
-                if main.BREEDTE//2 + 250 <= muis_pos[0] <= main.BREEDTE//2 + 375:
+                if main.BREEDTE//2 + 200 <= muis_pos[0] <= main.BREEDTE//2 + 325:
                     main.CROSSHAIRGROOTTE = 15
+                    main.crosshair = "small"
 
 
 
@@ -243,6 +249,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources,setting):
     renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[5])
 
     ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=main.kleuren[7])
+    ManagerFont2 = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=main.kleuren[2])
     Line1_text = "sensitivity:"
     Line2_text = "crosshair:"
     Line3_text = "difficulty:"
@@ -250,39 +257,71 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources,setting):
     Line5_text = "hard"
     Line6_text = "normal"
     Line7_text = "easy"
-    Line8_text = "hoog"
-    Line9_text = "gemiddeld"
-    Line10_text = "laag"
-    Line11_text = "groot"
-    Line12_text = "gemiddeld"
-    Line13_text = "klein"
+    Line8_text = "high"
+    Line9_text = "average"
+    Line10_text = "low"
+    Line11_text = "big"
+    Line12_text = "average"
+    Line13_text = "small"
     Back = "back"
 
     render_Line1 = factory.from_text(Line1_text, fontmanager=ManagerFont)
     render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont)
     render_Line3 = factory.from_text(Line3_text, fontmanager=ManagerFont)
     render_Line4 = factory.from_text(Line4_text, fontmanager=ManagerFont)
-    render_Line5 = factory.from_text(Line5_text, fontmanager=ManagerFont)
-    render_Line6 = factory.from_text(Line6_text, fontmanager=ManagerFont)
-    render_Line7 = factory.from_text(Line7_text, fontmanager=ManagerFont)
-    render_Line8 = factory.from_text(Line8_text, fontmanager=ManagerFont)
-    render_Line9 = factory.from_text(Line9_text, fontmanager=ManagerFont)
-    render_Line10 = factory.from_text(Line10_text, fontmanager=ManagerFont)
-    render_Line11 = factory.from_text(Line11_text, fontmanager=ManagerFont)
-    render_Line12 = factory.from_text(Line12_text, fontmanager=ManagerFont)
-    render_Line13 = factory.from_text(Line13_text, fontmanager=ManagerFont)
+    if main.difficulty == "hard":
+        render_Line5 = factory.from_text(Line5_text, fontmanager=ManagerFont2)
+    else:
+        render_Line5 = factory.from_text(Line5_text, fontmanager=ManagerFont)
+    if main.difficulty == "normal":
+        render_Line6 = factory.from_text(Line6_text, fontmanager=ManagerFont2)
+    else:
+        render_Line6 = factory.from_text(Line6_text, fontmanager=ManagerFont)
+    if main.difficulty == "easy":
+        render_Line7 = factory.from_text(Line7_text, fontmanager=ManagerFont2)
+    else:
+        render_Line7 = factory.from_text(Line7_text, fontmanager=ManagerFont)
+
+
+    if main.sens == "high":
+        render_Line8 = factory.from_text(Line8_text, fontmanager=ManagerFont2)
+    else:
+        render_Line8 = factory.from_text(Line8_text, fontmanager=ManagerFont)
+    if main.sens == "average":
+        render_Line9 = factory.from_text(Line9_text, fontmanager=ManagerFont2)
+    else:
+        render_Line9 = factory.from_text(Line9_text, fontmanager=ManagerFont)
+    if main.sens == "low":
+        render_Line10 = factory.from_text(Line10_text, fontmanager=ManagerFont2)
+    else:
+        render_Line10 = factory.from_text(Line10_text, fontmanager=ManagerFont)
+
+
+    if main.crosshair == "big":
+        render_Line11 = factory.from_text(Line11_text, fontmanager=ManagerFont2)
+    else:
+        render_Line11 = factory.from_text(Line11_text, fontmanager=ManagerFont)
+    if main.crosshair == "average":
+        render_Line12 = factory.from_text(Line12_text, fontmanager=ManagerFont2)
+    else:
+        render_Line12 = factory.from_text(Line12_text, fontmanager=ManagerFont)
+    if main.crosshair == "small":
+        render_Line13 = factory.from_text(Line13_text, fontmanager=ManagerFont2)
+    else:
+        render_Line13 = factory.from_text(Line13_text, fontmanager=ManagerFont)
+
     render_Back = factory.from_text(Back, fontmanager=ManagerFont)
 
 
     renderer.copy(render_Line1, dstrect=(main.BREEDTE // 2 - 400 , main.HOOGTE // 2 - 325, 250, 100))
     renderer.copy(render_Line8, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 325, 125, 100))
     renderer.copy(render_Line9, dstrect=(main.BREEDTE // 2 + 25, main.HOOGTE // 2 - 325, 200, 100))
-    renderer.copy(render_Line10, dstrect=(main.BREEDTE // 2 + 250, main.HOOGTE // 2 - 325, 125, 100))
+    renderer.copy(render_Line10, dstrect=(main.BREEDTE // 2 + 250, main.HOOGTE // 2 - 325, 75, 100))
 
     renderer.copy(render_Line2, dstrect=(main.BREEDTE // 2 - 400, main.HOOGTE // 2 - 225, 250, 100))
-    renderer.copy(render_Line11, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 225, 125, 100))
-    renderer.copy(render_Line12, dstrect=(main.BREEDTE // 2 + 25, main.HOOGTE // 2 - 225, 200, 100))
-    renderer.copy(render_Line13, dstrect=(main.BREEDTE // 2 + 250, main.HOOGTE // 2 - 225, 125, 100))
+    renderer.copy(render_Line11, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 225, 75, 100))
+    renderer.copy(render_Line12, dstrect=(main.BREEDTE // 2 - 25 , main.HOOGTE // 2 - 225, 200, 100))
+    renderer.copy(render_Line13, dstrect=(main.BREEDTE // 2 + 200, main.HOOGTE // 2 - 225, 125, 100))
 
 
     renderer.copy(render_Line3, dstrect=(main.BREEDTE // 2 - 400, main.HOOGTE // 2 - 125, 250, 100))

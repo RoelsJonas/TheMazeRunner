@@ -87,6 +87,8 @@ start = False
 settingsbool = False
 azertybool = False
 difficulty = "normal"
+crosshair = "average"
+sens = "average"
 # de "wereldkaart". Dit is een 2d matrix waarin elke cel een type van muur voorstelt
 # Een 0 betekent dat op deze plaats in de game wereld geen muren aanwezig zijn
 
@@ -132,6 +134,8 @@ def main():
     global settingsbool
     global azertybool
     global difficulty
+    global crosshair
+    global sens
     muis_pos = np.array([BREEDTE//2, HOOGTE//2])
 
     # Maak een venster aan om de game te renderen
