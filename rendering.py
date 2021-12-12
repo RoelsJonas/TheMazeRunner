@@ -5,6 +5,7 @@ import sdl2
 import sdl2.ext
 import sdl2.sdlttf
 import main
+import sprites
 import equips
 
 
@@ -58,6 +59,7 @@ def render_lucht_en_vloer(renderer, timecycle):
 def render_StartScreen(renderer,factory,muis_pos,resources):
     afsluiten = False
     starten = False
+    settings = False
     events=sdl2.ext.get_events()
     for event in events:
         if event.type == sdl2.SDL_MOUSEMOTION:
@@ -75,9 +77,11 @@ def render_StartScreen(renderer,factory,muis_pos,resources):
 
         if event.type == sdl2.SDL_MOUSEBUTTONDOWN:
             if main.BREEDTE//2 - 125 <= muis_pos[0] <= main.BREEDTE//2 + 125:
-                if main.HOOGTE//2 + 25 <= muis_pos[1] <= main.HOOGTE//2 + 225:
+                if main.HOOGTE//2 + 100 <= muis_pos[1] <= main.HOOGTE//2 + 175:
                     afsluiten = True
-                elif main.HOOGTE//2 - 275 <= muis_pos[1] <= main.HOOGTE//2 - 75:
+                elif main.HOOGTE//2 -125 <= muis_pos[1] <= main.HOOGTE//2 +75:
+                    settings = True
+                elif main.HOOGTE//2 - 200 <= muis_pos[1] <= main.HOOGTE//2 - 100:
                     starten = True
 
 
@@ -100,12 +104,13 @@ def render_StartScreen(renderer,factory,muis_pos,resources):
     renderer.copy(StartScreen_render_Line2, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 125, 250, 200))
     renderer.copy(StartScreen_render_Line3, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 +25, 250, 200))
 
-    return(muis_pos, afsluiten, starten)
+    return(muis_pos, afsluiten, starten,settings)
 
 
 def render_ResumeScreen(renderer,factory,muis_pos,resources):
     afsluiten = False
     starten = False
+    settings = False
     events=sdl2.ext.get_events()
     for event in events:
         if event.type == sdl2.SDL_MOUSEMOTION:
@@ -123,9 +128,11 @@ def render_ResumeScreen(renderer,factory,muis_pos,resources):
 
         if event.type == sdl2.SDL_MOUSEBUTTONDOWN:
             if main.BREEDTE//2 - 125 <= muis_pos[0] <= main.BREEDTE//2 + 125:
-                if main.HOOGTE//2 + 25 <= muis_pos[1] <= main.HOOGTE//2 + 225:
+                if main.HOOGTE//2 + 100 <= muis_pos[1] <= main.HOOGTE//2 + 175:
                     afsluiten = True
-                elif main.HOOGTE//2 - 275 <= muis_pos[1] <= main.HOOGTE//2 - 75:
+                elif main.HOOGTE//2 -125 <= muis_pos[1] <= main.HOOGTE//2 +75:
+                    settings = True
+                elif main.HOOGTE//2 - 200 <= muis_pos[1] <= main.HOOGTE//2 - 100:
                     starten = True
 
 
@@ -148,8 +155,160 @@ def render_ResumeScreen(renderer,factory,muis_pos,resources):
     renderer.copy(StartScreen_render_Line2, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 125, 250, 200))
     renderer.copy(StartScreen_render_Line3, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 +25, 250, 200))
 
-    return(muis_pos, afsluiten, starten)
+    return(muis_pos, afsluiten, starten,settings)
 
+
+def render_SettingsScreen(renderer, factory, muis_pos, resources,setting):
+    events = sdl2.ext.get_events()
+    settings = True
+    for event in events:
+        if event.type == sdl2.SDL_MOUSEMOTION:
+            muis_pos[0] += event.motion.xrel
+            if muis_pos[0] < 0:
+                muis_pos[0] = 0
+            elif muis_pos[0] > main.BREEDTE:
+                muis_pos[0] = main.BREEDTE
+
+            muis_pos[1] += event.motion.yrel
+            if muis_pos[1] < 0:
+                muis_pos[1] = 0
+            elif muis_pos[1] > main.HOOGTE:
+                muis_pos[1] = main.HOOGTE
+
+        if event.type == sdl2.SDL_MOUSEBUTTONDOWN:
+            if main.BREEDTE//2 - 125 <= muis_pos[0] <= main.BREEDTE//2 + 125:
+                if main.HOOGTE//2 + 150 <= muis_pos[1] <= main.HOOGTE//2 + 250:
+                    settings = False
+
+            if main.BREEDTE//2 -125 <= muis_pos[0] <= main.BREEDTE//2 -75:
+                if main.HOOGTE//2 +5 <= muis_pos[1] <= main.HOOGTE//2 + 55:
+                    if main.azertybool:
+                        main.azertybool = False
+                        setting.azerty = False
+
+                    else:
+                        main.azertybool = True
+                        setting.azerty = True
+
+            if main.HOOGTE//2 -125 <= muis_pos[1] <= main.HOOGTE//2 -25:
+                if main.BREEDTE//2 -125 <= muis_pos[0] <= main.BREEDTE//2 -25:
+                    main.difficulty = "hard"
+                    main.HUNGERMODIFIER = 0.75
+                    main.STAMINALOSSMODIFIER = 7
+                    main.STAMINAREGENMODIFIER = 2
+                    main.HUNGERHPLOSSMODIFIER = 0.75
+                    main.HPREPLENISHMODIFIERER = 0.3
+
+
+                if main.BREEDTE//2 <= muis_pos[0] <= main.BREEDTE//2 + 150:
+                    main.difficulty = "normal"
+                    main.HUNGERMODIFIER = 0.5
+                    main.STAMINALOSSMODIFIER = 5
+                    main.STAMINAREGENMODIFIER = 3
+                    main.HUNGERHPLOSSMODIFIER = 0.5
+                    main.HPREPLENISHMODIFIERER = 0.5
+
+                if main.BREEDTE//2 + 175 <= muis_pos[0] <= main.BREEDTE//2 + 275:
+                    main.difficulty = "easy"
+                    main.HUNGERMODIFIER = 0.25
+                    main.STAMINALOSSMODIFIER = 3
+                    main.STAMINAREGENMODIFIER = 4
+                    main.HUNGERHPLOSSMODIFIER = 0.25
+                    main.HPREPLENISHMODIFIERER = 0.7
+
+            if main.HOOGTE//2 - 325 <= muis_pos[1] <= main.HOOGTE//2 - 225:
+                if main.BREEDTE//2 - 125 <= muis_pos[0] <= main.BREEDTE//2:
+                    main.SENSITIVITY = 0.01
+
+                if main.BREEDTE//2 + 25 <= muis_pos[0] <= main.BREEDTE//2 + 225:
+                    main.SENSITIVITY = 0.001
+
+                if main.BREEDTE//2 + 250 <= muis_pos[0] <= main.BREEDTE//2 + 375:
+                    main.SENSITIVITY = 0.0001
+
+            if main.HOOGTE//2 - 225 <= muis_pos[1] <= main.HOOGTE//2 - 125:
+                if main.BREEDTE//2 - 125 <= muis_pos[0] <= main.BREEDTE//2:
+                    main.CROSSHAIRGROOTTE = 50
+
+                if main.BREEDTE//2 + 25 <= muis_pos[0] <= main.BREEDTE//2 + 225:
+                    main.CROSSHAIRGROOTTE = 26
+
+                if main.BREEDTE//2 + 250 <= muis_pos[0] <= main.BREEDTE//2 + 375:
+                    main.CROSSHAIRGROOTTE = 15
+
+
+
+
+
+    renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[5])
+
+    ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=main.kleuren[7])
+    Line1_text = "sensitivity:"
+    Line2_text = "crosshair:"
+    Line3_text = "difficulty:"
+    Line4_text = "azerty:"
+    Line5_text = "hard"
+    Line6_text = "normal"
+    Line7_text = "easy"
+    Line8_text = "hoog"
+    Line9_text = "gemiddeld"
+    Line10_text = "laag"
+    Line11_text = "groot"
+    Line12_text = "gemiddeld"
+    Line13_text = "klein"
+    Back = "back"
+
+    render_Line1 = factory.from_text(Line1_text, fontmanager=ManagerFont)
+    render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont)
+    render_Line3 = factory.from_text(Line3_text, fontmanager=ManagerFont)
+    render_Line4 = factory.from_text(Line4_text, fontmanager=ManagerFont)
+    render_Line5 = factory.from_text(Line5_text, fontmanager=ManagerFont)
+    render_Line6 = factory.from_text(Line6_text, fontmanager=ManagerFont)
+    render_Line7 = factory.from_text(Line7_text, fontmanager=ManagerFont)
+    render_Line8 = factory.from_text(Line8_text, fontmanager=ManagerFont)
+    render_Line9 = factory.from_text(Line9_text, fontmanager=ManagerFont)
+    render_Line10 = factory.from_text(Line10_text, fontmanager=ManagerFont)
+    render_Line11 = factory.from_text(Line11_text, fontmanager=ManagerFont)
+    render_Line12 = factory.from_text(Line12_text, fontmanager=ManagerFont)
+    render_Line13 = factory.from_text(Line13_text, fontmanager=ManagerFont)
+    render_Back = factory.from_text(Back, fontmanager=ManagerFont)
+
+
+    renderer.copy(render_Line1, dstrect=(main.BREEDTE // 2 - 400 , main.HOOGTE // 2 - 325, 250, 100))
+    renderer.copy(render_Line8, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 325, 125, 100))
+    renderer.copy(render_Line9, dstrect=(main.BREEDTE // 2 + 25, main.HOOGTE // 2 - 325, 200, 100))
+    renderer.copy(render_Line10, dstrect=(main.BREEDTE // 2 + 250, main.HOOGTE // 2 - 325, 125, 100))
+
+    renderer.copy(render_Line2, dstrect=(main.BREEDTE // 2 - 400, main.HOOGTE // 2 - 225, 250, 100))
+    renderer.copy(render_Line11, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 225, 125, 100))
+    renderer.copy(render_Line12, dstrect=(main.BREEDTE // 2 + 25, main.HOOGTE // 2 - 225, 200, 100))
+    renderer.copy(render_Line13, dstrect=(main.BREEDTE // 2 + 250, main.HOOGTE // 2 - 225, 125, 100))
+
+
+    renderer.copy(render_Line3, dstrect=(main.BREEDTE // 2 - 400, main.HOOGTE // 2 - 125, 250, 100))
+    renderer.copy(render_Line5, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 125, 100, 100))
+    renderer.copy(render_Line6, dstrect=(main.BREEDTE // 2, main.HOOGTE // 2 - 125, 150, 100))
+    renderer.copy(render_Line7, dstrect=(main.BREEDTE // 2 + 175, main.HOOGTE // 2 - 125, 100, 100))
+
+    renderer.copy(render_Line4, dstrect=(main.BREEDTE // 2 - 400, main.HOOGTE // 2 - 25, 250, 100))
+
+
+
+    renderer.fill((main.BREEDTE//2 - 125, main.HOOGTE//2 + 5 , 5 ,55),main.kleuren[7])
+    renderer.fill((main.BREEDTE // 2 - 75, main.HOOGTE // 2 + 5, 5, 55), main.kleuren[7])
+    renderer.fill((main.BREEDTE // 2 - 125, main.HOOGTE // 2 + 5, 55, 5), main.kleuren[7])
+    renderer.fill((main.BREEDTE // 2 - 125, main.HOOGTE // 2 + 55, 55, 5), main.kleuren[7])
+    if main.azertybool:
+        renderer.fill((main.BREEDTE//2-125,main.HOOGTE//2 + 5,55,55),main.kleuren[6])
+
+    renderer.copy(factory.from_image(resources.get_path("crosshair.png")),
+                  srcrect=(0, 0, 50, 50),
+                  dstrect=(muis_pos[0] - main.CROSSHAIRGROOTTE // 2, muis_pos[1] - main.CROSSHAIRGROOTTE // 2,
+                           main.CROSSHAIRGROOTTE, main.CROSSHAIRGROOTTE))
+
+    renderer.copy(render_Back, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 + 100, 250, 200))
+
+    return (settings)
 
 
 def render_GameOVer(renderer, factory):

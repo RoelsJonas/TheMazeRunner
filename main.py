@@ -84,6 +84,9 @@ D_CAMERA = 1/np.tan(np.deg2rad(90)/2)
 # wordt op True gezet als het spel afgesloten moet worden
 moet_afsluiten = False
 start = False
+settingsbool = False
+azertybool = False
+difficulty = "normal"
 # de "wereldkaart". Dit is een 2d matrix waarin elke cel een type van muur voorstelt
 # Een 0 betekent dat op deze plaats in de game wereld geen muren aanwezig zijn
 
@@ -126,6 +129,9 @@ def main():
     global r_speler
     global r_cameravlak
     global start
+    global settingsbool
+    global azertybool
+    global difficulty
     muis_pos = np.array([BREEDTE//2, HOOGTE//2])
 
     # Maak een venster aan om de game te renderen
@@ -148,13 +154,21 @@ def main():
     completionText = text.text("Congratulations! You have found a way out!", BREEDTE//2 - 350, 450, 700, 60)
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites, stick, rock) = rendering.create_resources(renderer)
     while not start:
-        (muis_pos,afsluiten,start) = rendering.render_StartScreen(renderer, factory, muis_pos, resources)
-        renderer.present()
-        if afsluiten:
-            sdl2.ext.quit()
-            moet_afsluiten = True
-            sys.exit()
+        while not settingsbool:
+            (muis_pos,afsluiten,start,settingsbool) = rendering.render_StartScreen(renderer, factory, muis_pos, resources)
+            renderer.present()
+            if afsluiten:
+                sdl2.ext.quit()
+                moet_afsluiten = True
+                sys.exit()
+                break
+            if start:
+                break
+        if start:
             break
+
+        settingsbool = rendering.render_SettingsScreen(renderer,factory,muis_pos,resources,setting)
+        renderer.present()
 
     (world_map, doorLocations, door_map, wall_map, spriteList) = imageToMap.generateWorld("resources\map10.png", factory, resources, textures, renderer, ManagerFont)
 
@@ -190,26 +204,45 @@ def main():
     spriteListNacht = []
     #spriteListNacht.append(sprites.Sprite(510.1, 510.1, 1, 0, "spellun-sprite.png", 4.0, 1.2, 1, True, False, False, False, 0, 50, 10, resources, factory, None))
     for location in spawnLocations:
-        spriteListNacht.append(sprites.Sprite(location[1], location[0], 1, 0, "spellun-sprite.png", 8.4, 2.4, 1, True, False, False, False, 0, 50, 5, resources, factory, None))
+        if difficulty == "hard":
+            spriteListNacht.append(
+                sprites.Sprite(location[1], location[0], 1, 0, "spellun-sprite.png", 8.4, 2.4, 1, True, False, False,
+                               False, 0, 50, 7, resources, factory, None))
+        elif difficulty == "normal":
+            spriteListNacht.append(
+                sprites.Sprite(location[1], location[0], 1, 0, "spellun-sprite.png", 8.4, 2.4, 1, True, False, False,
+                               False, 0, 50, 5, resources, factory, None))
+        elif difficulty == 'easy':
+            spriteListNacht.append(
+                sprites.Sprite(location[1], location[0], 1, 0, "spellun-sprite.png", 8.4, 2.4, 1, True, False, False,
+                               False, 0, 50, 3, resources, factory, None))
+
 
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
     renderer.clear()
     while not moet_afsluiten:
         while not start:
-            (muis_pos, afsluiten, start) = rendering.render_ResumeScreen(renderer, factory, muis_pos, resources)
-            renderer.present()
-            start_time = time.time()
-            if afsluiten:
-                sdl2.ext.quit()
-                moet_afsluiten = True
-                sys.exit()
+            while not settingsbool:
+                (muis_pos, afsluiten, start,settingsbool) = rendering.render_ResumeScreen(renderer, factory, muis_pos, resources)
+                renderer.present()
+                start_time = time.time()
+                if afsluiten:
+                    sdl2.ext.quit()
+                    moet_afsluiten = True
+                    sys.exit()
+                    break
+                if start:
+                    break
+            if start:
                 break
-
+            settingsbool = rendering.render_SettingsScreen(renderer, factory, muis_pos, resources,setting)
+            renderer.present()
 
 
 
         #maak lege z buffer aan:
         z_buffer = np.zeros(BREEDTE, float)
+
 
         rendering.render_lucht_en_vloer(renderer, timeCycle)
         # Render de huidige frame
@@ -230,7 +263,6 @@ def main():
         if (int(p_speler[1]), int(p_speler[0])) in doorLocations:
             if door_map[int(p_speler[1]), int(p_speler[0])].state == 1:
                 hp = -1
-
 
         for i in range(len(doorLocations)):
             if world_map[doorLocations[i][0], doorLocations[i][1]] == 3:
