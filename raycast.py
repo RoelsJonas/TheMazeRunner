@@ -63,7 +63,7 @@ def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, tim
                 i_x = int(np.round(intersectie[0])) - 1
 
 
-        if world_map[i_y, i_x] != 0:
+        if world_map[i_y, i_x] != 0 and world_map [i_y, i_x] != 10:
             if world_map[i_y, i_x] == 1:
                 d_muur = np.linalg.norm(intersectie - p_speler) #np.sqrt(np.power(intersectie[0] - p_speler[0], 2) + np.power(intersectie[1] - p_speler[1], 2))
                 texture = wall_map[i_y, i_x].image

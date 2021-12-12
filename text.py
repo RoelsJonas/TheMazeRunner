@@ -30,4 +30,7 @@ class text:
             renderer.copy(text, dstrect=(self.x, self.y, self.b, self.h))
             self.textTimer -= delta
 
+    def display(self):
+        self.textTimer = 10
+
 
