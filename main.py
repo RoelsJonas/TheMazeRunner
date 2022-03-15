@@ -153,7 +153,7 @@ def main():
     renderer = sdl2.ext.Renderer(window)
 
     tekstList = []
-    beginText = text.text("Who am I? What am I doing here?!?", BREEDTE//2 - 350, 450, 700, 50)
+    beginText = text.text("Who am I? What am I doing here?!? Is Jonas SEXY?", BREEDTE//2 - 350, 450, 700, 50)
     consumableText = text.text("Hmm, that's good stuff!", BREEDTE//2 - 200, 450, 400, 50)
     slaapText = text.text("Catching some Z's", BREEDTE//2 - 200, 450, 400, 50)
     completionText = text.text("Congratulations! You have found a way out!", BREEDTE//2 - 350, 450, 700, 60)
