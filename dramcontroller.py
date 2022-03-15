@@ -1,5 +1,6 @@
 import serial
 import time
+from serial.tools.list_ports import comports
 
 class DramController:
     port = ""
@@ -15,12 +16,25 @@ class DramController:
     buttonOrangeLed = 0
 
     IMU = (0,0,0)
-    MIC =
+    MIC = 0
     NunChuk = None
 
     def __init__(self):
-        self.port = getPort("Arduino Zero")
+        self.port = self.getPort("Arduino Zero")
         self.NunChuk = NunChuk()
+        ser = serial.Serial(self.port, 9600, timeout = 0)
+        if(ser.is_open):
+            ser.close()
+            ser.open()
+
+    def getPort(self, name):
+        portName = ''
+        portList = list(comports())
+        for port in portList:
+            if port[1].startswith(name):
+                portName = port[0]
+        return(portName)
+
 
 
 class NunChuk:

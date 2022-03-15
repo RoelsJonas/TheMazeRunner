@@ -16,6 +16,7 @@ import imageToMap
 import equips
 import text
 import crafting as crafts
+import dramcontroller
 #begin waarden instellen
 hp = 100
 stamina = 100
@@ -189,6 +190,8 @@ def main():
     craftingIndex1 = None
     craftingIndex2 = None
     beginText.textTimer = 10
+
+    dramController = dramcontroller.DramController()
 
     start_time = time.time()                    #wanneer oppakbare sprite wordt opgepakt gaat hij uit de spritelist en in de equiplist
     equiplist = [
