@@ -1,1 +1,14 @@
-kilimanjaro,houston,south africa,ghent,honolulu,100101,reduction,1969,300,greenhouse gasses,nh3,balboa,sun tzu,sinx
+kilimanjaro, skala, mont blanc, mount meru
+houston, cape canaveral, sillicon valley, hardangervidda
+south africa, kenya, congo, egypt
+ghent, antwerp, bruges, bergen
+honolulu, san josé, maui, oslo
+100101, 110110, 101101, 100100
+reduction,
+1969, 1814, 1996, 2027
+300, 3000, 30, 3
+greenhouse gasses, nitrogen gasses, mustard gass, farts
+nh3, nh4, nh2, nh203
+balboa, creed, roels, ragnarson
+sun tzu, jack ma, Xiang Yu, Wu Qi
+sinx, cosx, tanhx, 5

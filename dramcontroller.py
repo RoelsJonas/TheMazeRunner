@@ -4,6 +4,7 @@ from serial.tools.list_ports import comports
 
 class DramController:
     port = ""
+    ser = None
 
     buttonRed = 0
     buttonBlue = 0
@@ -15,6 +16,14 @@ class DramController:
     buttonGreenLed = 0
     buttonOrangeLed = 0
 
+    leds = [0,0,0,0,0]
+
+    seg1 = 0
+    seg2 = 0
+
+    vibrator = 0
+    buzzer = 0
+
     IMU = (0,0,0)
     MIC = 0
     NunChuk = None
@@ -22,10 +31,10 @@ class DramController:
     def __init__(self):
         self.port = self.getPort("Arduino Zero")
         self.NunChuk = NunChuk()
-        ser = serial.Serial(self.port, 9600, timeout = 0)
-        if(ser.is_open):
-            ser.close()
-            ser.open()
+        self.ser = serial.Serial(self.port, 9600, timeout = 0)
+        if(self.ser.is_open):
+            self.ser.close()
+            self.ser.open()
 
     def getPort(self, name):
         portName = ''
@@ -35,6 +44,11 @@ class DramController:
                 portName = port[0]
         return(portName)
 
+
+
+    def sendData(self):
+        str = "{" + str(self.leds[0]) + str(self.leds[1]) + str(self.leds[2]) + str(self.leds[3]) + str(self.leds[4]) + str(self.buttonRedLed) + str(self.buttonGreenLed) + str(self.buttonOrangeLed) + str(self.buttonBlueLed) + str(self.seg1) + str(self.seg2) + str(self.vibrator) + str(self.buzzer) + "}"
+        self.ser.write(str)
 
 
 class NunChuk:
