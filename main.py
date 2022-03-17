@@ -175,6 +175,8 @@ def main():
         settingsbool = rendering.render_SettingsScreen(renderer,factory,muis_pos,resources,setting)
         renderer.present()
 
+    dramController = dramcontroller.DramController()
+
     (world_map, doorLocations, door_map, wall_map, spriteList) = imageToMap.generateWorld("resources\map10.png", factory, resources, textures, renderer, ManagerFont)
 
     p_speler = np.array([151.5, 137.5])
@@ -190,8 +192,6 @@ def main():
     craftingIndex1 = None
     craftingIndex2 = None
     beginText.textTimer = 10
-
-    dramController = dramcontroller.DramController()
 
     start_time = time.time()                    #wanneer oppakbare sprite wordt opgepakt gaat hij uit de spritelist en in de equiplist
     equiplist = [
@@ -270,7 +270,7 @@ def main():
 
         for i in range(len(doorLocations)):
             if world_map[doorLocations[i][0], doorLocations[i][1]] == 3:
-                door_map[doorLocations[i][0], doorLocations[i][1]].interact(renderer, factory, resources, pakOp, p_speler, equiplist, equiped, setting)
+                door_map[doorLocations[i][0], doorLocations[i][1]].interact(renderer, factory, resources, pakOp, p_speler, equiplist, equiped, setting, dramcontroller)
                 door_map[doorLocations[i][0], doorLocations[i][1]].updateState(delta)
 
         for sprite in spriteList:

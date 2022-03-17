@@ -44,6 +44,8 @@ class DramController:
                 portName = port[0]
         return(portName)
 
+    def readButtons(self):
+        return [self.buttonBlue, self.buttonGreen, self.ButtonRed, self.buttonOrange]
 
 
     def sendData(self):
