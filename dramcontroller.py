@@ -67,6 +67,19 @@ class DramController:
             data = bytes(text, encoding='utf-8')
             self.ser.write(data)
 
+    def readData(self):
+        if(self.ser != None):
+            while (self.ser.inWaiting()):
+                string = str(self.ser.readline()).split(",")
+                if (len(string) == 8):
+                    joyx = string[1]
+                    joyy = string[2]
+                    joyx = joyx.replace('JOYX:', '')
+                    joyy = joyy.replace('JOYY:', '')
+                    joyx = int(joyx)
+                    joyy = int(joyy)
+                    self.NunChuk.setvalues(joyx, joyy, 0, 0, (0, 0, 0), 0, 0)
+
 
 
 class NunChuk:

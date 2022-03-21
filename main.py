@@ -297,17 +297,7 @@ def main():
 
         (hunger, hp, consumableText, equiplist[equiped]) = equips.interactions(hunger, hp,  equiplist[equiped], interact, consumableText, p_speler, renderer, world_map, factory)
 
-        while(dramController.ser.inWaiting()):
-            string = str(dramController.ser.readline()).split(",")
-            if(len(string) == 8):
-                joyx = string[1]
-                joyy = string[2]
-                joyx = joyx.replace('JOYX:','')
-                joyy = joyy.replace('JOYY:','')
-                joyx = int(joyx)
-                joyy = int(joyy)
-                dramController.NunChuk.setvalues(joyx,joyy,0,0,(0,0,0),0,0)
-
+        dramController.readData()
         dramController.mapStamina(stamina)
         dramController.mapHealth(hp)
         dramController.sendData()
