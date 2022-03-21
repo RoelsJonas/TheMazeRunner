@@ -297,9 +297,8 @@ def main():
 
         (hunger, hp, consumableText, equiplist[equiped]) = equips.interactions(hunger, hp,  equiplist[equiped], interact, consumableText, p_speler, renderer, world_map, factory)
 
-        if(dramController.ser.inWaiting()):
+        while(dramController.ser.inWaiting()):
             string = str(dramController.ser.readline()).split(",")
-            print(string)
             if(len(string) == 8):
                 joyx = string[1]
                 joyy = string[2]
@@ -309,7 +308,9 @@ def main():
                 joyy = int(joyy)
                 dramController.NunChuk.setvalues(joyx,joyy,0,0,(0,0,0),0,0)
 
-
+        dramController.mapStamina(stamina)
+        dramController.mapHealth(hp)
+        dramController.sendData()
 
 
         timeCycle += delta
