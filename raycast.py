@@ -15,7 +15,7 @@ def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, tim
     deur = False
     texture = ""
 
-    #stap 0 initialiseer x en y met waarde 0
+    # stap 0 initialiseer x en y met waarde 0
     x = 0
     y = 0
 
@@ -24,7 +24,7 @@ def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, tim
     delta_v = 1/np.abs(r_straal[0])
     delta_h = 1/np.abs(r_straal[1])
 
-    #stap 2 bereken d_horizontaal en d_verticaal
+    # stap 2 bereken d_horizontaal en d_verticaal
     if r_straal[1] >= 0:
         d_horizontaal = (1 - p_speler[1] + int(p_speler[1])) * delta_h
     else:
@@ -35,7 +35,7 @@ def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, tim
     else:
         d_verticaal = (p_speler[0] - int(p_speler[0])) * delta_v
 
-    #loop van stap 3 tot stap 6
+    # loop van stap 3 tot stap 6
     while d_muur == -1:
         if (d_horizontaal + x * delta_h) <= (d_verticaal + y * delta_v):
             intersectie = np.add(p_speler, np.multiply(d_horizontaal + (x * delta_h), r_straal))
@@ -73,6 +73,5 @@ def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, tim
                 z_buffer_nieuw = door_map[i_y, i_x].render(renderer, window, kolom, np.linalg.norm(intersectie - p_speler), intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, z_buffer, p_speler, delta)
                 if z_buffer[main.BREEDTE - 1 - kolom] == 0 or z_buffer_nieuw[main.BREEDTE - 1 - kolom] < z_buffer[main.BREEDTE - 1 - kolom]:
                     z_buffer = z_buffer_nieuw
-
 
     return (d_muur, intersectie, horizontaal, z_buffer, door_map, texture)

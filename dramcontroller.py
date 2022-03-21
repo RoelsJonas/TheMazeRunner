@@ -11,10 +11,10 @@ class DramController:
     buttonGreen = 0
     buttonOrange = 0
 
-    buttonRedLed = 0
-    buttonBlueLed = 0
-    buttonGreenLed = 0
-    buttonOrangeLed = 0
+    buttonRedLed = 1
+    buttonBlueLed = 1
+    buttonGreenLed = 1
+    buttonOrangeLed = 1
 
     leds = [0,0,0,0,0]
 
@@ -31,10 +31,11 @@ class DramController:
     def __init__(self):
         self.port = self.getPort("Arduino Zero")
         self.NunChuk = NunChuk()
-        self.ser = serial.Serial(self.port, 9600, timeout = 0)
-        if(self.ser.is_open):
-            self.ser.close()
-            self.ser.open()
+        if(self.port != ''):
+            self.ser = serial.Serial(self.port, 9600, timeout = 0)
+            if(self.ser.is_open):
+                self.ser.close()
+                self.ser.open()
 
     def getPort(self, name):
         portName = ''
@@ -47,10 +48,33 @@ class DramController:
     def readButtons(self):
         return [self.buttonBlue, self.buttonGreen, self.ButtonRed, self.buttonOrange]
 
+    def mapStamina(self, stamina):
+        if(stamina > 80):
+            self.leds = [1, 1, 1, 1, 1]
+        elif(stamina > 60):
+            self.leds = [1, 1, 1, 1, 0]
+        elif(stamina > 40):
+            self.leds = [1, 1, 1, 0, 0]
+        elif(stamina > 20):
+            self.leds = [1, 1, 0, 0, 0]
+        elif(stamina > 1):
+            self.leds = [1, 0, 0, 0, 0]
+        else:
+            self.leds = [0, 0, 0, 0, 0]
+
+    def mapHealth(self, hp):
+        if(hp > 99):
+            self.seg1 = 9
+            self.seg2 = 9
+        else:
+            self.seg1 = int(hp/10)
+            self.seg2 = int(hp - int(hp/10) * 10)
 
     def sendData(self):
-        str = "{" + str(self.leds[0]) + str(self.leds[1]) + str(self.leds[2]) + str(self.leds[3]) + str(self.leds[4]) + str(self.buttonRedLed) + str(self.buttonGreenLed) + str(self.buttonOrangeLed) + str(self.buttonBlueLed) + str(self.seg1) + str(self.seg2) + str(self.vibrator) + str(self.buzzer) + "}"
-        self.ser.write(str)
+        if(self.ser != None):
+            text = "{LEDS:" + str(self.leds[0]) + str(self.leds[1]) + str(self.leds[2]) + str(self.leds[3]) + str(self.leds[4]) + ",BUTTONLEDS:" + str(self.buttonRedLed) + str(self.buttonGreenLed) + str(self.buttonOrangeLed) + str(self.buttonBlueLed) + ",SEG1:" + str(self.seg1) + ",SEG2:" + str(self.seg2) + ",VIBRATION:" + str(self.vibrator) + ",BUZZER:" + str(self.buzzer) + "};"
+            data = bytes(text, encoding='utf-8')
+            self.ser.write(data)
 
 
 class NunChuk:

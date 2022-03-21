@@ -117,7 +117,7 @@ class Sprite:
             #bepaal in welke kolom van het scherm dit snijpunt valt
             if -1 <= snijpunt <= 1 and cameraCoordinaten[1] > 0:
                 schermKolom = int(np.round((snijpunt + 1) * main.BREEDTE/2))
-                d_sprite = np.linalg.norm(p_kolom)
+                d_sprite = np.linalg.norm(cameraCoordinaten)
                 h = (main.HOOGTE/d_sprite)
                 y1 = main.HOOGTE - int((main.HOOGTE-h)//2) - 100
                 h = int(self.hoogte * h)
