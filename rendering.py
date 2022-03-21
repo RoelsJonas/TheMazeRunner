@@ -60,6 +60,8 @@ def render_StartScreen(renderer,factory,muis_pos,resources):
     afsluiten = False
     starten = False
     settings = False
+    selected = 0
+
     events=sdl2.ext.get_events()
     for event in events:
         if event.type == sdl2.SDL_MOUSEMOTION:
@@ -93,12 +95,23 @@ def render_StartScreen(renderer,factory,muis_pos,resources):
                              main.CROSSHAIRGROOTTE,main.CROSSHAIRGROOTTE))
 
     ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf",size = 50,color = main.kleuren[7])
+    ManagerFont2 = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=main.kleuren[2])
+
     Line1_text = "start"
     Line2_text = "settings"
     Line3_text = "quit"
-    StartScreen_render_Line1 = factory.from_text(Line1_text,fontmanager=ManagerFont)
-    StartScreen_render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont)
-    StartScreen_render_Line3 = factory.from_text(Line3_text, fontmanager=ManagerFont)
+    if(selected == 0):
+        StartScreen_render_Line1 = factory.from_text(Line1_text, fontmanager=ManagerFont2)
+        StartScreen_render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont)
+        StartScreen_render_Line3 = factory.from_text(Line3_text, fontmanager=ManagerFont)
+    if(selected == 1):
+        StartScreen_render_Line1 = factory.from_text(Line1_text, fontmanager=ManagerFont)
+        StartScreen_render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont2)
+        StartScreen_render_Line3 = factory.from_text(Line3_text, fontmanager=ManagerFont)
+    if(selected == 2):
+        StartScreen_render_Line1 = factory.from_text(Line1_text, fontmanager=ManagerFont)
+        StartScreen_render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont)
+        StartScreen_render_Line3 = factory.from_text(Line3_text, fontmanager=ManagerFont2)
 
     renderer.copy(StartScreen_render_Line1,dstrect=(main.BREEDTE//2 - 125,main.HOOGTE//2 - 275,250,200))
     renderer.copy(StartScreen_render_Line2, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 125, 250, 200))
@@ -111,6 +124,7 @@ def render_ResumeScreen(renderer,factory,muis_pos,resources):
     afsluiten = False
     starten = False
     settings = False
+    selected = 0
     events=sdl2.ext.get_events()
     for event in events:
         if event.type == sdl2.SDL_MOUSEMOTION:
@@ -144,12 +158,22 @@ def render_ResumeScreen(renderer,factory,muis_pos,resources):
                              main.CROSSHAIRGROOTTE,main.CROSSHAIRGROOTTE))
 
     ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf",size = 50,color = main.kleuren[7])
+    ManagerFont2 = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=main.kleuren[2])
     Line1_text = "resume"
     Line2_text = "settings"
     Line3_text = "quit"
-    StartScreen_render_Line1 = factory.from_text(Line1_text,fontmanager=ManagerFont)
-    StartScreen_render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont)
-    StartScreen_render_Line3 = factory.from_text(Line3_text, fontmanager=ManagerFont)
+    if(selected == 0):
+        StartScreen_render_Line1 = factory.from_text(Line1_text, fontmanager=ManagerFont2)
+        StartScreen_render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont)
+        StartScreen_render_Line3 = factory.from_text(Line3_text, fontmanager=ManagerFont)
+    if(selected == 1):
+        StartScreen_render_Line1 = factory.from_text(Line1_text, fontmanager=ManagerFont)
+        StartScreen_render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont2)
+        StartScreen_render_Line3 = factory.from_text(Line3_text, fontmanager=ManagerFont)
+    if(selected == 2):
+        StartScreen_render_Line1 = factory.from_text(Line1_text, fontmanager=ManagerFont)
+        StartScreen_render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont)
+        StartScreen_render_Line3 = factory.from_text(Line3_text, fontmanager=ManagerFont2)
 
     renderer.copy(StartScreen_render_Line1,dstrect=(main.BREEDTE//2 - 125,main.HOOGTE//2 - 275,250,200))
     renderer.copy(StartScreen_render_Line2, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 125, 250, 200))

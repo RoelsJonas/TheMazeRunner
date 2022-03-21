@@ -35,7 +35,7 @@ def bewegen(delta, delta_p, r_speler, r_cameravlak, p_speler, door_map, world_ma
     return(p_speler)
 
 
-def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map, wall_map):
+def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map, wall_map, dramController):
     moet_afsluiten = False
     damage = 0
     delta_p = np.array([0,0])
@@ -46,6 +46,11 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, doo
     crafting = False
     start = True
     settings=False
+
+    if(dramController.NunChuk.joyY > 210):
+        delta_p[0] += 1
+    if(dramController.NunChuk.joyY < 60):
+        delta_p[0] -= 1
 
     if key_states[sdl2.SDL_SCANCODE_LSHIFT] and stamina > 0:
         delta = delta * main.SPRINT_SPEED
@@ -112,7 +117,7 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, doo
     return(p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting, start)
 
 
-def draaien(r_speler, r_cameravlak):
+def draaien(r_speler, r_cameravlak, dramController):
     muisGeklikt = False
     events = sdl2.ext.get_events()
     for event in events:
@@ -124,5 +129,19 @@ def draaien(r_speler, r_cameravlak):
                             (np.sin(beweging), np.cos(beweging))))
             r_speler = np.dot(r_speler, rot)
             r_cameravlak = np.array([r_speler[1], -1 * r_speler[0]])
+
+    if(dramController.NunChuk.joyX > 140):
+        beweging = (-1) * np.abs(dramController.NunChuk.joyX-129) * main.SENSITIVITY * 10
+        rot = np.array(((np.cos(beweging), -np.sin(beweging)),
+                        (np.sin(beweging), np.cos(beweging))))
+        r_speler = np.dot(r_speler, rot)
+        r_cameravlak = np.array([r_speler[1], -1 * r_speler[0]])
+
+    if(dramController.NunChuk.joyX < 110):
+        beweging = np.abs(dramController.NunChuk.joyX - 129) * main.SENSITIVITY * 10
+        rot = np.array(((np.cos(beweging), -np.sin(beweging)),
+                        (np.sin(beweging), np.cos(beweging))))
+        r_speler = np.dot(r_speler, rot)
+        r_cameravlak = np.array([r_speler[1], -1 * r_speler[0]])
 
     return(r_speler, r_cameravlak, muisGeklikt)

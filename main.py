@@ -297,6 +297,20 @@ def main():
 
         (hunger, hp, consumableText, equiplist[equiped]) = equips.interactions(hunger, hp,  equiplist[equiped], interact, consumableText, p_speler, renderer, world_map, factory)
 
+        if(dramController.ser.inWaiting()):
+            string = str(dramController.ser.readline()).split(",")
+            print(string)
+            if(len(string) == 8):
+                joyx = string[1]
+                joyy = string[2]
+                joyx = joyx.replace('JOYX:','')
+                joyy = joyy.replace('JOYY:','')
+                joyx = int(joyx)
+                joyy = int(joyy)
+                dramController.NunChuk.setvalues(joyx,joyy,0,0,(0,0,0),0,0)
+
+
+
 
         timeCycle += delta
         if round(timeCycle) == DAGNACHTCYCLUSTIJD/2 + 5:
@@ -332,8 +346,8 @@ def main():
                 renderer.copy(equiplist[equiped].image, srcrect=(0, 0, equiplist[equiped].image.size[0], equiplist[equiped].image.size[1]), dstrect=(BREEDTE - 300, HOOGTE - 300, 250, 250))
 
 
-        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting,start) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map, wall_map)
-        (r_speler, r_cameravlak, geklikt) = movement.draaien(r_speler, r_cameravlak)
+        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting,start) = movement.polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map, wall_map, dramController)
+        (r_speler, r_cameravlak, geklikt) = movement.draaien(r_speler, r_cameravlak, dramController)
 
 
         if hunger > 0:

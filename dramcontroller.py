@@ -48,3 +48,13 @@ class NunChuk:
 
     def __init__(self):
         self.roll = 0
+
+    def setvalues(self,X,Y,C,Z,acc,r,p):
+        self.joyX = X
+        self.joyY = Y
+        self.buttonC = C
+        self.buttonZ = Z
+        self.accel = acc
+        self.roll = r
+        self.pitch = p
+
