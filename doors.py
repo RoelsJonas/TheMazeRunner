@@ -1,4 +1,6 @@
 import numpy as np
+
+import dramcontroller
 import keyBoardInput
 import main
 import playsound
@@ -114,6 +116,11 @@ class interactableDoor:
     passCode = "1234"
     instructionText = "Give the password"
 
+    answer1 = ""
+    answer2 = ""
+    answer3 = ""
+    answer4 = ""
+
     def __init__(self, p, kant, texture):
         self.p_door = np.array([p[0], p[1]])
         self.side = kant
@@ -137,8 +144,18 @@ class interactableDoor:
 
     def setPassCode(self, codeList, instructionsList):
         index = random.randint(0,10)    #random index nemen om random vraag uit vraaglijst te nemen
-        self.passCode = codeList[index]
+        self.passCode = codeList[index*4]
         self.instructionText = instructionsList[index]
+
+        answerList = [codeList[index*4], codeList[index*4+1], codeList[index*4+2], codeList[index*4+3]]
+        random.shuffle(answerList)
+        self.answer1 = answerList[0]
+        self.answer2 = answerList[1]
+        self.answer3 = answerList[2]
+        self.answer4 = answerList[3]
+
+
+
 
     def render(self, renderer, window, kolom, d_muur, intersectie, horizontaal, textures, r_straal, r_speler, timeCycle, z_buffer, p_speler, delta):
         # render niets als deur volledig open is
@@ -184,7 +201,7 @@ class interactableDoor:
         return (z_buffer)
 
 
-    def interact(self, renderer, factory, resources, interaction, p_speler, equiplist, equiped, setting):
+    def interact(self, renderer, factory, resources, interaction, p_speler, equiplist, equiped, setting, dramco):
         if interaction:
             d_deur = np.array([self.p_door[0], self.p_door[1]])
             d_deur[0] -= p_speler[0]
@@ -194,53 +211,48 @@ class interactableDoor:
             if d_deur < 1.25:
                 inPuzzle = True
                 solved = False
-                userInput = ""
+                userInput = (0,0,0,0)
+                answer = ""
                 ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(255, 255, 255))
+                ManagerFontBlue = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(0, 0, 255))
+                ManagerFontRed = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(255, 0, 0))
+                ManagerFontGreen = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(0, 255, 0))
+                ManagerFontOrange = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(255, 128, 0))
                 text = self.instructionText
-                answerText = factory.from_text("Answer:", fontmanager = ManagerFont)
+                answerText1 = factory.from_text(self.answer1, fontmanager = ManagerFontBlue)
+                answerText2 = factory.from_text(self.answer2, fontmanager=ManagerFontGreen)
+                answerText3 = factory.from_text(self.answer3, fontmanager=ManagerFontRed)
+                answerText4 = factory.from_text(self.answer4, fontmanager=ManagerFontOrange)
                 textRender = factory.from_text(text, fontmanager = ManagerFont)
-                muis_pos = np.array([main.BREEDTE//2, main.HOOGTE//2])
                 pressTime = 0
                 while inPuzzle:
                     renderer.clear()
+                    dramco.readData()
 
                     renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[4])
 
-                    key_states = sdl2.SDL_GetKeyboardState(None)
+                    key_states = sdl2.SDL_GetKeyboardState(None)    #moet nog vervangen worden door een knop op controller
                     events = sdl2.ext.get_events()
                     if key_states[sdl2.SDL_SCANCODE_TAB]:
                         inPuzzle = False
 
                     renderer.copy(textRender, dstrect=(main.BREEDTE//2 - len(text) * 4, 100, len(text) * 8, 60))
-                    renderer.copy(answerText, dstrect=(main.BREEDTE//2 - len(text) * 4, 180, len(text) * 8, 60))
-                    if userInput == "":
-                        inputText = factory.from_text(" ", fontmanager = ManagerFont)
-                    else:
-                        inputText = factory.from_text(userInput, fontmanager = ManagerFont)
-                    renderer.copy(inputText, dstrect=(main.BREEDTE//2 - len(userInput) * 8, 260, len(userInput) * 16, 120))
+                    renderer.copy(answerText1, dstrect=(main.BREEDTE//4 - len(text) * 2, 180, len(self.answer1) * 16, 60))
+                    renderer.copy(answerText2, dstrect=(main.BREEDTE // 2 + len(text) * 2, 180, len(self.answer2) * 16, 60))
+                    renderer.copy(answerText3, dstrect=(main.BREEDTE // 4 - len(text) * 2, 360, len(self.answer3) * 16, 60))
+                    renderer.copy(answerText4, dstrect=(main.BREEDTE // 2 + len(text) * 2, 360, len(self.answer4) * 16, 60))
+                    #[buttonBlue, buttonGreen, ButtonRed, buttonOrange]
+                    if(dramco.buttonBlue == 1):
+                        answer = self.answer1
+                    if (dramco.buttonGreen == 1):
+                        answer = self.answer2
+                    if (dramco.buttonRed == 1):
+                        answer = self.answer3
+                    if (dramco.buttonOrange == 1):
+                        answer = self.answer4
 
-                    for event in events:
-                        if event.type == sdl2.SDL_MOUSEMOTION:
-                            muis_pos[0] += event.motion.xrel
-                            if muis_pos[0] < 0:
-                                muis_pos[0] = 0
-                            elif muis_pos[0] > main.BREEDTE:
-                                muis_pos[0] = main.BREEDTE
 
-                            muis_pos[1] += event.motion.yrel
-                            if muis_pos[1] < 0:
-                                muis_pos[1] = 0
-                            elif muis_pos[1] > main.HOOGTE:
-                                muis_pos[1] = main.HOOGTE
-
-                    (userInput, pressTime) = keyBoardInput.keyBoardInput(key_states, pressTime, userInput, setting)
-
-                    renderer.copy(factory.from_image(resources.get_path("crosshair.png")),
-                                  srcrect=(0, 0, 50, 50),
-                                  dstrect=(muis_pos[0] - main.CROSSHAIRGROOTTE // 2, muis_pos[1] - main.CROSSHAIRGROOTTE // 2,
-                                           main.CROSSHAIRGROOTTE, main.CROSSHAIRGROOTTE))
-
-                    if(userInput ==  self.passCode):
+                    if(answer ==  self.passCode):
                         if not solved:
                             solvetime = time.time()
                             solved = True
@@ -258,7 +270,3 @@ class interactableDoor:
                     if self.state == 1:
                         self.opening = 1
                     playsound.playsound(main.GATESOUND, False)
-
-
-
-

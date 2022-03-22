@@ -21,12 +21,13 @@ class DramController:
     IMU = (0,0,0)
     MIC = 0
     NunChuk = None
+    oldString = ""
 
     def __init__(self):
         self.port = self.getPort("Arduino Zero")
         self.NunChuk = NunChuk()
         if (self.port != ''):
-            self.ser = serial.Serial(self.port, 9600, timeout=0)
+            self.ser = serial.Serial(self.port, 115200, timeout=0)
             if (self.ser.is_open):
                 self.ser.close()
                 self.ser.open()
@@ -71,8 +72,10 @@ class DramController:
     def sendData(self):
         if(self.ser != None):
             text = "{LEDS:" + str(self.leds[0]) + str(self.leds[1]) + str(self.leds[2]) + str(self.leds[3]) + str(self.leds[4]) + ",BUTTONLEDS:" + str(self.buttonRedLed) + str(self.buttonGreenLed) + str(self.buttonOrangeLed) + str(self.buttonBlueLed) + ",SEG1:" + str(self.seg1) + ",SEG2:" + str(self.seg2) + ",VIBRATION:" + str(self.vibrator) + ",BUZZER:" + str(self.buzzer) + "};"
-            data = bytes(text, encoding='utf-8')
-            self.ser.write(data)
+            if(text != self.oldString):
+                self.oldString = text
+                data = bytes(text, encoding='utf-8')
+                self.ser.write(data)
 
     def readData(self):
         if(self.ser != None):
