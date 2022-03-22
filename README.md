@@ -1,6 +1,6 @@
 # TheMazeRunner
 
-Controsls (QWERTY /AZERTY mode):
+Controls (QWERTY /AZERTY mode):
   - Walk: W / Z
   - BACK: S
   - LEFT: A / Q

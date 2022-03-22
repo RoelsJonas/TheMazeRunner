@@ -31,6 +31,13 @@ class DramController:
                 self.ser.close()
                 self.ser.open()
 
+
+    def setvalues(self,bo,bb,br,bg):
+        self.buttonOrange = bo
+        self.buttonBlue = bb
+        self.buttonRed = br
+        self.buttonGreen = bg
+
     def getPort(self, name):
         portName = ''
         portList = list(comports())
@@ -71,16 +78,31 @@ class DramController:
         if(self.ser != None):
             while (self.ser.inWaiting()):
                 string = str(self.ser.readline()).split(",")
+                print(string)
                 if (len(string) == 8):
+                    buttons = string[0]
                     joyx = string[1]
                     joyy = string[2]
+                    pitch = string[3]
+                    roll = string[4]
+                    Z = string[5]
+                    C = string[6]
+                    buttons = buttons.replace("b'{BUTTONS:", '')
                     joyx = joyx.replace('JOYX:', '')
                     joyy = joyy.replace('JOYY:', '')
+                    pitch = pitch.replace('PITCH:','')
+                    roll = roll.replace('ROLL:','')
+                    Z = Z.replace('Z:','')
+                    C = C.replace('C:','')
                     joyx = int(joyx)
                     joyy = int(joyy)
-                    self.NunChuk.setvalues(joyx, joyy, 0, 0, (0, 0, 0), 0, 0)
-
-
+                    pitch =float(pitch)
+                    roll = float(roll)
+                    Z = int(Z)
+                    C = int(C)
+                    self.NunChuk.setvalues(joyx, joyy, Z, C, (0, 0, 0), pitch, roll)
+                    if(len(buttons) == 4):
+                        self.setvalues(int(buttons[0]),int(buttons[1]),int(buttons[2]),int(buttons[3]))
 
 class NunChuk:
     joyX = 129
@@ -94,12 +116,12 @@ class NunChuk:
     def __init__(self):
         self.roll = 0
 
-    def setvalues(self,X,Y,C,Z,acc,r,p):
+    def setvalues(self,X,Y,Z,C,acc,p,r):
         self.joyX = X
         self.joyY = Y
-        self.buttonC = C
         self.buttonZ = Z
+        self.buttonC = C
         self.accel = acc
-        self.roll = r
         self.pitch = p
+        self.roll = r
 

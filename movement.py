@@ -51,8 +51,10 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, doo
         delta_p[0] += 1
     if(dramController.NunChuk.joyY < 60):
         delta_p[0] -= 1
-
-    if key_states[sdl2.SDL_SCANCODE_LSHIFT] and stamina > 0:
+    if(dramController.NunChuk.buttonC == 1 and stamina > 0):
+        delta = delta * main.SPRINT_SPEED
+        sprinting = True
+    elif key_states[sdl2.SDL_SCANCODE_LSHIFT] and stamina > 0:
         delta = delta * main.SPRINT_SPEED
         sprinting = True
     else:
@@ -76,6 +78,16 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, doo
     if key_states[sdl2.SDL_SCANCODE_C]:
         r_speler *= -1
 
+    if(dramController.buttonBlue == 1):
+        if(equiped == 3):
+            equiped = 0
+        else:
+            equiped += 1
+    if(dramController.buttonGreen == 1):
+        if(equiped == 0):
+            equiped = 3
+        else:
+            equiped -= 1
     if key_states[sdl2.SDL_SCANCODE_1]:
         equiped = 0
     if key_states[sdl2.SDL_SCANCODE_2]:
@@ -88,7 +100,15 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, doo
     if key_states[sdl2.SDL_SCANCODE_E]:
         interact = True
 
-    if key_states[sdl2.SDL_SCANCODE_F]:
+    if(dramController.NunChuk.buttonZ == 1):
+        pakOp = True
+        for i in range(-1, 2):
+            for j in range(-1, 2):
+                if wall_map[int(p_speler[1] + i), int(p_speler[0] + j)] != None:
+                    if wall_map[int(p_speler[1] + i), int(p_speler[0] + j)].type == "crafting bench":
+                        crafting = True
+
+    elif key_states[sdl2.SDL_SCANCODE_F]:
         pakOp = True
         for i in range(-1, 2):
             for j in range(-1, 2):
