@@ -24,6 +24,11 @@ class DramController:
     vibrator = 0
     buzzer = 0
 
+    buttonRedLed = 0
+    buttonBlueLed = 0
+    buttonGreenLed = 0
+    buttonOrangeLed = 0
+
     IMU = (0,0,0)
     MIC = 0
     NunChuk = None
@@ -31,11 +36,18 @@ class DramController:
     def __init__(self):
         self.port = self.getPort("Arduino Zero")
         self.NunChuk = NunChuk()
-        if(self.port != ''):
-            self.ser = serial.Serial(self.port, 9600, timeout = 0)
-            if(self.ser.is_open):
+        if (self.port != ''):
+            self.ser = serial.Serial(self.port, 9600, timeout=0)
+            if (self.ser.is_open):
                 self.ser.close()
                 self.ser.open()
+
+
+    def setvalues(self,bo,bb,br,bg):
+        self.buttonOrange = bo
+        self.buttonBlue = bb
+        self.buttonRed = br
+        self.buttonGreen = bg
 
     def getPort(self, name):
         portName = ''
@@ -44,9 +56,6 @@ class DramController:
             if port[1].startswith(name):
                 portName = port[0]
         return(portName)
-
-    def readButtons(self):
-        return [self.buttonBlue, self.buttonGreen, self.ButtonRed, self.buttonOrange]
 
     def mapStamina(self, stamina):
         if(stamina > 80):
@@ -76,6 +85,35 @@ class DramController:
             data = bytes(text, encoding='utf-8')
             self.ser.write(data)
 
+    def readData(self):
+        if(self.ser != None):
+            while (self.ser.inWaiting()):
+                string = str(self.ser.readline()).split(",")
+                print(string)
+                if (len(string) == 8):
+                    buttons = string[0]
+                    joyx = string[1]
+                    joyy = string[2]
+                    pitch = string[3]
+                    roll = string[4]
+                    Z = string[5]
+                    C = string[6]
+                    buttons = buttons.replace("b'{BUTTONS:", '')
+                    joyx = joyx.replace('JOYX:', '')
+                    joyy = joyy.replace('JOYY:', '')
+                    pitch = pitch.replace('PITCH:','')
+                    roll = roll.replace('ROLL:','')
+                    Z = Z.replace('Z:','')
+                    C = C.replace('C:','')
+                    joyx = int(joyx)
+                    joyy = int(joyy)
+                    pitch =float(pitch)
+                    roll = float(roll)
+                    Z = int(Z)
+                    C = int(C)
+                    self.NunChuk.setvalues(joyx, joyy, Z, C, (0, 0, 0), pitch, roll)
+                    if(len(buttons) == 4):
+                        self.setvalues(int(buttons[0]),int(buttons[1]),int(buttons[2]),int(buttons[3]))
 
 class NunChuk:
     joyX = 129
@@ -88,3 +126,13 @@ class NunChuk:
 
     def __init__(self):
         self.roll = 0
+
+    def setvalues(self,X,Y,Z,C,acc,p,r):
+        self.joyX = X
+        self.joyY = Y
+        self.buttonZ = Z
+        self.buttonC = C
+        self.accel = acc
+        self.pitch = p
+        self.roll = r
+

@@ -147,7 +147,7 @@ class interactableDoor:
         self.passCode = codeList[index*4]
         self.instructionText = instructionsList[index]
 
-        answerList = [codeList[index], codeList[index+1], codeList[index+2], codeList[index+3]]
+        answerList = [codeList[index*4], codeList[index*4+1], codeList[index*4+2], codeList[index*4+3]]
         random.shuffle(answerList)
         self.answer1 = answerList[0]
         self.answer2 = answerList[1]
@@ -214,15 +214,20 @@ class interactableDoor:
                 userInput = (0,0,0,0)
                 answer = ""
                 ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(255, 255, 255))
+                ManagerFontBlue = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(0, 0, 255))
+                ManagerFontRed = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(255, 0, 0))
+                ManagerFontGreen = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(0, 255, 0))
+                ManagerFontOrange = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(255, 128, 0))
                 text = self.instructionText
-                answerText1 = factory.from_text("Blue:" + self.answer1, fontmanager = ManagerFont)
-                answerText2 = factory.from_text("Green: " + self.answer2, fontmanager=ManagerFont)
-                answerText3 = factory.from_text("Red: " + self.answer3, fontmanager=ManagerFont)
-                answerText4 = factory.from_text("Orange: " + self.answer4, fontmanager=ManagerFont)
+                answerText1 = factory.from_text(self.answer1, fontmanager = ManagerFontBlue)
+                answerText2 = factory.from_text(self.answer2, fontmanager=ManagerFontGreen)
+                answerText3 = factory.from_text(self.answer3, fontmanager=ManagerFontRed)
+                answerText4 = factory.from_text(self.answer4, fontmanager=ManagerFontOrange)
                 textRender = factory.from_text(text, fontmanager = ManagerFont)
                 pressTime = 0
                 while inPuzzle:
                     renderer.clear()
+                    dramco.readData()
 
                     renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[4])
 
@@ -233,19 +238,18 @@ class interactableDoor:
 
                     renderer.copy(textRender, dstrect=(main.BREEDTE//2 - len(text) * 4, 100, len(text) * 8, 60))
                     renderer.copy(answerText1, dstrect=(main.BREEDTE//4 - len(text) * 2, 180, len(text) * 4, 60))
-                    renderer.copy(answerText2, dstrect=(main.BREEDTE // 4 - len(text) * 2, 180, len(text) * 4, 60))
-                    renderer.copy(answerText3, dstrect=(main.BREEDTE // 4 - len(text) * 2, 180, len(text) * 4, 60))
-                    renderer.copy(answerText4, dstrect=(main.BREEDTE // 4 - len(text) * 2, 180, len(text) * 4, 60))
-                    if userInput == [0,0,0,0]:  #[buttonBlue, buttonGreen, ButtonRed, buttonOrange]
-                        userInput = dramco.readButtons()
-                        if(userInput[0] == 1):
-                            answer = self.answer1
-                        if (userInput[1] == 1):
-                            answer = self.answer2
-                        if (userInput[2] == 1):
-                            answer = self.answer3
-                        if (userInput[3] == 1):
-                            answer = self.answer4
+                    renderer.copy(answerText2, dstrect=(main.BREEDTE // 2 + len(text) * 2, 180, len(text) * 4, 60))
+                    renderer.copy(answerText3, dstrect=(main.BREEDTE // 4 - len(text) * 2, 360, len(text) * 4, 60))
+                    renderer.copy(answerText4, dstrect=(main.BREEDTE // 2 + len(text) * 2, 360, len(text) * 4, 60))
+                    #[buttonBlue, buttonGreen, ButtonRed, buttonOrange]
+                    if(dramco.buttonBlue == 1):
+                        answer = self.answer1
+                    if (dramco.buttonGreen == 1):
+                        answer = self.answer2
+                    if (dramco.buttonRed == 1):
+                        answer = self.answer3
+                    if (dramco.buttonOrange == 1):
+                        answer = self.answer4
 
 
                     if(answer ==  self.passCode):
