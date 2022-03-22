@@ -8,6 +8,9 @@ import main
 import sprites
 import equips
 
+pausecounter = 100
+selected = 0
+started = False
 
 def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist, timeToAttack):
     offset = ((main.BREEDTE - 800 )//2)
@@ -56,11 +59,13 @@ def render_lucht_en_vloer(renderer, timecycle):
     renderer.fill((0, main.HOOGTE, main.BREEDTE, int(-main.HOOGTE / 2 -100)), main.kleuren[6])
 
 
-def render_StartScreen(renderer,factory,muis_pos,resources):
+def render_StartScreen(renderer,factory,muis_pos,resources,dramController):
     afsluiten = False
     starten = False
     settings = False
-    selected = 0
+    global selected
+    global pausecounter
+    pausecounter += 1
 
     events=sdl2.ext.get_events()
     for event in events:
@@ -100,6 +105,23 @@ def render_StartScreen(renderer,factory,muis_pos,resources):
     Line1_text = "start"
     Line2_text = "settings"
     Line3_text = "quit"
+
+    if(dramController.NunChuk.joyY > 210):
+        if(pausecounter > 100):
+            if(selected == 0):
+                selected = 2
+                pausecounter = 0
+            else:
+                selected -= 1
+                pausecounter = 0
+    if(dramController.NunChuk.joyY < 60):
+        if(pausecounter > 100):
+            if(selected == 2):
+                selected = 0
+                pausecounter = 0
+            else:
+                selected += 1
+                pausecounter = 0
     if(selected == 0):
         StartScreen_render_Line1 = factory.from_text(Line1_text, fontmanager=ManagerFont2)
         StartScreen_render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont)
@@ -117,14 +139,33 @@ def render_StartScreen(renderer,factory,muis_pos,resources):
     renderer.copy(StartScreen_render_Line2, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 125, 250, 200))
     renderer.copy(StartScreen_render_Line3, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 +25, 250, 200))
 
+    if (dramController.NunChuk.buttonZ == 1):
+        if (selected == 0):
+            starten = True
+            started = False
+        if (selected == 1):
+            settings = True
+            started = False
+        if (selected == 2):
+            afsluiten = True
+            started = False
+
     return(muis_pos, afsluiten, starten,settings)
 
 
-def render_ResumeScreen(renderer,factory,muis_pos,resources):
+def render_ResumeScreen(renderer,factory,muis_pos,resources,dramController):
     afsluiten = False
     starten = False
     settings = False
-    selected = 0
+    global pausecounter
+    global selected
+    pausecounter += 1
+    global started
+
+    if(started == False):
+        selected = 0
+        started = True
+
     events=sdl2.ext.get_events()
     for event in events:
         if event.type == sdl2.SDL_MOUSEMOTION:
@@ -144,10 +185,13 @@ def render_ResumeScreen(renderer,factory,muis_pos,resources):
             if main.BREEDTE//2 - 125 <= muis_pos[0] <= main.BREEDTE//2 + 125:
                 if main.HOOGTE//2 + 100 <= muis_pos[1] <= main.HOOGTE//2 + 175:
                     afsluiten = True
+                    started = False
                 elif main.HOOGTE//2 -125 <= muis_pos[1] <= main.HOOGTE//2 +75:
                     settings = True
+                    started = False
                 elif main.HOOGTE//2 - 200 <= muis_pos[1] <= main.HOOGTE//2 - 100:
                     starten = True
+                    started = False
 
 
 
@@ -162,6 +206,22 @@ def render_ResumeScreen(renderer,factory,muis_pos,resources):
     Line1_text = "resume"
     Line2_text = "settings"
     Line3_text = "quit"
+    if (dramController.NunChuk.joyY > 210):
+        if (pausecounter > 100):
+            if (selected == 0):
+                selected = 2
+                pausecounter = 0
+            else:
+                selected -= 1
+                pausecounter = 0
+    if (dramController.NunChuk.joyY < 60):
+        if (pausecounter > 100):
+            if (selected == 2):
+                selected = 0
+                pausecounter = 0
+            else:
+                selected += 1
+                pausecounter = 0
     if(selected == 0):
         StartScreen_render_Line1 = factory.from_text(Line1_text, fontmanager=ManagerFont2)
         StartScreen_render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont)
@@ -179,6 +239,16 @@ def render_ResumeScreen(renderer,factory,muis_pos,resources):
     renderer.copy(StartScreen_render_Line2, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 125, 250, 200))
     renderer.copy(StartScreen_render_Line3, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 +25, 250, 200))
 
+    if(dramController.NunChuk.buttonZ == 1):
+        if(selected == 0):
+            starten = True
+            started = False
+        if(selected == 1):
+            settings = True
+            started = False
+        if(selected == 2):
+            afsluiten = True
+            started = False
     return(muis_pos, afsluiten, starten,settings)
 
 
@@ -437,7 +507,7 @@ def dim_image(renderer, dimmer, timeCycle):
             renderer.copy(dimmer, srcrect=(0, 0, 1, 1), dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
 
 
-def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted, craftingIndex1, craftingIndex2, craftables):
+def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted, craftingIndex1, craftingIndex2, craftables, dramController):
     correctRecipe = None
 
     renderer.clear()
@@ -574,14 +644,15 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
                   dstrect=(muis_pos[0] - main.CROSSHAIRGROOTTE // 2, muis_pos[1] - main.CROSSHAIRGROOTTE // 2,
                            main.CROSSHAIRGROOTTE, main.CROSSHAIRGROOTTE))
 
-
-    if key_states[sdl2.SDL_SCANCODE_E] or key_states[sdl2.SDL_SCANCODE_ESCAPE] or key_states[sdl2.SDL_SCANCODE_TAB]:
+    if(dramController.NunChuk.buttonC == 1):
         inventory = False
         craftingIndex1 = None
         craftingIndex2 = None
 
-
-
+    elif key_states[sdl2.SDL_SCANCODE_E] or key_states[sdl2.SDL_SCANCODE_ESCAPE] or key_states[sdl2.SDL_SCANCODE_TAB]:
+        inventory = False
+        craftingIndex1 = None
+        craftingIndex2 = None
 
 
     renderer.present()

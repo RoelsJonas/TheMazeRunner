@@ -80,32 +80,35 @@ class DramController:
     def readData(self):
         if(self.ser != None):
             while (self.ser.inWaiting()):
-                string = str(self.ser.readline()).split(",")
-                print(string)
-                if (len(string) == 8):
-                    buttons = string[0]
-                    joyx = string[1]
-                    joyy = string[2]
-                    pitch = string[3]
-                    roll = string[4]
-                    Z = string[5]
-                    C = string[6]
-                    buttons = buttons.replace("b'{BUTTONS:", '')
-                    joyx = joyx.replace('JOYX:', '')
-                    joyy = joyy.replace('JOYY:', '')
-                    pitch = pitch.replace('PITCH:','')
-                    roll = roll.replace('ROLL:','')
-                    Z = Z.replace('Z:','')
-                    C = C.replace('C:','')
-                    joyx = int(joyx)
-                    joyy = int(joyy)
-                    pitch =float(pitch)
-                    roll = float(roll)
-                    Z = int(Z)
-                    C = int(C)
-                    self.NunChuk.setvalues(joyx, joyy, Z, C, (0, 0, 0), pitch, roll)
-                    if(len(buttons) == 4):
-                        self.setvalues(int(buttons[0]),int(buttons[1]),int(buttons[2]),int(buttons[3]))
+                line = self.ser.readline()
+                if(len(line) >= 70):
+                    string = str(line).split(",")
+                    print(string)
+                    if (len(string) == 8):
+                        buttons = string[0]
+                        joyx = string[1]
+                        joyy = string[2]
+                        pitch = string[3]
+                        roll = string[4]
+                        Z = string[5]
+                        C = string[6]
+                        buttons = buttons.replace("b'{BUTTONS:", '')
+                        joyx = joyx.replace('JOYX:', '')
+                        joyy = joyy.replace('JOYY:', '')
+                        pitch = pitch.replace('PITCH:','')
+                        roll = roll.replace('ROLL:','')
+                        Z = Z.replace('Z:','')
+                        C = C.replace('C:','')
+                        joyx = int(joyx)
+                        joyy = int(joyy)
+                        pitch =float(pitch)
+                        roll = float(roll)
+                        Z = int(Z)
+                        C = int(C)
+                        self.NunChuk.setvalues(joyx, joyy, Z, C, (0, 0, 0), pitch, roll)
+                        print(str(buttons))
+                        if(len(str(buttons)) == 4):
+                            self.setvalues(int(buttons[0]),int(buttons[1]),int(buttons[2]),int(buttons[3]))
 
 class NunChuk:
     joyX = 129

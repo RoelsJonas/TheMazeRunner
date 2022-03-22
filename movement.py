@@ -133,6 +133,9 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, doo
     if key_states[sdl2.SDL_SCANCODE_ESCAPE]:
         start = False
         settings = False
+    if(dramController.buttonRed == 1):
+        start = False
+        settings = False
 
     return(p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting, start)
 
@@ -151,14 +154,14 @@ def draaien(r_speler, r_cameravlak, dramController):
             r_cameravlak = np.array([r_speler[1], -1 * r_speler[0]])
 
     if(dramController.NunChuk.joyX > 140):
-        beweging = (-1) * np.abs(dramController.NunChuk.joyX-129) * main.SENSITIVITY * 10
+        beweging = (-1) * np.abs(dramController.NunChuk.joyX-129) * main.SENSITIVITY * 5
         rot = np.array(((np.cos(beweging), -np.sin(beweging)),
                         (np.sin(beweging), np.cos(beweging))))
         r_speler = np.dot(r_speler, rot)
         r_cameravlak = np.array([r_speler[1], -1 * r_speler[0]])
 
     if(dramController.NunChuk.joyX < 110):
-        beweging = np.abs(dramController.NunChuk.joyX - 129) * main.SENSITIVITY * 10
+        beweging = np.abs(dramController.NunChuk.joyX - 129) * main.SENSITIVITY * 5
         rot = np.array(((np.cos(beweging), -np.sin(beweging)),
                         (np.sin(beweging), np.cos(beweging))))
         r_speler = np.dot(r_speler, rot)
