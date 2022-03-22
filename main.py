@@ -139,6 +139,8 @@ def main():
     global sens
     muis_pos = np.array([BREEDTE//2, HOOGTE//2])
 
+    dramController = dramcontroller.DramController()
+
     # Maak een venster aan om de game te renderen
     window = sdl2.ext.Window("The Maze Runner", size=(BREEDTE, HOOGTE))
     window.show()
@@ -153,14 +155,15 @@ def main():
     renderer = sdl2.ext.Renderer(window)
 
     tekstList = []
-    beginText = text.text("Who am I? What am I doing here?!? Is Jonas SEXY?", BREEDTE//2 - 350, 450, 700, 50)
+    beginText = text.text("Who am I? What am I doing here?!?", BREEDTE//2 - 350, 450, 700, 50)
     consumableText = text.text("Hmm, that's good stuff!", BREEDTE//2 - 200, 450, 400, 50)
     slaapText = text.text("Catching some Z's", BREEDTE//2 - 200, 450, 400, 50)
     completionText = text.text("Congratulations! You have found a way out!", BREEDTE//2 - 350, 450, 700, 60)
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites, stick, rock) = rendering.create_resources(renderer)
     while not start:
         while not settingsbool:
-            (muis_pos,afsluiten,start,settingsbool) = rendering.render_StartScreen(renderer, factory, muis_pos, resources)
+            dramController.readData()
+            (muis_pos,afsluiten,start,settingsbool) = rendering.render_StartScreen(renderer, factory, muis_pos, resources, dramController)
             renderer.present()
             if afsluiten:
                 sdl2.ext.quit()
@@ -191,7 +194,6 @@ def main():
     craftingIndex2 = None
     beginText.textTimer = 10
 
-    dramController = dramcontroller.DramController()
 
     start_time = time.time()                    #wanneer oppakbare sprite wordt opgepakt gaat hij uit de spritelist en in de equiplist
     equiplist = [
@@ -229,7 +231,8 @@ def main():
     while not moet_afsluiten:
         while not start:
             while not settingsbool:
-                (muis_pos, afsluiten, start,settingsbool) = rendering.render_ResumeScreen(renderer, factory, muis_pos, resources)
+                dramController.readData()
+                (muis_pos, afsluiten, start,settingsbool) = rendering.render_ResumeScreen(renderer, factory, muis_pos, resources,dramController)
                 renderer.present()
                 start_time = time.time()
                 if afsluiten:
@@ -366,7 +369,11 @@ def main():
 
         highlighted = [False, False, False, False]
         while crafting:
-            (muis_pos, equiplist, equiped, crafting, highlighted, craftingIndex1, craftingIndex2) = rendering.render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted, craftingIndex1, craftingIndex2, craftables)
+            dramController.readData()
+            dramController.mapStamina(stamina)
+            dramController.mapHealth(hp)
+            dramController.sendData()
+            (muis_pos, equiplist, equiped, crafting, highlighted, craftingIndex1, craftingIndex2) = rendering.render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted, craftingIndex1, craftingIndex2, craftables,dramController)
             start_time = time.time()
 
 
