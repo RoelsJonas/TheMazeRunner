@@ -84,7 +84,7 @@ class DramController:
                 if(len(line) >= 70):
                     string = str(line).split(",")
                     print(string)
-                    if (len(string) == 8):
+                    if (len(string) >= 8):
                         buttons = string[0]
                         joyx = string[1]
                         joyy = string[2]
@@ -106,7 +106,6 @@ class DramController:
                         Z = int(Z)
                         C = int(C)
                         self.NunChuk.setvalues(joyx, joyy, Z, C, (0, 0, 0), pitch, roll)
-                        print(str(buttons))
                         if(len(str(buttons)) == 4):
                             self.setvalues(int(buttons[0]),int(buttons[1]),int(buttons[2]),int(buttons[3]))
 
