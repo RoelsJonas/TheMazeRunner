@@ -18,7 +18,7 @@ class DramController:
     buttonGreenLed = 0
     buttonOrangeLed = 0
 
-    IMU = (0,0,0)
+    IMU = [0, 0, 0]
     MIC = 0
     NunChuk = None
     oldString = ""
@@ -84,7 +84,7 @@ class DramController:
                 if(len(line) >= 70):
                     string = str(line).split(",")
                     print(string)
-                    if (len(string) >= 8):
+                    if (len(string) >= 11 and string[0].startswith("b'{BUTTONS:")):
                         buttons = string[0]
                         joyx = string[1]
                         joyy = string[2]
@@ -92,6 +92,10 @@ class DramController:
                         roll = string[4]
                         Z = string[5]
                         C = string[6]
+                        self.MIC = int(string[7].replace("SOUND:", ''))
+                        IMUX = string[8].replace("IMUX:", '')
+                        IMUY = string[9].replace("IMUY:", '')
+                        IMUZ = string[10].replace("IMUZ:", '')
                         buttons = buttons.replace("b'{BUTTONS:", '')
                         joyx = joyx.replace('JOYX:', '')
                         joyy = joyy.replace('JOYY:', '')
@@ -105,9 +109,11 @@ class DramController:
                         roll = float(roll)
                         Z = int(Z)
                         C = int(C)
+
                         self.NunChuk.setvalues(joyx, joyy, Z, C, (0, 0, 0), pitch, roll)
                         if(len(str(buttons)) == 4):
                             self.setvalues(int(buttons[0]),int(buttons[1]),int(buttons[2]),int(buttons[3]))
+
 
 class NunChuk:
     joyX = 129
