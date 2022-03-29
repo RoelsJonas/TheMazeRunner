@@ -8,7 +8,7 @@ import sprites
 import playsound
 import time
 
-def interactions(hunger, hp, obj , interact, consumableText, p_speler, renderer, world_map, factory):
+def interactions(hunger, hp, obj , interact, consumableText, p_speler, renderer, world_map, factory,dramController):
     if obj != None:
         if interact and obj.consumable:
             (hunger, hp) = obj.interact(hunger, hp, p_speler, renderer)
@@ -21,7 +21,7 @@ def interactions(hunger, hp, obj , interact, consumableText, p_speler, renderer,
             statusKaart = True
             muis_pos = np.array([0,0])
             while statusKaart:
-                (statusKaart, muis_pos) = openKaart(renderer, p_speler, world_map, statusKaart, muis_pos, factory)
+                (statusKaart, muis_pos) = openKaart(renderer, p_speler, world_map, statusKaart, muis_pos, factory,dramController)
             interact = False
 
     return(hunger, hp, consumableText, obj)
@@ -87,9 +87,10 @@ class equip:
 
         return(spriteList)
 
-def openKaart(renderer, p_speler, world_map, statusKaart, muis_pos, factory):
+def openKaart(renderer, p_speler, world_map, statusKaart, muis_pos, factory,dramController):
     p_speler_temp = np.array([p_speler[0]-20, p_speler[1]-15])
     renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[6])
+    dramController.readData()
     for i in range(int(p_speler_temp[0]), int(p_speler_temp[0])+40):
         for j in range(int(p_speler_temp[1]), int(p_speler_temp[1])+30):
             if world_map[j,i] == 1:
@@ -116,7 +117,8 @@ def openKaart(renderer, p_speler, world_map, statusKaart, muis_pos, factory):
                   srcrect=(0, 0, 50, 50),
                   dstrect=(muis_pos[0] - main.CROSSHAIRGROOTTE // 2, muis_pos[1] - main.CROSSHAIRGROOTTE // 2,
                            main.CROSSHAIRGROOTTE, main.CROSSHAIRGROOTTE))
-
+    if(dramController.NunChuk.buttonC == 1):
+        statusKaart = False
     if key_states[sdl2.SDL_SCANCODE_TAB]:
         statusKaart = False
     renderer.fill((main.BREEDTE//2+5, main.HOOGTE//2+5, 10, 10), main.kleuren[3])

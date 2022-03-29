@@ -17,8 +17,7 @@ import equips
 import text
 import crafting as crafts
 import dramcontroller
-import multiprocessing as mp
-import ParallelWrapper
+
 #begin waarden instellen
 hp = 100
 stamina = 100
@@ -158,7 +157,6 @@ def main():
     # Maak een renderer aan zodat we in ons venster kunnen renderen
     renderer = sdl2.ext.Renderer(window)
 
-    data = ParallelWrapper.ObjectWrapper(renderer, window)
 
     tekstList = []
     beginText = text.text("Who am I? What am I doing here?!?", BREEDTE//2 - 350, 450, 700, 50)
@@ -211,7 +209,7 @@ def main():
                   crafts.Craftable(renderer, factory, resources, "medkit3.png", "H2", "H2", "H3", 0, 60, 0), #medkit upgrade van level 2 naar level 3 ( 25 ==> 60 hp regen)
                   crafts.Craftable(renderer, factory, resources, "spear.png", "STICK", "ROCK", "SPEAR", 17, 0, 0), #combinatie van stick en rock wordt speer (damage van 10 ==> 17) (van 5 maal slaan naar 3 maal slaan voor monster te vermoorden)
                   ]
-    timeCycle = 170
+    timeCycle = 20
     winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
 
     spriteList.append(sprites.Sprite(151.2, 137.2, 1, 1, "bonfire.png", 0.5, 0.5, 1, False, False, False, False, 0, 0, 0, resources, factory, slaapText))
@@ -328,7 +326,7 @@ def main():
         (hunger, hp, consumableText, equiplist[equiped]) = equips.interactions(hunger, hp, equiplist[equiped],
                                                                                interact or dramController.detectMotion(),
                                                                                consumableText, p_speler, renderer,
-                                                                               world_map, factory)
+                                                                               world_map, factory,dramController)
 
         dramController.readData()
         dramController.mapStamina(stamina)
