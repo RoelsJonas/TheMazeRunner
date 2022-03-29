@@ -315,7 +315,7 @@ def main():
                                                                                      geklikt or dramController.detectMotion(),
                                                                                      timeToAttack, pakOp, equiplist,
                                                                                      equiped, factory, timeCycle,
-                                                                                     resources, renderer)
+                                                                                     resources, renderer,dramController)
                 if destroy or timeCycle == 0:
                     spriteListNacht.remove(sprite)
 
