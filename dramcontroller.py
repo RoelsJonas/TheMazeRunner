@@ -90,7 +90,7 @@ class DramController:
     def detectMotion(self):
         vals = np.array([self.IMU[2,0] - self.IMU[1,0], self.IMU[2,1]-self.IMU[1,1], self.IMU[2,2] - self.IMU[1,2]])
         #print(np.linalg.norm(vals))
-        if(np.linalg.norm(vals) > 4):
+        if(np.linalg.norm(vals) > 5.5):
             return True
         else:
             return False

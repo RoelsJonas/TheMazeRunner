@@ -17,9 +17,6 @@ import equips
 import text
 import crafting as crafts
 import dramcontroller
-import pp
-import multiprocessing as mp
-import ParallelWrapper
 #begin waarden instellen
 hp = 100
 stamina = 100
@@ -141,8 +138,6 @@ def main():
     global crosshair
     global sens
 
-    job_server = pp.Server()
-    pool = mp.Pool(mp.cpu_count())
 
     muis_pos = np.array([BREEDTE//2, HOOGTE//2])
 
@@ -161,7 +156,6 @@ def main():
     # Maak een renderer aan zodat we in ons venster kunnen renderen
     renderer = sdl2.ext.Renderer(window)
 
-    data = ParallelWrapper.ObjectWrapper(renderer, window)
 
     tekstList = []
     beginText = text.text("Who am I? What am I doing here?!?", BREEDTE//2 - 350, 450, 700, 50)
@@ -319,7 +313,7 @@ def main():
 
         timeToAttack -= delta
 
-        (hunger, hp, consumableText, equiplist[equiped]) = equips.interactions(hunger, hp,  equiplist[equiped], interact, consumableText, p_speler, renderer, world_map, factory)
+        (hunger, hp, consumableText, equiplist[equiped]) = equips.interactions(hunger, hp,  equiplist[equiped], interact or dramController.detectMotion(), consumableText, p_speler, renderer, world_map, factory)
 
         dramController.readData()
         dramController.mapStamina(stamina)
