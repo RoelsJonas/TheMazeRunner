@@ -226,6 +226,7 @@ class interactableDoor:
                 textRender = factory.from_text(text, fontmanager = ManagerFont)
                 pressTime = 0
                 while inPuzzle:
+                    start = time.time_ns()
                     renderer.clear()
                     dramco.readData()
 
@@ -262,6 +263,8 @@ class interactableDoor:
                             inPuzzle = False
 
                     renderer.present()
+                    if(time.time_ns()-start < 20000000):
+                        time.sleep((time.time_ns()-start)/1000000000)
 
 
                 if solved:

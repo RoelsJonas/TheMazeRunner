@@ -297,21 +297,24 @@ def main():
         for sprite in spriteList:
             if sprite.d_speler <= 10:
                 sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
-            sprite.moveToPlayer(p_speler, delta, world_map)
-            (hunger, hp, destroy, equiplist, timeCycle) = sprite.checkInteractie(hunger, hp, p_speler, delta, geklikt, timeToAttack, pakOp, equiplist, equiped, factory, timeCycle, resources, renderer)
+            if(dramController.MIC < 200):
+                sprite.moveToPlayer(p_speler, delta, world_map)
+            (hunger, hp, destroy, equiplist, timeCycle) = sprite.checkInteractie(hunger, hp, p_speler, delta, geklikt or dramController.detectMotion(), timeToAttack, pakOp, equiplist, equiped, factory, timeCycle, resources, renderer)
             if destroy:
                 spriteList.remove(sprite)
 
 
         if timeCycle > (DAGNACHTCYCLUSTIJD//2) + 10:
-            for sprite in spriteListNacht:
-                sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
-                sprite.moveToPlayer(p_speler, delta, world_map)
-                (hunger, hp, destroy, equiplist, timeCycle) = sprite.checkInteractie(hunger, hp, p_speler, delta, geklikt, timeToAttack, pakOp, equiplist, equiped, factory, timeCycle, resources, renderer)
+            if sprite.d_speler <= 10:
+                for sprite in spriteListNacht:
+                    sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
+                    if(dramController.MIC < 200):
+                        sprite.moveToPlayer(p_speler, delta, world_map)
+                (hunger, hp, destroy, equiplist, timeCycle) = sprite.checkInteractie(hunger, hp, p_speler, delta, geklikt or dramController.detectMotion(), timeToAttack, pakOp, equiplist, equiped, factory, timeCycle, resources, renderer)
                 if destroy or timeCycle == 0:
                     spriteListNacht.remove(sprite)
 
-        if geklikt and timeToAttack < 0 and equiplist[equiped] != None and equiplist[equiped].type in weaponList:
+        if (geklikt or dramController.detectMotion()) and timeToAttack < 0 and equiplist[equiped] != None and equiplist[equiped].type in weaponList:
             timeToAttack = 1
 
         timeToAttack -= delta
