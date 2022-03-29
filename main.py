@@ -212,7 +212,7 @@ def main():
     timeCycle = 20
     winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
 
-    spriteList.append(sprites.Sprite(151.2, 137.2, 1, 1, "bonfire.png", 0.5, 0.5, 1, False, False, False, False, 0, 0, 0, resources, factory, slaapText))
+    spriteList.append(sprites.Sprite(150.0, 137.0, 1, 1, "bonfire.png", 0.5, 0.5, 1, False, False, False, False, 0, 0, 0, resources, factory, slaapText))
 
     spriteListNacht = []
     #spriteListNacht.append(sprites.Sprite(510.1, 510.1, 1, 0, "spellun-sprite.png", 4.0, 1.2, 1, True, False, False, False, 0, 50, 10, resources, factory, None))
