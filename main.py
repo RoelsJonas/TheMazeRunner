@@ -17,7 +17,6 @@ import equips
 import text
 import crafting as crafts
 import dramcontroller
-import pp
 import multiprocessing as mp
 import ParallelWrapper
 #begin waarden instellen
@@ -141,8 +140,6 @@ def main():
     global crosshair
     global sens
 
-    job_server = pp.Server()
-    pool = mp.Pool(mp.cpu_count())
 
     muis_pos = np.array([BREEDTE//2, HOOGTE//2])
 
@@ -197,7 +194,7 @@ def main():
     interact = False
     pakOp = False
     drop = False
-    equiped = 1
+    equiped = 0
     muis_pos = np.array([BREEDTE//2, HOOGTE//2])
     craftingIndex1 = None
     craftingIndex2 = None
@@ -207,7 +204,8 @@ def main():
     start_time = time.time()                    #wanneer oppakbare sprite wordt opgepakt gaat hij uit de spritelist en in de equiplist
     equiplist = [
                  equips.equip(factory, resources, "burger.png", 0, 25, 0, True, "BURGER"),
-                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"), None, None]
+                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
+                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"), None]
 
     craftables = [crafts.Craftable(renderer, factory, resources, "medkit2.png", "H1", "H1", "H2", 0, 25, 0), #medkit upgrade van level 1 naar level 2 (10 ==> 25 hp regen)
                   crafts.Craftable(renderer, factory, resources, "medkit3.png", "H2", "H2", "H3", 0, 60, 0), #medkit upgrade van level 2 naar level 3 ( 25 ==> 60 hp regen)
@@ -297,26 +295,40 @@ def main():
         for sprite in spriteList:
             if sprite.d_speler <= 10:
                 sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
-            sprite.moveToPlayer(p_speler, delta, world_map)
-            (hunger, hp, destroy, equiplist, timeCycle) = sprite.checkInteractie(hunger, hp, p_speler, delta, geklikt, timeToAttack, pakOp, equiplist, equiped, factory, timeCycle, resources, renderer)
+            if (dramController.MIC < 200):
+                sprite.moveToPlayer(p_speler, delta, world_map)
+            (hunger, hp, destroy, equiplist, timeCycle) = sprite.checkInteractie(hunger, hp, p_speler, delta,
+                                                                                 geklikt or dramController.detectMotion(),
+                                                                                 timeToAttack, pakOp, equiplist,
+                                                                                 equiped, factory, timeCycle, resources,
+                                                                                 renderer,dramController)
             if destroy:
                 spriteList.remove(sprite)
 
-
-        if timeCycle > (DAGNACHTCYCLUSTIJD//2) + 10:
-            for sprite in spriteListNacht:
-                sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
-                sprite.moveToPlayer(p_speler, delta, world_map)
-                (hunger, hp, destroy, equiplist, timeCycle) = sprite.checkInteractie(hunger, hp, p_speler, delta, geklikt, timeToAttack, pakOp, equiplist, equiped, factory, timeCycle, resources, renderer)
+        if timeCycle > (DAGNACHTCYCLUSTIJD // 2) + 10:
+            if sprite.d_speler <= 10:
+                for sprite in spriteListNacht:
+                    sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
+                    if (dramController.MIC < 200):
+                        sprite.moveToPlayer(p_speler, delta, world_map)
+                (hunger, hp, destroy, equiplist, timeCycle) = sprite.checkInteractie(hunger, hp, p_speler, delta,
+                                                                                     geklikt or dramController.detectMotion(),
+                                                                                     timeToAttack, pakOp, equiplist,
+                                                                                     equiped, factory, timeCycle,
+                                                                                     resources, renderer)
                 if destroy or timeCycle == 0:
                     spriteListNacht.remove(sprite)
 
-        if geklikt and timeToAttack < 0 and equiplist[equiped] != None and equiplist[equiped].type in weaponList:
+        if (geklikt or dramController.detectMotion()) and timeToAttack < 0 and equiplist[equiped] != None and equiplist[
+            equiped].type in weaponList:
             timeToAttack = 1
 
         timeToAttack -= delta
 
-        (hunger, hp, consumableText, equiplist[equiped]) = equips.interactions(hunger, hp,  equiplist[equiped], interact, consumableText, p_speler, renderer, world_map, factory)
+        (hunger, hp, consumableText, equiplist[equiped]) = equips.interactions(hunger, hp, equiplist[equiped],
+                                                                               interact or dramController.detectMotion(),
+                                                                               consumableText, p_speler, renderer,
+                                                                               world_map, factory)
 
         dramController.readData()
         dramController.mapStamina(stamina)
@@ -392,7 +404,7 @@ def main():
             dramController.mapStamina(stamina)
             dramController.mapHealth(hp)
             dramController.sendData()
-            (muis_pos, equiplist, equiped, crafting, highlighted, craftingIndex1, craftingIndex2) = rendering.render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted, craftingIndex1, craftingIndex2, craftables,dramController)
+            (muis_pos, equiplist, equiped, crafting, highlighted, craftingIndex1, craftingIndex2) = rendering.render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted, craftingIndex1, craftingIndex2, craftables, dramController)
             start_time = time.time()
 
 

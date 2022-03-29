@@ -226,6 +226,7 @@ class interactableDoor:
                 textRender = factory.from_text(text, fontmanager = ManagerFont)
                 pressTime = 0
                 while inPuzzle:
+                    start = time.time_ns()
                     renderer.clear()
                     dramco.readData()
 
@@ -233,7 +234,9 @@ class interactableDoor:
 
                     key_states = sdl2.SDL_GetKeyboardState(None)    #moet nog vervangen worden door een knop op controller
                     events = sdl2.ext.get_events()
-                    if key_states[sdl2.SDL_SCANCODE_TAB]:
+                    if(dramco.Nunchuk.buttonC):
+                        inPuzzle = False
+                    elif key_states[sdl2.SDL_SCANCODE_TAB]:
                         inPuzzle = False
 
                     renderer.copy(textRender, dstrect=(main.BREEDTE//2 - len(text) * 4, 100, len(text) * 8, 60))
@@ -262,6 +265,8 @@ class interactableDoor:
                             inPuzzle = False
 
                     renderer.present()
+                    if(time.time_ns()-start < 20000000):
+                        time.sleep((time.time_ns()-start)/1000000000)
 
 
                 if solved:

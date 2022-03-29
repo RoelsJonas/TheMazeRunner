@@ -135,7 +135,7 @@ class Sprite:
         self.d_speler = np.linalg.norm(d)
 
 
-    def checkInteractie(self, hunger, hp, p_speler, delta, geklikt, timeToAttack, interaction, equiplist, equiped, factory, timeCycle, resources, renderer):
+    def checkInteractie(self, hunger, hp, p_speler, delta, geklikt, timeToAttack, interaction, equiplist, equiped, factory, timeCycle, resources, renderer,dramController):
         destroy = False
         spelerDamage = 0
 

@@ -99,6 +99,8 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, doo
 
     if key_states[sdl2.SDL_SCANCODE_E]:
         interact = True
+    elif(dramController.buttonOrange == 1):
+        interact = True
 
     if(dramController.NunChuk.buttonZ == 1):
         pakOp = True

@@ -1,5 +1,6 @@
 import serial
 import time
+import numpy as np
 from serial.tools.list_ports import comports
 
 class DramController:
@@ -18,7 +19,7 @@ class DramController:
     buttonGreenLed = 0
     buttonOrangeLed = 0
 
-    IMU = [0, 0, 0]
+    IMU = np.zeros((3,3), float)
     MIC = 0
     NunChuk = None
     oldString = ""
@@ -77,14 +78,31 @@ class DramController:
                 data = bytes(text, encoding='utf-8')
                 self.ser.write(data)
 
+    def updateIMU(self, x, y, z):
+        for i in range(2):
+            for j in range(3):
+                self.IMU[i, j] = self.IMU[i + 1, j]
+        self.IMU[2, 0] = x
+        self.IMU[2, 1] = y
+        self.IMU[2, 2] = z
+
+    def detectMotion(self):
+        vals = np.array(
+            [self.IMU[2, 0] - self.IMU[1, 0], self.IMU[2, 1] - self.IMU[1, 1], self.IMU[2, 2] - self.IMU[1, 2]])
+        # print(np.linalg.norm(vals))
+        if (np.linalg.norm(vals) > 5.5):
+            return True
+        else:
+            return False
+
     def readData(self):
         if(self.ser != None):
             while (self.ser.inWaiting()):
                 line = self.ser.readline()
                 if(len(line) >= 70):
                     string = str(line).split(",")
-                    print(string)
-                    if (len(string) >= 11 and string[0].startswith("b'{BUTTONS:")):
+                    #print(string)
+                    if (len(string) >= 8 and string[0].startswith("b'{BUTTONS:")):
                         buttons = string[0]
                         joyx = string[1]
                         joyy = string[2]
@@ -92,10 +110,16 @@ class DramController:
                         roll = string[4]
                         Z = string[5]
                         C = string[6]
-                        self.MIC = int(string[7].replace("SOUND:", ''))
-                        IMUX = string[8].replace("IMUX:", '')
-                        IMUY = string[9].replace("IMUY:", '')
-                        IMUZ = string[10].replace("IMUZ:", '')
+                        if(len(string) >= 11):
+                            try:
+                                self.MIC = int(string[7].replace("SOUND:", ''))
+                                IMUX = float(string[8].replace("IMUX:", ''))
+                                IMUY = float(string[9].replace("IMUY:", ''))
+                                IMUZ = float(string[10].replace("IMUZ:", '').replace("};\\r\\n'", ''). replace("'",'').replace("};", ''))
+                                self.updateIMU(IMUX, IMUY, IMUZ)
+                            except:
+                                print("Invalid string from controller", string)
+
                         buttons = buttons.replace("b'{BUTTONS:", '')
                         joyx = joyx.replace('JOYX:', '')
                         joyy = joyy.replace('JOYY:', '')
