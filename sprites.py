@@ -128,10 +128,6 @@ class Sprite:
                     renderer.copy(self.afbeelding,
                                 srcrect=(kolom, 0, 1, self.afbeelding.size[1]),
                                 dstrect=(schermKolom, y1, 2, h))
-            else:
-                schermKolom = 0
-            if kolom == main.BREEDTE//2:
-                self.middensteKolom = schermKolom
 
 
     def updateDistance(self, p_speler):

@@ -17,6 +17,9 @@ import equips
 import text
 import crafting as crafts
 import dramcontroller
+import pp
+import multiprocessing as mp
+import ParallelWrapper
 #begin waarden instellen
 hp = 100
 stamina = 100
@@ -137,7 +140,13 @@ def main():
     global difficulty
     global crosshair
     global sens
+
+    job_server = pp.Server()
+    pool = mp.Pool(mp.cpu_count())
+
     muis_pos = np.array([BREEDTE//2, HOOGTE//2])
+
+    dramController = dramcontroller.DramController()
 
     # Maak een venster aan om de game te renderen
     window = sdl2.ext.Window("The Maze Runner", size=(BREEDTE, HOOGTE))
@@ -152,15 +161,18 @@ def main():
     # Maak een renderer aan zodat we in ons venster kunnen renderen
     renderer = sdl2.ext.Renderer(window)
 
+    data = ParallelWrapper.ObjectWrapper(renderer, window)
+
     tekstList = []
-    beginText = text.text("Who am I? What am I doing here?!? Is Jonas SEXY?", BREEDTE//2 - 350, 450, 700, 50)
+    beginText = text.text("Who am I? What am I doing here?!?", BREEDTE//2 - 350, 450, 700, 50)
     consumableText = text.text("Hmm, that's good stuff!", BREEDTE//2 - 200, 450, 400, 50)
     slaapText = text.text("Catching some Z's", BREEDTE//2 - 200, 450, 400, 50)
     completionText = text.text("Congratulations! You have found a way out!", BREEDTE//2 - 350, 450, 700, 60)
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites, stick, rock) = rendering.create_resources(renderer)
     while not start:
         while not settingsbool:
-            (muis_pos,afsluiten,start,settingsbool) = rendering.render_StartScreen(renderer, factory, muis_pos, resources)
+            dramController.readData()
+            (muis_pos,afsluiten,start,settingsbool) = rendering.render_StartScreen(renderer, factory, muis_pos, resources, dramController)
             renderer.present()
             if afsluiten:
                 sdl2.ext.quit()
@@ -191,7 +203,6 @@ def main():
     craftingIndex2 = None
     beginText.textTimer = 10
 
-    dramController = dramcontroller.DramController()
 
     start_time = time.time()                    #wanneer oppakbare sprite wordt opgepakt gaat hij uit de spritelist en in de equiplist
     equiplist = [
@@ -227,9 +238,12 @@ def main():
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
     renderer.clear()
     while not moet_afsluiten:
+        #frameStartTime = time.time()
+
         while not start:
             while not settingsbool:
-                (muis_pos, afsluiten, start,settingsbool) = rendering.render_ResumeScreen(renderer, factory, muis_pos, resources)
+                dramController.readData()
+                (muis_pos, afsluiten, start,settingsbool) = rendering.render_ResumeScreen(renderer, factory, muis_pos, resources,dramController)
                 renderer.present()
                 start_time = time.time()
                 if afsluiten:
@@ -250,9 +264,16 @@ def main():
 
         rendering.render_lucht_en_vloer(renderer, timeCycle)
         # Render de huidige frame
+
+        #z_buffer[BREEDTE - 1 - kolom] = [pool.apply(raycast.parallel_raycast, args=(r_speler, r_cameravlak, kolom, p_speler, renderer, window, textures, timeCycle, z_buffer, door_map, world_map, delta, wall_map)) for kolom in range(800)]
+        #[pool.apply(raycast.parallel_test, args=(number, dramController, z_buffer, data)) for number in range(800)]
         for kolom in range(0, window.size[0]):
+            #z_buffer[BREEDTE - 1 - kolom] = raycast.parallel_raycast(r_speler, r_cameravlak, kolom, p_speler, renderer, window, textures, timeCycle, z_buffer, door_map, world_map, delta, wall_map)
+            
             r_straal = raycast.bereken_r_straal(r_speler,r_cameravlak, kolom)
+            
             (d_muur, intersectie, horizontaal, z_buffer, door_map, texture) = raycast.raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, timeCycle, z_buffer, door_map, world_map, delta, wall_map)
+            #print("raycast tijd", (time.time() - kolomStart)*1000)
             if z_buffer[BREEDTE - 1 - kolom] == 0 or z_buffer[BREEDTE - 1 - kolom] > d_muur:
                 z_buffer[BREEDTE - 1 - kolom] = d_muur
                 rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, texture, r_straal, r_speler)
@@ -270,7 +291,7 @@ def main():
 
         for i in range(len(doorLocations)):
             if world_map[doorLocations[i][0], doorLocations[i][1]] == 3:
-                door_map[doorLocations[i][0], doorLocations[i][1]].interact(renderer, factory, resources, pakOp, p_speler, equiplist, equiped, setting)
+                door_map[doorLocations[i][0], doorLocations[i][1]].interact(renderer, factory, resources, pakOp, p_speler, equiplist, equiped, setting, dramController)
                 door_map[doorLocations[i][0], doorLocations[i][1]].updateState(delta)
 
         for sprite in spriteList:
@@ -363,10 +384,15 @@ def main():
         completionText.renderText(delta, renderer, factory)
         rendering.render_FPS(delta, renderer, factory, ManagerFont)
         renderer.present()
+        #print("Total frame time", (time.time() - frameStartTime))
 
         highlighted = [False, False, False, False]
         while crafting:
-            (muis_pos, equiplist, equiped, crafting, highlighted, craftingIndex1, craftingIndex2) = rendering.render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted, craftingIndex1, craftingIndex2, craftables)
+            dramController.readData()
+            dramController.mapStamina(stamina)
+            dramController.mapHealth(hp)
+            dramController.sendData()
+            (muis_pos, equiplist, equiped, crafting, highlighted, craftingIndex1, craftingIndex2) = rendering.render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted, craftingIndex1, craftingIndex2, craftables,dramController)
             start_time = time.time()
 
 
