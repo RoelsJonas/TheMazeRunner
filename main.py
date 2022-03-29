@@ -17,6 +17,9 @@ import equips
 import text
 import crafting as crafts
 import dramcontroller
+import pp
+import multiprocessing as mp
+import ParallelWrapper
 #begin waarden instellen
 hp = 100
 stamina = 100
@@ -137,6 +140,10 @@ def main():
     global difficulty
     global crosshair
     global sens
+
+    job_server = pp.Server()
+    pool = mp.Pool(mp.cpu_count())
+
     muis_pos = np.array([BREEDTE//2, HOOGTE//2])
 
     dramController = dramcontroller.DramController()
@@ -153,6 +160,8 @@ def main():
 
     # Maak een renderer aan zodat we in ons venster kunnen renderen
     renderer = sdl2.ext.Renderer(window)
+
+    data = ParallelWrapper.ObjectWrapper(renderer, window)
 
     tekstList = []
     beginText = text.text("Who am I? What am I doing here?!?", BREEDTE//2 - 350, 450, 700, 50)
@@ -229,6 +238,8 @@ def main():
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
     renderer.clear()
     while not moet_afsluiten:
+        #frameStartTime = time.time()
+
         while not start:
             while not settingsbool:
                 dramController.readData()
@@ -253,9 +264,16 @@ def main():
 
         rendering.render_lucht_en_vloer(renderer, timeCycle)
         # Render de huidige frame
+
+        #z_buffer[BREEDTE - 1 - kolom] = [pool.apply(raycast.parallel_raycast, args=(r_speler, r_cameravlak, kolom, p_speler, renderer, window, textures, timeCycle, z_buffer, door_map, world_map, delta, wall_map)) for kolom in range(800)]
+        #[pool.apply(raycast.parallel_test, args=(number, dramController, z_buffer, data)) for number in range(800)]
         for kolom in range(0, window.size[0]):
+            #z_buffer[BREEDTE - 1 - kolom] = raycast.parallel_raycast(r_speler, r_cameravlak, kolom, p_speler, renderer, window, textures, timeCycle, z_buffer, door_map, world_map, delta, wall_map)
+            
             r_straal = raycast.bereken_r_straal(r_speler,r_cameravlak, kolom)
+            
             (d_muur, intersectie, horizontaal, z_buffer, door_map, texture) = raycast.raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, timeCycle, z_buffer, door_map, world_map, delta, wall_map)
+            #print("raycast tijd", (time.time() - kolomStart)*1000)
             if z_buffer[BREEDTE - 1 - kolom] == 0 or z_buffer[BREEDTE - 1 - kolom] > d_muur:
                 z_buffer[BREEDTE - 1 - kolom] = d_muur
                 rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, texture, r_straal, r_speler)
@@ -366,6 +384,7 @@ def main():
         completionText.renderText(delta, renderer, factory)
         rendering.render_FPS(delta, renderer, factory, ManagerFont)
         renderer.present()
+        #print("Total frame time", (time.time() - frameStartTime))
 
         highlighted = [False, False, False, False]
         while crafting:

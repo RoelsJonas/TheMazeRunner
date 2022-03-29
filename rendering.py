@@ -47,9 +47,9 @@ def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, text
 
     schermkolom = main.BREEDTE - 1 - kolom
     if horizontaal:
-        textuur_x = int(np.round((intersectie[0] - int(intersectie[0])) * texture.size[0]))
+        textuur_x = int(round((intersectie[0] - int(intersectie[0])) * texture.size[0]))
     else:
-        textuur_x = int(np.round((intersectie[1] - int(intersectie[1])) * texture.size[0]))
+        textuur_x = int(round((intersectie[1] - int(intersectie[1])) * texture.size[0]))
 
     renderer.copy(texture, srcrect=(textuur_x, textuur_y, 1, textuur_hoogte), dstrect=(schermkolom, y1, 2, int(hoogte))) #muur
 
