@@ -112,11 +112,14 @@ class DramController:
                         Z = string[5]
                         C = string[6]
                         if(len(string) >= 11):
-                            self.MIC = int(string[7].replace("SOUND:", ''))
-                            IMUX = float(string[8].replace("IMUX:", ''))
-                            IMUY = float(string[9].replace("IMUY:", ''))
-                            IMUZ = float(string[10].replace("IMUZ:", '').replace("};\\r\\n'", ''). replace("'",''))
-                            self.updateIMU(IMUX, IMUY, IMUZ)
+                            try:
+                                self.MIC = int(string[7].replace("SOUND:", ''))
+                                IMUX = float(string[8].replace("IMUX:", ''))
+                                IMUY = float(string[9].replace("IMUY:", ''))
+                                IMUZ = float(string[10].replace("IMUZ:", '').replace("};\\r\\n'", ''). replace("'",'').replace("};", ''))
+                                self.updateIMU(IMUX, IMUY, IMUZ)
+                            except:
+                                print("Invalid string from controller", string)
 
                         buttons = buttons.replace("b'{BUTTONS:", '')
                         joyx = joyx.replace('JOYX:', '')

@@ -201,7 +201,8 @@ def main():
     start_time = time.time()                    #wanneer oppakbare sprite wordt opgepakt gaat hij uit de spritelist en in de equiplist
     equiplist = [
                  equips.equip(factory, resources, "burger.png", 0, 25, 0, True, "BURGER"),
-                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"), None, None]
+                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
+                 equips.equip(factory, resources, "spear.png", 10, 10, 10, False, "SPEAR"), None]
 
     craftables = [crafts.Craftable(renderer, factory, resources, "medkit2.png", "H1", "H1", "H2", 0, 25, 0), #medkit upgrade van level 1 naar level 2 (10 ==> 25 hp regen)
                   crafts.Craftable(renderer, factory, resources, "medkit3.png", "H2", "H2", "H3", 0, 60, 0), #medkit upgrade van level 2 naar level 3 ( 25 ==> 60 hp regen)
