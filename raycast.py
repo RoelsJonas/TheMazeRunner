@@ -1,5 +1,19 @@
 import numpy as np
 import main
+import rendering
+import dramcontroller
+import ParallelWrapper
+
+def parallel_raycast(r_speler, r_cameravlak, kolom, p_speler, renderer, window, textures, timeCycle, z_buffer, door_map, world_map, delta, wall_map):
+    r_straal = bereken_r_straal(r_speler, r_cameravlak, kolom)
+    (d_muur, intersectie, horizontaal, z_buffer, door_map, texture) = raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, timeCycle, z_buffer, door_map, world_map, delta, wall_map)
+    if z_buffer[main.BREEDTE - 1 - kolom] == 0 or z_buffer[main.BREEDTE - 1 - kolom] > d_muur:
+        rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, texture, r_straal, r_speler)
+        return d_muur
+    return(0)
+
+def parallel_test(number, controller, list, wrapper):
+    print("Test:", number, controller.buzzer, list[0])
 
 
 def bereken_r_straal(r_speler, r_cameravlak, kolom):
