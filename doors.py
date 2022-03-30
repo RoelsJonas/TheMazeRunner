@@ -234,7 +234,9 @@ class interactableDoor:
 
                     key_states = sdl2.SDL_GetKeyboardState(None)    #moet nog vervangen worden door een knop op controller
                     events = sdl2.ext.get_events()
-                    if key_states[sdl2.SDL_SCANCODE_TAB]:
+                    if(dramco.NunChuk.buttonC):
+                        inPuzzle = False
+                    elif key_states[sdl2.SDL_SCANCODE_TAB]:
                         inPuzzle = False
 
                     renderer.copy(textRender, dstrect=(main.BREEDTE//2 - len(text) * 4, 100, len(text) * 8, 60))

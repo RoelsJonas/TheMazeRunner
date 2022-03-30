@@ -9,6 +9,8 @@ import sprites
 import equips
 
 pausecounter = 100
+craftingcounter = 100
+craftingcounter2 = 0
 selected = 0
 started = False
 
@@ -509,7 +511,11 @@ def dim_image(renderer, dimmer, timeCycle):
 
 def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted, craftingIndex1, craftingIndex2, craftables, dramController):
     correctRecipe = None
-
+    global craftingcounter
+    global craftingcounter2
+    craftingcounter+=1
+    craftingcounter2+=1
+    offset = ((main.BREEDTE - 800) // 2)
     renderer.clear()
     renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[5])
 
@@ -539,7 +545,6 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
                 muis_pos[1] = 0
             elif muis_pos[1] > main.HOOGTE:
                 muis_pos[1] = main.HOOGTE
-
         if event.type == sdl2.SDL_MOUSEBUTTONDOWN:
             if main.HOOGTE - 65 <= muis_pos[1] <= main.HOOGTE - 15:
                 if 200 <= muis_pos[0] - (main.BREEDTE - 800)//2 <= 255:
@@ -589,6 +594,65 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
                         equiplist[craftingIndex2] = None
                         craftingIndex2 = None
                         craftingIndex1 = None
+    if(craftingcounter2 >= 100):
+        if(dramController.buttonRed):
+            if correctRecipe != None:
+                equiplist[
+                    craftingIndex1] = correctRecipe.crafted()  # equips.equip(correctRecipe.factory, correctRecipe.resources, correctRecipe.image_text, correctRecipe.damage, correctRecipe.hunger, correctRecipe.hp, correctRecipe.consumable, correctRecipe.type)
+                equiplist[craftingIndex2] = None
+                craftingIndex2 = None
+                craftingIndex1 = None
+        if (dramController.NunChuk.buttonZ == 1):
+            craftingcounter2 = 0
+            if (equiped == 0):
+                if craftingIndex1 == 0:
+                    craftingIndex1 = None
+                elif craftingIndex2 == 0:
+                    craftingIndex2 = None
+                elif craftingIndex1 == None:
+                    craftingIndex1 = 0
+                elif craftingIndex2 == None:
+                    craftingIndex2 = 0
+            elif (equiped == 1):
+                if craftingIndex1 == 1:
+                    craftingIndex1 = None
+                elif craftingIndex2 == 1:
+                    craftingIndex2 = None
+                elif craftingIndex1 == None:
+                    craftingIndex1 = 1
+                elif craftingIndex2 == None:
+                    craftingIndex2 = 1
+            elif (equiped == 2):
+                if craftingIndex1 == 2:
+                    craftingIndex1 = None
+                elif craftingIndex2 == 2:
+                    craftingIndex2 = None
+                elif craftingIndex1 == None:
+                    craftingIndex1 = 2
+                elif craftingIndex2 == None:
+                    craftingIndex2 = 2
+            elif (equiped == 3):
+                if craftingIndex1 == 3:
+                    craftingIndex1 = None
+                elif craftingIndex2 == 3:
+                    craftingIndex2 = None
+                elif craftingIndex1 == None:
+                    craftingIndex1 = 3
+                elif craftingIndex2 == None:
+                    craftingIndex2 = 3
+    if(craftingcounter >100):
+        if (dramController.buttonBlue == 1):
+            if (equiped == 3):
+                equiped = 0
+            else:
+                equiped += 1
+            craftingcounter = 0
+        if (dramController.buttonGreen == 1):
+            if (equiped == 0):
+                equiped = 3
+            else:
+                equiped -= 1
+            craftingcounter = 0
 
     renderer.fill(((main.BREEDTE - 800) // 2 + 69, main.HOOGTE - 60, int(hp), 47), main.kleuren[10])
     renderer.fill(((main.BREEDTE - 800) // 2 + 688, main.HOOGTE - 65, int(stamina), 22), main.kleuren[9])
@@ -597,16 +661,21 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
     renderer.copy(factory.from_image(resources.get_path("+.png")), srcrect=(0,0,50,50), dstrect=(main.BREEDTE//2 - 15, main.HOOGTE//2 - 165, 40,40))
     renderer.copy(factory.from_image(resources.get_path("Larrow.png")), srcrect=(0, 0, 50, 50),dstrect=(main.BREEDTE // 2 - 85, main.HOOGTE // 2 - 95, 40, 40))
     renderer.copy(factory.from_image(resources.get_path("Rarrow.png")), srcrect=(0, 0, 50, 50),dstrect=(main.BREEDTE // 2 + 48, main.HOOGTE // 2 - 95, 40, 40))
+
+    renderer.fill((offset + 200 + equiped * 75, main.HOOGTE - 65, 5, 55), main.kleuren[1])
+    renderer.fill((offset + 251 + equiped * 75, main.HOOGTE - 65, 5, 55), main.kleuren[1])
+    renderer.fill((offset + 200 + equiped * 75, main.HOOGTE - 65, 55, 5), main.kleuren[1])
+    renderer.fill((offset + 200 + equiped * 75, main.HOOGTE - 15, 55, 5), main.kleuren[1])
     for i in range (len(equiplist)):
         if equiplist[i] != None:
             equiplist[i].render(i, renderer, (main.BREEDTE - 800)//2 )
 
     if craftingIndex1 != None:
         if equiplist[craftingIndex1] != None:
-            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex1 * 75, main.HOOGTE - 65, 5, 55), main.kleuren[1])
-            renderer.fill(((main.BREEDTE - 800) // 2 + 251 + craftingIndex1 * 75, main.HOOGTE - 65, 5, 55), main.kleuren[1])
-            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex1 * 75, main.HOOGTE - 65, 55, 5), main.kleuren[1])
-            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex1 * 75, main.HOOGTE - 15, 55, 5), main.kleuren[1])
+            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex1 * 75, main.HOOGTE - 65, 5, 55), main.kleuren[3])
+            renderer.fill(((main.BREEDTE - 800) // 2 + 251 + craftingIndex1 * 75, main.HOOGTE - 65, 5, 55), main.kleuren[3])
+            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex1 * 75, main.HOOGTE - 65, 55, 5), main.kleuren[3])
+            renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex1 * 75, main.HOOGTE - 15, 55, 5), main.kleuren[3])
 
     if craftingIndex2 != None:
         if equiplist[craftingIndex2] != None:
@@ -616,20 +685,20 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
             renderer.fill(((main.BREEDTE - 800) // 2 + 200 + craftingIndex2 * 75, main.HOOGTE - 15, 55, 5), main.kleuren[2])
 
 
-    renderer.fill((main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 200, 5, 105), main.kleuren[1])
-    renderer.fill((main.BREEDTE // 2 - 24, main.HOOGTE // 2 - 200, 5, 105), main.kleuren[1])
-    renderer.fill((main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 200, 105, 5), main.kleuren[1])
-    renderer.fill((main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 100, 105, 5), main.kleuren[1])
+    renderer.fill((main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 200, 5, 105), main.kleuren[3])
+    renderer.fill((main.BREEDTE // 2 - 24, main.HOOGTE // 2 - 200, 5, 105), main.kleuren[3])
+    renderer.fill((main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 200, 105, 5), main.kleuren[3])
+    renderer.fill((main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 100, 105, 5), main.kleuren[3])
 
     renderer.fill((main.BREEDTE // 2 + 25, main.HOOGTE // 2 - 200, 5, 105), main.kleuren[2])
     renderer.fill((main.BREEDTE // 2 + 126, main.HOOGTE // 2 - 200, 5, 105), main.kleuren[2])
     renderer.fill((main.BREEDTE // 2 + 25, main.HOOGTE // 2 - 200, 105, 5), main.kleuren[2])
     renderer.fill((main.BREEDTE // 2 + 25, main.HOOGTE // 2 - 100, 105, 5), main.kleuren[2])
 
-    renderer.fill((main.BREEDTE // 2 - 50, main.HOOGTE // 2 - 50, 5, 105), main.kleuren[3])
-    renderer.fill((main.BREEDTE // 2 + 51, main.HOOGTE // 2 - 50, 5, 105), main.kleuren[3])
-    renderer.fill((main.BREEDTE // 2 - 50, main.HOOGTE // 2 - 50, 105, 5), main.kleuren[3])
-    renderer.fill((main.BREEDTE // 2 - 50, main.HOOGTE // 2 + 50, 105, 5), main.kleuren[3])
+    renderer.fill((main.BREEDTE // 2 - 50, main.HOOGTE // 2 - 50, 5, 105), main.kleuren[1])
+    renderer.fill((main.BREEDTE // 2 + 51, main.HOOGTE // 2 - 50, 5, 105), main.kleuren[1])
+    renderer.fill((main.BREEDTE // 2 - 50, main.HOOGTE // 2 - 50, 105, 5), main.kleuren[1])
+    renderer.fill((main.BREEDTE // 2 - 50, main.HOOGTE // 2 + 50, 105, 5), main.kleuren[1])
 
     if craftingIndex1 != None:
         if equiplist[craftingIndex1] != None:

@@ -1,7 +1,7 @@
 import serial
 import time
-from serial.tools.list_ports import comports
 import numpy as np
+from serial.tools.list_ports import comports
 
 class DramController:
     port = ""
@@ -19,7 +19,7 @@ class DramController:
     buttonGreenLed = 0
     buttonOrangeLed = 0
 
-    IMU = np.zeros((3, 3), float)
+    IMU = np.zeros((3,3), float)
     MIC = 0
     NunChuk = None
     oldString = ""
@@ -81,20 +81,19 @@ class DramController:
     def updateIMU(self, x, y, z):
         for i in range(2):
             for j in range(3):
-                self.IMU[i,j] = self.IMU[i+1, j]
+                self.IMU[i, j] = self.IMU[i + 1, j]
         self.IMU[2, 0] = x
         self.IMU[2, 1] = y
         self.IMU[2, 2] = z
 
-
     def detectMotion(self):
-        vals = np.array([self.IMU[2,0] - self.IMU[1,0], self.IMU[2,1]-self.IMU[1,1], self.IMU[2,2] - self.IMU[1,2]])
-        #print(np.linalg.norm(vals))
-        if(np.linalg.norm(vals) > 5.5):
+        vals = np.array(
+            [self.IMU[2, 0] - self.IMU[1, 0], self.IMU[2, 1] - self.IMU[1, 1], self.IMU[2, 2] - self.IMU[1, 2]])
+        # print(np.linalg.norm(vals))
+        if (np.linalg.norm(vals) > 5.5):
             return True
         else:
             return False
-
 
     def readData(self):
         if(self.ser != None):
