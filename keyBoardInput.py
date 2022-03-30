@@ -2,6 +2,7 @@ import sdl2
 import sdl2.ext
 import sdl2.sdlttf
 import time
+import globals
 
 
 def keyBoardInput(key_states, pressTime, userInput, setting):

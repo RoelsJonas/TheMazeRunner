@@ -1,6 +1,7 @@
 import main
 import numpy as np
 import equips
+import globals
 
 
 

@@ -179,7 +179,7 @@ def main():
         if start:
             break
 
-        settingsbool = rendering.render_SettingsScreen(renderer,factory,muis_pos,resources,setting)
+        settingsbool = rendering.render_SettingsScreen(renderer,factory,muis_pos,resources,setting, dramController)
         renderer.present()
 
     (world_map, doorLocations, door_map, wall_map, spriteList) = imageToMap.generateWorld("resources\map10.png", factory, resources, textures, renderer, ManagerFont)

@@ -6,6 +6,7 @@ import numpy as np
 import text
 import sprites
 import playsound
+import globals
 import time
 
 def interactions(hunger, hp, obj , interact, consumableText, p_speler, renderer, world_map, factory,dramController):

@@ -1,5 +1,7 @@
 import numpy as np
+import globals
 import main
+import globals
 import equips
 import text
 import rendering

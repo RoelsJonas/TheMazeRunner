@@ -14,6 +14,12 @@ craftingcounter2 = 0
 selected = 0
 started = False
 
+selected_X = 0 #omdat ze anders elke frame terug op nul gezet worden omdat de functie telkens opnieuw wordt opgeroepen
+selected_Y = 0
+selected_X_sens = 0
+selected_X_diff = 0
+selected_X_cross = 0
+
 def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist, timeToAttack):
     offset = ((main.BREEDTE - 800 )//2)
     renderer.fill((0,main.HOOGTE - 75, main.BREEDTE, main.HOOGTE),main.kleuren[5])
@@ -251,12 +257,23 @@ def render_ResumeScreen(renderer,factory,muis_pos,resources,dramController):
         if(selected == 2):
             afsluiten = True
             started = False
-    return(muis_pos, afsluiten, starten,settings)
+    return(muis_pos, afsluiten, starten, settings)
 
 
-def render_SettingsScreen(renderer, factory, muis_pos, resources,setting):
+def render_SettingsScreen(renderer, factory, muis_pos, resources,setting, dramco):
+    global pausecounter
+    global selected_Y
+    global selected_X
+    global selected_X_sens
+    global selected_X_diff
+    global selected_X_cross
+    pausecounter += 1
+
+    dramco.readData()
+
     events = sdl2.ext.get_events()
     settings = True
+
     for event in events:
         if event.type == sdl2.SDL_MOUSEMOTION:
             muis_pos[0] += event.motion.xrel
@@ -312,7 +329,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources,setting):
                     main.HUNGERHPLOSSMODIFIER = 0.25
                     main.HPREPLENISHMODIFIERER = 0.7
 
-            if main.HOOGTE//2 - 325 <= muis_pos[1] <= main.HOOGTE//2 - 225:
+            if main.HOOGTE//2 - 225 <= muis_pos[1] <= main.HOOGTE//2 - 125:
                 if main.BREEDTE//2 - 125 <= muis_pos[0] <= main.BREEDTE//2:
                     main.SENSITIVITY = 0.01
                     main.sens = "high"
@@ -325,7 +342,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources,setting):
                     main.SENSITIVITY = 0.0001
                     main.sens = "low"
 
-            if main.HOOGTE//2 - 225 <= muis_pos[1] <= main.HOOGTE//2 - 125:
+            if main.HOOGTE//2 - 325 <= muis_pos[1] <= main.HOOGTE//2 - 225:
                 if main.BREEDTE//2 - 125 <= muis_pos[0] <= main.BREEDTE//2 -50:
                     main.CROSSHAIRGROOTTE = 50
                     main.crosshair = "big"
@@ -338,94 +355,221 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources,setting):
                     main.CROSSHAIRGROOTTE = 15
                     main.crosshair = "small"
 
+    if (dramco.NunChuk.joyY > 210):
+        if (pausecounter > 50):
+            if (selected_Y == 0):
+                selected_Y = 3
+                pausecounter = 0
+            else:
+                selected_Y -= 1
+                pausecounter = 0
+    if (dramco.NunChuk.joyY < 60):
+        if (pausecounter > 50):
+            if (selected_Y == 3):
+                selected_Y = 0
+                pausecounter = 0
+            else:
+                selected_Y += 1
+                pausecounter = 0
 
+
+
+    if(dramco.NunChuk.joyX > 210 ):
+        if (pausecounter > 50):
+            if(selected_Y == 0):
+                if (selected_X_sens == 2):
+                    selected_X_sens = 0
+                    pausecounter = 0
+                else:
+                    selected_X_sens += 1
+                    pausecounter = 0
+            if (selected_Y == 1):
+                if (selected_X_diff == 2):
+                    selected_X_diff = 0
+                    pausecounter = 0
+                else:
+                    selected_X_diff += 1
+                    pausecounter = 0
+            if (selected_Y == 2):
+                if (selected_X_cross == 2):
+                    selected_X_cross = 0
+                    pausecounter = 0
+                else:
+                    selected_X_cross += 1
+                    pausecounter = 0
+    if (dramco.NunChuk.joyX < 60):
+        if (pausecounter > 50):
+            if(selected_Y == 0):
+                if (selected_X_sens == 0):
+                    selected_X_sens = 2
+                    pausecounter = 0
+                else:
+                    selected_X_sens -= 1
+                    pausecounter = 0
+            if (selected_Y == 1):
+                if (selected_X_diff == 0):
+                    selected_X_diff = 2
+                    pausecounter = 0
+                else:
+                    selected_X_diff -= 1
+                    pausecounter = 0
+            if (selected_Y == 2):
+                if (selected_X_cross == 0):
+                    selected_X_cross = 2
+                    pausecounter = 0
+                else:
+                    selected_X_cross -= 1
+                    pausecounter = 0
+
+    if(selected_Y == 0):
+        if (selected_X_sens == 0):
+            main.SENSITIVITY = 0.01
+            main.sens = "high"
+        if (selected_X_sens == 1):
+            main.SENSITIVITY = 0.001
+            main.sens = "average"
+        if (selected_X_sens == 2):
+            main.SENSITIVITY = 0.0001
+            main.sens = "low"
+    if(selected_Y == 1):
+        if(selected_X_diff == 0):
+            main.difficulty = "hard"
+            main.HUNGERMODIFIER = 0.75
+            main.STAMINALOSSMODIFIER = 7
+            main.STAMINAREGENMODIFIER = 2
+            main.HUNGERHPLOSSMODIFIER = 0.75
+            main.HPREPLENISHMODIFIERER = 0.3
+        if(selected_X_diff == 1):
+            main.difficulty = "normal"
+            main.HUNGERMODIFIER = 0.5
+            main.STAMINALOSSMODIFIER = 5
+            main.STAMINAREGENMODIFIER = 3
+            main.HUNGERHPLOSSMODIFIER = 0.5
+            main.HPREPLENISHMODIFIERER = 0.5
+        if(selected_X_diff == 2):
+            main.difficulty = "easy"
+            main.HUNGERMODIFIER = 0.25
+            main.STAMINALOSSMODIFIER = 3
+            main.STAMINAREGENMODIFIER = 4
+            main.HUNGERHPLOSSMODIFIER = 0.25
+            main.HPREPLENISHMODIFIERER = 0.7
+    if(selected_Y == 2):
+        if(selected_X_cross == 0):
+            main.CROSSHAIRGROOTTE = 50
+            main.crosshair = "big"
+        if(selected_X_cross == 1):
+            main.CROSSHAIRGROOTTE = 26
+            main.crosshair = "average"
+        if(selected_X_cross == 2):
+            main.CROSSHAIRGROOTTE = 15
+            main.crosshair = "small"
+    if(selected_Y == 3):
+        if(dramco.NunChuk.buttonZ == 1):
+            settings = False
 
 
 
     renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[5])
 
     ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=main.kleuren[7])
-    ManagerFont2 = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=main.kleuren[2])
-    Line1_text = "sensitivity:"
-    Line2_text = "crosshair:"
-    Line3_text = "difficulty:"
-    Line4_text = "azerty:"
-    Line5_text = "hard"
-    Line6_text = "normal"
-    Line7_text = "easy"
-    Line8_text = "high"
-    Line9_text = "average"
-    Line10_text = "low"
-    Line11_text = "big"
-    Line12_text = "average"
-    Line13_text = "small"
+    ManagerFontGreen = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=main.kleuren[2])
+    ManagerFontBlue = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=main.kleuren[3])
+    Sensitivity_text = "sensitivity:"
+    Difficulty_text = "difficulty:"
+    Crosshair_text = "crosshair:"
+    Azerty_text = "azerty:"
+    Hard_text = "hard"
+    Normal_text = "normal"
+    Easy_text = "easy"
+    High_text = "high"
+    Average_text = "average"
+    Low_text = "low"
+    Big_text = "big"
+    AverageCrosshair_text = "average"
+    Small_text = "small"
     Back = "back"
 
-    render_Line1 = factory.from_text(Line1_text, fontmanager=ManagerFont)
-    render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont)
-    render_Line3 = factory.from_text(Line3_text, fontmanager=ManagerFont)
-    render_Line4 = factory.from_text(Line4_text, fontmanager=ManagerFont)
+    render_Azerty = factory.from_text(Azerty_text, fontmanager=ManagerFont)
+    if(selected_Y == 0):
+        render_Sensitivity = factory.from_text(Sensitivity_text, fontmanager=ManagerFontBlue)
+        render_Difficulty = factory.from_text(Difficulty_text, fontmanager=ManagerFont)
+        render_Crosshair = factory.from_text(Crosshair_text, fontmanager=ManagerFont)
+        render_Back = factory.from_text(Back, fontmanager=ManagerFont)
+    elif(selected_Y == 1):
+        render_Sensitivity = factory.from_text(Sensitivity_text, fontmanager=ManagerFont)
+        render_Difficulty = factory.from_text(Difficulty_text, fontmanager=ManagerFontBlue)
+        render_Crosshair = factory.from_text(Crosshair_text, fontmanager=ManagerFont)
+        render_Back = factory.from_text(Back, fontmanager=ManagerFont)
+    elif(selected_Y == 2):
+        render_Sensitivity = factory.from_text(Sensitivity_text, fontmanager=ManagerFont)
+        render_Difficulty = factory.from_text(Difficulty_text, fontmanager=ManagerFont)
+        render_Crosshair = factory.from_text(Crosshair_text, fontmanager=ManagerFontBlue)
+        render_Back = factory.from_text(Back, fontmanager=ManagerFont)
+    elif (selected_Y == 3):
+        render_Sensitivity = factory.from_text(Sensitivity_text, fontmanager=ManagerFont)
+        render_Difficulty = factory.from_text(Difficulty_text, fontmanager=ManagerFont)
+        render_Crosshair = factory.from_text(Crosshair_text, fontmanager=ManagerFont)
+        render_Back = factory.from_text(Back, fontmanager=ManagerFontBlue)
+
     if main.difficulty == "hard":
-        render_Line5 = factory.from_text(Line5_text, fontmanager=ManagerFont2)
+        render_Hard = factory.from_text(Hard_text, fontmanager=ManagerFontGreen)
     else:
-        render_Line5 = factory.from_text(Line5_text, fontmanager=ManagerFont)
+        render_Hard = factory.from_text(Hard_text, fontmanager=ManagerFont)
     if main.difficulty == "normal":
-        render_Line6 = factory.from_text(Line6_text, fontmanager=ManagerFont2)
+        render_Normal = factory.from_text(Normal_text, fontmanager=ManagerFontGreen)
     else:
-        render_Line6 = factory.from_text(Line6_text, fontmanager=ManagerFont)
+        render_Normal = factory.from_text(Normal_text, fontmanager=ManagerFont)
     if main.difficulty == "easy":
-        render_Line7 = factory.from_text(Line7_text, fontmanager=ManagerFont2)
+        render_Easy = factory.from_text(Easy_text, fontmanager=ManagerFontGreen)
     else:
-        render_Line7 = factory.from_text(Line7_text, fontmanager=ManagerFont)
+        render_Easy = factory.from_text(Easy_text, fontmanager=ManagerFont)
 
 
     if main.sens == "high":
-        render_Line8 = factory.from_text(Line8_text, fontmanager=ManagerFont2)
+        render_High = factory.from_text(High_text, fontmanager=ManagerFontGreen)
     else:
-        render_Line8 = factory.from_text(Line8_text, fontmanager=ManagerFont)
+        render_High = factory.from_text(High_text, fontmanager=ManagerFont)
     if main.sens == "average":
-        render_Line9 = factory.from_text(Line9_text, fontmanager=ManagerFont2)
+        render_Average = factory.from_text(Average_text, fontmanager=ManagerFontGreen)
     else:
-        render_Line9 = factory.from_text(Line9_text, fontmanager=ManagerFont)
+        render_Average = factory.from_text(Average_text, fontmanager=ManagerFont)
     if main.sens == "low":
-        render_Line10 = factory.from_text(Line10_text, fontmanager=ManagerFont2)
+        render_Low = factory.from_text(Low_text, fontmanager=ManagerFontGreen)
     else:
-        render_Line10 = factory.from_text(Line10_text, fontmanager=ManagerFont)
+        render_Low = factory.from_text(Low_text, fontmanager=ManagerFont)
 
 
     if main.crosshair == "big":
-        render_Line11 = factory.from_text(Line11_text, fontmanager=ManagerFont2)
+        render_Big = factory.from_text(Big_text, fontmanager=ManagerFontGreen)
     else:
-        render_Line11 = factory.from_text(Line11_text, fontmanager=ManagerFont)
+        render_Big = factory.from_text(Big_text, fontmanager=ManagerFont)
     if main.crosshair == "average":
-        render_Line12 = factory.from_text(Line12_text, fontmanager=ManagerFont2)
+        render_AverageCrosshair = factory.from_text(AverageCrosshair_text, fontmanager=ManagerFontGreen)
     else:
-        render_Line12 = factory.from_text(Line12_text, fontmanager=ManagerFont)
+        render_AverageCrosshair = factory.from_text(AverageCrosshair_text, fontmanager=ManagerFont)
     if main.crosshair == "small":
-        render_Line13 = factory.from_text(Line13_text, fontmanager=ManagerFont2)
+        render_Small= factory.from_text(Small_text, fontmanager=ManagerFontGreen)
     else:
-        render_Line13 = factory.from_text(Line13_text, fontmanager=ManagerFont)
-
-    render_Back = factory.from_text(Back, fontmanager=ManagerFont)
+        render_Small = factory.from_text(Small_text, fontmanager=ManagerFont)
 
 
-    renderer.copy(render_Line1, dstrect=(main.BREEDTE // 2 - 400 , main.HOOGTE // 2 - 325, 250, 100))
-    renderer.copy(render_Line8, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 325, 125, 100))
-    renderer.copy(render_Line9, dstrect=(main.BREEDTE // 2 + 25, main.HOOGTE // 2 - 325, 200, 100))
-    renderer.copy(render_Line10, dstrect=(main.BREEDTE // 2 + 250, main.HOOGTE // 2 - 325, 75, 100))
+    renderer.copy(render_Sensitivity, dstrect=(main.BREEDTE // 2 - 400 , main.HOOGTE // 2 - 325, 250, 100))
+    renderer.copy(render_High, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 325, 125, 100))
+    renderer.copy(render_Average, dstrect=(main.BREEDTE // 2 + 25, main.HOOGTE // 2 - 325, 200, 100))
+    renderer.copy(render_Low, dstrect=(main.BREEDTE // 2 + 250, main.HOOGTE // 2 - 325, 75, 100))
 
-    renderer.copy(render_Line2, dstrect=(main.BREEDTE // 2 - 400, main.HOOGTE // 2 - 225, 250, 100))
-    renderer.copy(render_Line11, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 225, 75, 100))
-    renderer.copy(render_Line12, dstrect=(main.BREEDTE // 2 - 25 , main.HOOGTE // 2 - 225, 200, 100))
-    renderer.copy(render_Line13, dstrect=(main.BREEDTE // 2 + 200, main.HOOGTE // 2 - 225, 125, 100))
+    renderer.copy(render_Crosshair, dstrect=(main.BREEDTE // 2 - 400, main.HOOGTE // 2 - 125, 250, 100))
+    renderer.copy(render_Big, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 125, 75, 100))
+    renderer.copy(render_AverageCrosshair, dstrect=(main.BREEDTE // 2 -25, main.HOOGTE // 2 - 125, 200, 100))
+    renderer.copy(render_Small, dstrect=(main.BREEDTE // 2 + 200, main.HOOGTE // 2 - 125, 125, 100))
 
 
-    renderer.copy(render_Line3, dstrect=(main.BREEDTE // 2 - 400, main.HOOGTE // 2 - 125, 250, 100))
-    renderer.copy(render_Line5, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 125, 100, 100))
-    renderer.copy(render_Line6, dstrect=(main.BREEDTE // 2, main.HOOGTE // 2 - 125, 150, 100))
-    renderer.copy(render_Line7, dstrect=(main.BREEDTE // 2 + 175, main.HOOGTE // 2 - 125, 100, 100))
+    renderer.copy(render_Difficulty, dstrect=(main.BREEDTE // 2 - 400, main.HOOGTE // 2 - 225, 250, 100))
+    renderer.copy(render_Hard, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 225, 100, 100))
+    renderer.copy(render_Normal, dstrect=(main.BREEDTE // 2, main.HOOGTE // 2 - 225, 150, 100))
+    renderer.copy(render_Easy, dstrect=(main.BREEDTE // 2 + 175, main.HOOGTE // 2 - 225, 100, 100))
 
-    renderer.copy(render_Line4, dstrect=(main.BREEDTE // 2 - 400, main.HOOGTE // 2 - 25, 250, 100))
+    renderer.copy(render_Azerty, dstrect=(main.BREEDTE // 2 - 400, main.HOOGTE // 2 - 25, 250, 100))
 
 
 
@@ -509,7 +653,7 @@ def dim_image(renderer, dimmer, timeCycle):
             renderer.copy(dimmer, srcrect=(0, 0, 1, 1), dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
 
 
-def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted, craftingIndex1, craftingIndex2, craftables, dramController):
+def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted, craftingIndex1, craftingIndex2, craftables, dramco):
     correctRecipe = None
     global craftingcounter
     global craftingcounter2
@@ -595,14 +739,14 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
                         craftingIndex2 = None
                         craftingIndex1 = None
     if(craftingcounter2 >= 100):
-        if(dramController.buttonRed):
+        if(dramco.buttonRed):
             if correctRecipe != None:
                 equiplist[
                     craftingIndex1] = correctRecipe.crafted()  # equips.equip(correctRecipe.factory, correctRecipe.resources, correctRecipe.image_text, correctRecipe.damage, correctRecipe.hunger, correctRecipe.hp, correctRecipe.consumable, correctRecipe.type)
                 equiplist[craftingIndex2] = None
                 craftingIndex2 = None
                 craftingIndex1 = None
-        if (dramController.NunChuk.buttonZ == 1):
+        if (dramco.NunChuk.buttonZ == 1):
             craftingcounter2 = 0
             if (equiped == 0):
                 if craftingIndex1 == 0:
@@ -641,13 +785,13 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
                 elif craftingIndex2 == None:
                     craftingIndex2 = 3
     if(craftingcounter >100):
-        if (dramController.buttonBlue == 1):
+        if (dramco.buttonBlue == 1):
             if (equiped == 3):
                 equiped = 0
             else:
                 equiped += 1
             craftingcounter = 0
-        if (dramController.buttonGreen == 1):
+        if (dramco.buttonGreen == 1):
             if (equiped == 0):
                 equiped = 3
             else:
@@ -713,7 +857,7 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
                   dstrect=(muis_pos[0] - main.CROSSHAIRGROOTTE // 2, muis_pos[1] - main.CROSSHAIRGROOTTE // 2,
                            main.CROSSHAIRGROOTTE, main.CROSSHAIRGROOTTE))
 
-    if(dramController.NunChuk.buttonC == 1):
+    if(dramco.NunChuk.buttonC == 1):
         inventory = False
         craftingIndex1 = None
         craftingIndex2 = None
@@ -722,6 +866,9 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
         inventory = False
         craftingIndex1 = None
         craftingIndex2 = None
+
+
+
 
 
     renderer.present()

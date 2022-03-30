@@ -5,6 +5,8 @@ import sdl2
 import sdl2.ext
 import sdl2.sdlttf
 import main
+import globals
+import globals
 
 class text:
     textFile = ""
