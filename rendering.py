@@ -230,6 +230,7 @@ def render_ResumeScreen(renderer,factory,muis_pos,resources,dramController):
             else:
                 selected += 1
                 pausecounter = 0
+
     if(selected == 0):
         StartScreen_render_Line1 = factory.from_text(Line1_text, fontmanager=ManagerFont2)
         StartScreen_render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont)
@@ -260,7 +261,7 @@ def render_ResumeScreen(renderer,factory,muis_pos,resources,dramController):
     return(muis_pos, afsluiten, starten, settings)
 
 
-def render_SettingsScreen(renderer, factory, muis_pos, resources,setting, dramco):
+def render_SettingsScreen(renderer, factory, muis_pos, resources,setting, dramco, komtVanResumeScreen):
     global pausecounter
     global selected_Y
     global selected_X
@@ -268,6 +269,10 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources,setting, dramco
     global selected_X_diff
     global selected_X_cross
     pausecounter += 1
+
+    if(komtVanResumeScreen == True):
+        selected_Y = 0
+        komtVanResumeScreen = False
 
     dramco.readData()
 
@@ -303,7 +308,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources,setting, dramco
                         main.azertybool = True
                         setting.azerty = True
 
-            if main.HOOGTE//2 -125 <= muis_pos[1] <= main.HOOGTE//2 -25:
+            if main.HOOGTE//2 - 225 <= muis_pos[1] <= main.HOOGTE//2 - 125:
                 if main.BREEDTE//2 -125 <= muis_pos[0] <= main.BREEDTE//2 -25:
                     main.difficulty = "hard"
                     main.HUNGERMODIFIER = 0.75
@@ -329,7 +334,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources,setting, dramco
                     main.HUNGERHPLOSSMODIFIER = 0.25
                     main.HPREPLENISHMODIFIERER = 0.7
 
-            if main.HOOGTE//2 - 225 <= muis_pos[1] <= main.HOOGTE//2 - 125:
+            if main.HOOGTE//2 - 325 <= muis_pos[1] <= main.HOOGTE//2 - 225:
                 if main.BREEDTE//2 - 125 <= muis_pos[0] <= main.BREEDTE//2:
                     main.SENSITIVITY = 0.01
                     main.sens = "high"
@@ -342,7 +347,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources,setting, dramco
                     main.SENSITIVITY = 0.0001
                     main.sens = "low"
 
-            if main.HOOGTE//2 - 325 <= muis_pos[1] <= main.HOOGTE//2 - 225:
+            if main.HOOGTE//2 -125 <= muis_pos[1] <= main.HOOGTE//2 -25:
                 if main.BREEDTE//2 - 125 <= muis_pos[0] <= main.BREEDTE//2 -50:
                     main.CROSSHAIRGROOTTE = 50
                     main.crosshair = "big"
@@ -356,7 +361,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources,setting, dramco
                     main.crosshair = "small"
 
     if (dramco.NunChuk.joyY > 210):
-        if (pausecounter > 50):
+        if (pausecounter > 25):
             if (selected_Y == 0):
                 selected_Y = 3
                 pausecounter = 0
@@ -364,7 +369,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources,setting, dramco
                 selected_Y -= 1
                 pausecounter = 0
     if (dramco.NunChuk.joyY < 60):
-        if (pausecounter > 50):
+        if (pausecounter > 25):
             if (selected_Y == 3):
                 selected_Y = 0
                 pausecounter = 0
@@ -375,7 +380,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources,setting, dramco
 
 
     if(dramco.NunChuk.joyX > 210 ):
-        if (pausecounter > 50):
+        if (pausecounter > 25):
             if(selected_Y == 0):
                 if (selected_X_sens == 2):
                     selected_X_sens = 0
@@ -398,7 +403,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources,setting, dramco
                     selected_X_cross += 1
                     pausecounter = 0
     if (dramco.NunChuk.joyX < 60):
-        if (pausecounter > 50):
+        if (pausecounter > 25):
             if(selected_Y == 0):
                 if (selected_X_sens == 0):
                     selected_X_sens = 2
@@ -587,7 +592,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources,setting, dramco
 
     renderer.copy(render_Back, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 + 100, 250, 200))
 
-    return (settings)
+    return (settings, komtVanResumeScreen)
 
 
 def render_GameOVer(renderer, factory):

@@ -88,6 +88,7 @@ moet_afsluiten = False
 start = False
 settingsbool = False
 azertybool = False
+komtVanResumeScreen = False
 difficulty = "normal"
 crosshair = "average"
 sens = "average"
@@ -133,6 +134,7 @@ def main():
     global r_speler
     global r_cameravlak
     global start
+    global komtVanResumeScreen
     global settingsbool
     global azertybool
     global difficulty
@@ -179,7 +181,7 @@ def main():
         if start:
             break
 
-        settingsbool = rendering.render_SettingsScreen(renderer,factory,muis_pos,resources,setting, dramController)
+        (settingsbool, komtVanResumeScreen) = rendering.render_SettingsScreen(renderer,factory,muis_pos,resources,setting, dramController, komtVanResumeScreen)
         renderer.present()
 
     (world_map, doorLocations, door_map, wall_map, spriteList) = imageToMap.generateWorld("resources\map10.png", factory, resources, textures, renderer, ManagerFont)
@@ -239,7 +241,8 @@ def main():
         while not start:
             while not settingsbool:
                 dramController.readData()
-                (muis_pos, afsluiten, start,settingsbool) = rendering.render_ResumeScreen(renderer, factory, muis_pos, resources,dramController)
+                (muis_pos, afsluiten, start, settingsbool) = rendering.render_ResumeScreen(renderer, factory, muis_pos, resources, dramController)
+                komtVanResumeScreen = True
                 renderer.present()
                 start_time = time.time()
                 if afsluiten:
@@ -251,7 +254,8 @@ def main():
                     break
             if start:
                 break
-            settingsbool = rendering.render_SettingsScreen(renderer, factory, muis_pos, resources,setting)
+
+            (settingsbool, komtVanResumeScreen) = rendering.render_SettingsScreen(renderer, factory, muis_pos, resources,setting, dramController, komtVanResumeScreen)
             renderer.present()
 
         #maak lege z buffer aan:
