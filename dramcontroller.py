@@ -95,7 +95,7 @@ class DramController:
         vals = np.array(
             [self.IMU[2, 0] - self.IMU[1, 0], self.IMU[2, 1] - self.IMU[1, 1], self.IMU[2, 2] - self.IMU[1, 2]])
         # print(np.linalg.norm(vals))
-        if (np.linalg.norm(vals) > 5.5):
+        if (np.linalg.norm(vals) > 10):
             return True
         else:
             return False
@@ -108,36 +108,36 @@ class DramController:
                     string = str(line).split(",")
                     #print(string)
                     if (len(string) >= 8 and string[0].startswith("b'{BUTTONS:")):
-                        buttons = string[0]
-                        joyx = string[1]
-                        joyy = string[2]
-                        pitch = string[3]
-                        roll = string[4]
-                        Z = string[5]
-                        C = string[6]
-                        if(len(string) >= 11):
-                            try:
+                        try:
+                            buttons = string[0]
+                            joyx = string[1]
+                            joyy = string[2]
+                            pitch = string[3]
+                            roll = string[4]
+                            Z = string[5]
+                            C = string[6]
+                            if(len(string) >= 11):
                                 self.MIC = int(string[7].replace("SOUND:", ''))
                                 IMUX = float(string[8].replace("IMUX:", ''))
                                 IMUY = float(string[9].replace("IMUY:", ''))
                                 IMUZ = float(string[10].replace("IMUZ:", '').replace("};\\r\\n'", ''). replace("'",'').replace("};", ''))
                                 self.updateIMU(IMUX, IMUY, IMUZ)
-                            except:
-                                print("Invalid string from controller", string)
 
-                        buttons = buttons.replace("b'{BUTTONS:", '')
-                        joyx = joyx.replace('JOYX:', '')
-                        joyy = joyy.replace('JOYY:', '')
-                        pitch = pitch.replace('PITCH:','')
-                        roll = roll.replace('ROLL:','')
-                        Z = Z.replace('Z:','')
-                        C = C.replace('C:','')
-                        joyx = int(joyx)
-                        joyy = int(joyy)
-                        pitch =float(pitch)
-                        roll = float(roll)
-                        Z = int(Z)
-                        C = int(C)
+                            buttons = buttons.replace("b'{BUTTONS:", '')
+                            joyx = joyx.replace('JOYX:', '')
+                            joyy = joyy.replace('JOYY:', '')
+                            pitch = pitch.replace('PITCH:','')
+                            roll = roll.replace('ROLL:','')
+                            Z = Z.replace('Z:','')
+                            C = C.replace('C:','')
+                            joyx = int(joyx)
+                            joyy = int(joyy)
+                            pitch =float(pitch)
+                            roll = float(roll)
+                            Z = int(Z)
+                            C = int(C)
+                        except:
+                            print("Invalid string from controller", string)
 
                         self.NunChuk.setvalues(joyx, joyy, Z, C, (0, 0, 0), pitch, roll)
                         if(len(str(buttons)) == 4):

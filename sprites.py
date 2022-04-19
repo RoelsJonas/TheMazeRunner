@@ -123,8 +123,8 @@ class Sprite:
             if -1 <= snijpunt <= 1 and cameraCoordinaten[1] > 0:
                 schermKolom = int(np.round((snijpunt + 1) * main.BREEDTE/2))
                 d_sprite = np.linalg.norm(p_kolom)
-                h = (main.HOOGTE/self.d_speler)*main.MUURHOOGTE
-                y1 = main.HOOGTE - int((main.HOOGTE-h)//2) - 20
+                h = (main.HOOGTE/self.d_speler)*2
+                y1 = main.HOOGTE - int((main.HOOGTE-h)//2) + 20
                 #h = int(self.hoogte * h)
                 h = int(h)
                 schermKolom = main.BREEDTE - 1 - schermKolom
