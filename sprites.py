@@ -222,13 +222,16 @@ class Sprite:
 
                 if equiplist[0] == None:
                     equiplist[0] = equips.equip(self.factory, self.resources, self.afbeeldingLink, self.DPS, self.hungerValue, self.hp, consum, type)
+                    destroy = True
                 elif equiplist[1] == None:
                     equiplist[1] = equips.equip(self.factory, self.resources, self.afbeeldingLink, self.DPS, self.hungerValue, self.hp, consum, type)
+                    destroy = True
                 elif equiplist[2] == None:
                     equiplist[2] = equips.equip(self.factory, self.resources, self.afbeeldingLink, self.DPS, self.hungerValue, self.hp, consum, type)
+                    destroy = True
                 elif equiplist[3] == None:
                     equiplist[3] = equips.equip(self.factory, self.resources, self.afbeeldingLink, self.DPS, self.hungerValue, self.hp, consum, type)
-                destroy = True
+                    destroy = True
 
         return(hunger, hp, destroy, equiplist, timeCycle)
 
