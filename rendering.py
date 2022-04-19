@@ -94,7 +94,7 @@ def render_StartScreen(renderer,factory,muis_pos,resources,dramController):
             if main.BREEDTE//2 - 125 <= muis_pos[0] <= main.BREEDTE//2 + 125:
                 if main.HOOGTE//2 + 100 <= muis_pos[1] <= main.HOOGTE//2 + 175:
                     afsluiten = True
-                elif main.HOOGTE//2 -125 <= muis_pos[1] <= main.HOOGTE//2 +75:
+                elif main.HOOGTE//2 - 75 <= muis_pos[1] <= main.HOOGTE//2 + 50:
                     settings = True
                 elif main.HOOGTE//2 - 200 <= muis_pos[1] <= main.HOOGTE//2 - 100:
                     starten = True
@@ -195,7 +195,7 @@ def render_ResumeScreen(renderer,factory,muis_pos,resources,dramController):
                 if main.HOOGTE//2 + 100 <= muis_pos[1] <= main.HOOGTE//2 + 175:
                     afsluiten = True
                     started = False
-                elif main.HOOGTE//2 -125 <= muis_pos[1] <= main.HOOGTE//2 +75:
+                elif main.HOOGTE//2 - 75 <= muis_pos[1] <= main.HOOGTE//2 + 50:
                     settings = True
                     started = False
                 elif main.HOOGTE//2 - 200 <= muis_pos[1] <= main.HOOGTE//2 - 100:
