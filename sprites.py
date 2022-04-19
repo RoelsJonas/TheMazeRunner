@@ -33,7 +33,7 @@ class Sprite:
     healer = False
     DPS = 0
     middensteKolom = 0
-    d_speler = 0
+    d_speler = 0.0
     collectible = False
     factory = ""
     renderer = ""
@@ -45,8 +45,8 @@ class Sprite:
         self.p_sprite = np.array([[x], [y]])
         self.afbeeldingLink = png
         self.afbeelding = factory.from_image(resources.get_path(png))
-        self.hoogte = h
-        self.breedte = b
+        self.hoogte =float(h)
+        self.breedte = float(b)
         self.r_sprite = np.array([richting_x, richting_y])
         self.MOVEMENTSPEED = speed
         self.volgt = volgIk
@@ -69,13 +69,15 @@ class Sprite:
                 p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
                 p_sprite[0] -= p_speler[0]
                 p_sprite[1] -= p_speler[1]
-                p_sprite = np.linalg.norm(p_sprite)
-                if p_sprite > .75:
-                    afstand = np.array([self.p_sprite[0]-p_speler[0], self.p_sprite[1]-p_speler[1]])
-                    norm = np.linalg.norm(afstand)
-                    afstand /= norm
-                    self.r_sprite = np.array([afstand[1], -1 * afstand[0]])
-                    p_sprite_nieuw = np.array([self.p_sprite[0] - delta * self.MOVEMENTSPEED * afstand[0], self.p_sprite[1] - delta * self.MOVEMENTSPEED * afstand[1]])
+
+                if np.linalg.norm(p_sprite) > .75:
+                    norm = np.linalg.norm([p_sprite])
+                    p_sprite /= norm
+                    self.r_sprite = np.array([p_sprite[1], -1 * p_sprite[0]])
+                    p_sprite_nieuw = np.array([self.p_sprite[0] - delta * self.MOVEMENTSPEED * p_sprite[0], self.p_sprite[1] - delta * self.MOVEMENTSPEED * p_sprite[1]])
+                    print("nieuw: ", p_sprite_nieuw)
+                    print("Speler: ", p_speler)
+
 
                 #check of nieuwe positie geldig is
                     if world_map[int(p_sprite_nieuw[1]), int(p_sprite_nieuw[0])] == 0:
@@ -92,13 +94,13 @@ class Sprite:
                 self.followTime = 0
 
     def setGrootte(self, h, b):
-        self.hoogte = h
-        self.breedte = b
+        self.hoogte = float(h)
+        self.breedte = float(b)
 
     def render(self, renderer, r_speler, r_cameravlak, p_speler, z_buffer):
         breed = self.afbeelding.size[0]
         determinant = ((r_cameravlak[0] * r_speler[1]) - (r_speler[0] * r_cameravlak[1]))
-        adj = np.array([[r_speler[1],-r_speler[0]],[-r_cameravlak[1],r_cameravlak[0]]])
+        adj = np.array([[r_speler[1], -r_speler[0]], [-r_cameravlak[1],r_cameravlak[0]]])
         self.drawn = False
         for kolom in range(0, breed):
             p_kolom = np.array([self.p_sprite[0], self.p_sprite[1]])
@@ -109,12 +111,12 @@ class Sprite:
             #p_kolom[1] += ((-0.5 + kolom / breed) * self.breedte) * self.r_sprite[1]
 
             #bepaal de coordinaten tov van het camera vlak
-            cameraCoordinaten = (1 / determinant) * np.dot(adj, p_kolom)
+            cameraCoordinaten = (1.0 / determinant) * np.dot(adj, p_kolom)
 
-            cameraCoordinaten[0] += ((-0.5 + kolom / breed) * self.breedte)
+            cameraCoordinaten[0] += ((-0.5 + float(kolom) / breed) * self.breedte)
 
             #bepaal het snijpunt met het cameravlak
-            snijpunt = (cameraCoordinaten[0] * main.D_CAMERA) / cameraCoordinaten[1]
+            snijpunt = (cameraCoordinaten[0] * float(main.D_CAMERA)) / cameraCoordinaten[1]
 
             #bepaal in welke kolom van het scherm dit snijpunt valt
             if -1 <= snijpunt <= 1 and cameraCoordinaten[1] > 0:
