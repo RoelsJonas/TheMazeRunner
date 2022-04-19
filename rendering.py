@@ -16,9 +16,9 @@ started = False
 
 selected_X = 0 #omdat ze anders elke frame terug op nul gezet worden omdat de functie telkens opnieuw wordt opgeroepen
 selected_Y = 0
-selected_X_sens = 0
-selected_X_diff = 0
-selected_X_cross = 0
+selected_X_sens = 1
+selected_X_diff = 1
+selected_X_cross = 1
 
 def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist, timeToAttack):
     offset = ((main.BREEDTE - 800 )//2)
@@ -147,7 +147,7 @@ def render_StartScreen(renderer,factory,muis_pos,resources,dramController):
     renderer.copy(StartScreen_render_Line2, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 125, 250, 200))
     renderer.copy(StartScreen_render_Line3, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 +25, 250, 200))
 
-    if (dramController.NunChuk.buttonZ == 1):
+    if (dramController.NunChuk.buttonZ == 1 and pausecounter > 75):
         if (selected == 0):
             starten = True
             started = False
@@ -157,6 +157,7 @@ def render_StartScreen(renderer,factory,muis_pos,resources,dramController):
         if (selected == 2):
             afsluiten = True
             started = False
+        pausecounter = 0
 
     return(muis_pos, afsluiten, starten,settings)
 
@@ -248,7 +249,7 @@ def render_ResumeScreen(renderer,factory,muis_pos,resources,dramController):
     renderer.copy(StartScreen_render_Line2, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 125, 250, 200))
     renderer.copy(StartScreen_render_Line3, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 +25, 250, 200))
 
-    if(dramController.NunChuk.buttonZ == 1):
+    if(dramController.NunChuk.buttonZ == 1 and pausecounter > 75):
         if(selected == 0):
             starten = True
             started = False
@@ -258,6 +259,7 @@ def render_ResumeScreen(renderer,factory,muis_pos,resources,dramController):
         if(selected == 2):
             afsluiten = True
             started = False
+        pausecounter = 0
     return(muis_pos, afsluiten, starten, settings)
 
 
@@ -474,6 +476,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources,setting, dramco
     if(selected_Y == 3):
         if(dramco.NunChuk.buttonZ == 1):
             settings = False
+            pausecounter = 0
 
 
 
