@@ -58,7 +58,7 @@ GATESOUND = "GateSound.wav"
 
 
 
-DAGNACHTCYCLUSTIJD = 60 # aantal seconden dat 1 dag nacht cyclus duurt
+DAGNACHTCYCLUSTIJD = 120 # aantal seconden dat 1 dag nacht cyclus duurt
 KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24     # om te weten om de hoeveel tijd de klok een uur moet opschuiven
 
 MUURHOOGTE = 1.5
@@ -211,7 +211,7 @@ def main():
                   crafts.Craftable(renderer, factory, resources, "medkit3.png", "H2", "H2", "H3", 0, 60, 0), #medkit upgrade van level 2 naar level 3 ( 25 ==> 60 hp regen)
                   crafts.Craftable(renderer, factory, resources, "spear.png", "STICK", "ROCK", "SPEAR", 17, 0, 0), #combinatie van stick en rock wordt speer (damage van 10 ==> 17) (van 5 maal slaan naar 3 maal slaan voor monster te vermoorden)
                   ]
-    timeCycle = 20
+    timeCycle = 50
     winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
 
     spriteList.append(sprites.Sprite(150.0, 137.0, 1, 1, "bonfire.png", 0.5, 0.5, 1, False, False, False, False, 0, 0, 0, resources, factory, slaapText))
@@ -266,7 +266,9 @@ def main():
         # Render de huidige frame
 
         for kolom in range(0, window.size[0]):
+            r_straal = raycast.bereken_r_straal(r_speler, r_cameravlak, kolom)
             
+
             r_straal = raycast.bereken_r_straal(r_speler,r_cameravlak, kolom)
             (d_muur, intersectie, horizontaal, z_buffer, door_map, texture) = raycast.raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, timeCycle, z_buffer, door_map, world_map, delta, wall_map)
 
@@ -306,7 +308,8 @@ def main():
         if timeCycle > (DAGNACHTCYCLUSTIJD // 2) + 10:
             if sprite.d_speler <= 10:
                 for sprite in spriteListNacht:
-                    sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
+                    if sprite.d_speler <= 50:
+                        sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
                     if (dramController.MIC < 200):
                         sprite.moveToPlayer(p_speler, delta, world_map)
                 (hunger, hp, destroy, equiplist, timeCycle) = sprite.checkInteractie(hunger, hp, p_speler, delta,
