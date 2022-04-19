@@ -20,7 +20,12 @@ TIPS = ["Watch out! At night the doors will close and monster will appear!",
         "Certain doors can be opened by answering the question with wisdom and strength.",
         "Items can be crafted by combining specific items at the crafting station and pressing F",
         "Watch out to not get crushed by closing doors, they will not wait for you!",
-        "To turn 180 degrees, press c."
+        "To turn 180 degrees, press c on your keyboard.",
+        "To move and look around, use the joystick on the NunChuk.",
+        "To switch between items, use the green and blue button.",
+        "To go to the resume screen, use the red button.",
+        "To consume an item, shake the controlller! But not to hard, some of the components might break!",
+        "To sprint, press the c button on the NunChuk."
         ]
 
 def generateWorld(afbeelding, factory, resources, textures, renderer, fontManager):
