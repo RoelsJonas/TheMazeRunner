@@ -136,12 +136,13 @@ class DramController:
                             roll = float(roll)
                             Z = int(Z)
                             C = int(C)
+                            self.NunChuk.setvalues(joyx, joyy, Z, C, (0, 0, 0), pitch, roll)
+                            if(len(str(buttons)) == 4):
+                                self.setvalues(int(buttons[0]),int(buttons[1]),int(buttons[2]),int(buttons[3]))
                         except:
                             print("Invalid string from controller", string)
 
-                        self.NunChuk.setvalues(joyx, joyy, Z, C, (0, 0, 0), pitch, roll)
-                        if(len(str(buttons)) == 4):
-                            self.setvalues(int(buttons[0]),int(buttons[1]),int(buttons[2]),int(buttons[3]))
+
 
 
 class NunChuk:
