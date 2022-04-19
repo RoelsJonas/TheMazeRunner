@@ -12,6 +12,7 @@ class DramController:
     buttonOrange = 0
 
     vibrator = 0
+    vibratorCounter = 0
     buzzer = 0
 
     buttonRedLed = 0
@@ -72,6 +73,10 @@ class DramController:
 
     def sendData(self):
         if(self.ser != None):
+            if(self.vibrator == 1 and self.vibratorCounter > 0):
+                self.vibratorCounter -= 1
+            else:
+                self.vibrator = 0
             text = "{LEDS:" + str(self.leds[0]) + str(self.leds[1]) + str(self.leds[2]) + str(self.leds[3]) + str(self.leds[4]) + ",BUTTONLEDS:" + str(self.buttonRedLed) + str(self.buttonGreenLed) + str(self.buttonOrangeLed) + str(self.buttonBlueLed) + ",SEG1:" + str(self.seg1) + ",SEG2:" + str(self.seg2) + ",VIBRATION:" + str(self.vibrator) + ",BUZZER:" + str(self.buzzer) + "};"
             if(text != self.oldString):
                 self.oldString = text

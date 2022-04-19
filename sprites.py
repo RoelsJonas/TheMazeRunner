@@ -181,6 +181,9 @@ class Sprite:
             p_sprite = np.linalg.norm(p_sprite)
             if self.d_speler < main.INTERACTIONDISTANCE:
                 hp -= self.DPS * delta
+                dramController.vibratorCounter = 5
+                dramController.vibrator = 1
+
                 if timeToAttack < 0 and geklikt and equiplist[equiped] != None:
                     self.hp -= equiplist[equiped].damage
 
