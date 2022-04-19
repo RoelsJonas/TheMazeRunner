@@ -265,15 +265,11 @@ def main():
         rendering.render_lucht_en_vloer(renderer, timeCycle)
         # Render de huidige frame
 
-        #z_buffer[BREEDTE - 1 - kolom] = [pool.apply(raycast.parallel_raycast, args=(r_speler, r_cameravlak, kolom, p_speler, renderer, window, textures, timeCycle, z_buffer, door_map, world_map, delta, wall_map)) for kolom in range(800)]
-        #[pool.apply(raycast.parallel_test, args=(number, dramController, z_buffer, data)) for number in range(800)]
         for kolom in range(0, window.size[0]):
-            #z_buffer[BREEDTE - 1 - kolom] = raycast.parallel_raycast(r_speler, r_cameravlak, kolom, p_speler, renderer, window, textures, timeCycle, z_buffer, door_map, world_map, delta, wall_map)
             
             r_straal = raycast.bereken_r_straal(r_speler,r_cameravlak, kolom)
-            
             (d_muur, intersectie, horizontaal, z_buffer, door_map, texture) = raycast.raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, timeCycle, z_buffer, door_map, world_map, delta, wall_map)
-            #print("raycast tijd", (time.time() - kolomStart)*1000)
+
             if z_buffer[BREEDTE - 1 - kolom] == 0 or z_buffer[BREEDTE - 1 - kolom] > d_muur:
                 z_buffer[BREEDTE - 1 - kolom] = d_muur
                 rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, texture, r_straal, r_speler)

@@ -5,6 +5,7 @@ import sdl2.sdlttf
 import main
 import doors
 
+equipedcounter = 5
 def bewegen(delta, delta_p, r_speler, r_cameravlak, p_speler, door_map, world_map):
 
     p_speler_nieuw = np.array([p_speler[0], p_speler[1]])
@@ -46,6 +47,8 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, doo
     crafting = False
     start = True
     settings=False
+    global equipedcounter
+    equipedcounter += 1
 
     if(dramController.NunChuk.joyY > 210):
         delta_p[0] += 1
@@ -78,28 +81,31 @@ def polling(delta,p_speler,r_speler, r_cameravlak, stamina, hunger, equiped, doo
     if key_states[sdl2.SDL_SCANCODE_C]:
         r_speler *= -1
 
-    if(dramController.buttonBlue == 1):
-        if(equiped == 3):
-            equiped = 0
-        else:
-            equiped += 1
-    if(dramController.buttonGreen == 1):
-        if(equiped == 0):
-            equiped = 3
-        else:
-            equiped -= 1
-    if key_states[sdl2.SDL_SCANCODE_1]:
-        equiped = 0
-    if key_states[sdl2.SDL_SCANCODE_2]:
-        equiped = 1
-    if key_states[sdl2.SDL_SCANCODE_3]:
-        equiped = 2
-    if key_states[sdl2.SDL_SCANCODE_4]:
-        equiped = 3
+    if equipedcounter >= 5:
+        if(dramController.buttonBlue == 1):
+            if(equiped == 3):
+                equiped = 0
+                equipedcounter = 0
+            else:
+                equiped += 1
+                equipedcounter = 0
+        if(dramController.buttonGreen == 1):
+            if(equiped == 0):
+                equiped = 3
+                equipedcounter = 0
+            else:
+                equiped -= 1
+                equipedcounter = 0
 
+    if key_states[sdl2.SDL_SCANCODE_1]:
+            equiped = 0
+    if key_states[sdl2.SDL_SCANCODE_2]:
+            equiped = 1
+    if key_states[sdl2.SDL_SCANCODE_3]:
+            equiped = 2
+    if key_states[sdl2.SDL_SCANCODE_4]:
+            equiped = 3
     if key_states[sdl2.SDL_SCANCODE_E]:
-        interact = True
-    elif(dramController.buttonOrange == 1):
         interact = True
 
     if(dramController.NunChuk.buttonZ == 1):
