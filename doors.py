@@ -143,7 +143,7 @@ class interactableDoor:
         self.updated = True
 
     def setPassCode(self, codeList, instructionsList):
-        index = random.randint(0,10)    #random index nemen om random vraag uit vraaglijst te nemen
+        index = random.randint(0,13)    #random index nemen om random vraag uit vraaglijst te nemen
         self.passCode = codeList[index*4]
         self.instructionText = instructionsList[index]
 

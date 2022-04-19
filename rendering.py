@@ -338,14 +338,17 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources,setting, dramco
                 if main.BREEDTE//2 - 125 <= muis_pos[0] <= main.BREEDTE//2:
                     main.SENSITIVITY = 0.01
                     main.sens = "high"
+                    selected_X_sens = 0
 
                 if main.BREEDTE//2 + 25 <= muis_pos[0] <= main.BREEDTE//2 + 225:
                     main.SENSITIVITY = 0.001
                     main.sens = "average"
+                    selected_X_sens = 1
 
                 if main.BREEDTE//2 + 250 <= muis_pos[0] <= main.BREEDTE//2 + 375:
                     main.SENSITIVITY = 0.0001
                     main.sens = "low"
+                    selected_X_sens = 2
 
             if main.HOOGTE//2 -125 <= muis_pos[1] <= main.HOOGTE//2 -25:
                 if main.BREEDTE//2 - 125 <= muis_pos[0] <= main.BREEDTE//2 -50:
