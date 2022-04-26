@@ -226,15 +226,15 @@ def main():
     for location in spawnLocations:
         if difficulty == "hard":
             spriteListNacht.append(
-                sprites.Sprite(location[0], location[1], 1, 0, "spellun-sprite.png", 8.4, 2.4, 1, True, False, False,
+                sprites.Sprite(location[0], location[1], 1, 0, "spellun-sprite.png", 200, 2.4, 1, True, False, False,
                                False, 0, 50, 7, resources, factory, None))
         elif difficulty == "normal":
             spriteListNacht.append(
-                sprites.Sprite(location[0], location[1], 1, 0, "spellun-sprite.png", 8.4, 2.4, 1, True, False, False,
+                sprites.Sprite(location[0], location[1], 1, 0, "spellun-sprite.png", 200, 2.4, 1, True, False, False,
                                False, 0, 50, 5, resources, factory, None))
         elif difficulty == 'easy':
             spriteListNacht.append(
-                sprites.Sprite(location[0], location[1], 1, 0, "spellun-sprite.png", 8.4, 2.4, 1, True, False, False,
+                sprites.Sprite(location[0], location[1], 1, 0, "spellun-sprite.png", 200, 2.4, 1, True, False, False,
                                False, 0, 50, 3, resources, factory, None))
 
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
