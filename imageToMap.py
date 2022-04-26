@@ -7,6 +7,7 @@ import random
 import time
 import sprites
 import globals
+
 MUUR = 1
 TIMEDDEUR = 2
 INTERACTABLEDEUR = 3
@@ -28,6 +29,7 @@ TIPS = ["Watch out! At night the doors will close and monster will appear!",
         "To sprint, press the c button on the NunChuk."
         ]
 
+
 def generateWorld(afbeelding, factory, resources, textures, renderer, fontManager):
     input_image = Image.open(afbeelding)
     r_image_in, g_image_in, b_image_in = input_image.split()
@@ -40,27 +42,27 @@ def generateWorld(afbeelding, factory, resources, textures, renderer, fontManage
     wall_map = np.empty((r_in.shape[0], r_in.shape[1]), object)
     doorLocation = []
     spriteList = []
-    timeIndex = random.randint(0, len(TIPS)-1)
+    timeIndex = random.randint(0, len(TIPS) - 1)
     starttime = time.time()
     for i in range(r_in.shape[0]):
         for j in range(r_in.shape[1]):
-            #zwarte pixel ==> muur met texture[0]
+            # zwarte pixel ==> muur met texture[0]
             if r_in[i, j] == 0 and b_in[i, j] == 0 and g_in[i, j] == 0:
                 world_map[i, j] = MUUR
                 wall_map[i, j] = Wall(i, j, textures[0], "wall")
 
-                #grijze pixel ==> craftingbench
+                # grijze pixel ==> craftingbench
             elif r_in[i, j] == 128 and b_in[i, j] == 128 and g_in[i, j] == 128:
                 world_map[i, j] = MUUR
                 wall_map[i, j] = Wall(i, j, textures[2], "crafting bench")
 
-            #blauwwe pixel ==> timed deur die van links opent
+            # blauwwe pixel ==> timed deur die van links opent
             elif b_in[i, j] == 255 and r_in[i, j] == 0 and g_in[i, j] == 0:
                 world_map[i, j] = TIMEDDEUR
                 door_map[i, j] = doors.timedDoor((j, i), LEFT, textures[0])
                 doorLocation.append((i, j))
 
-            #groene pixel ==> timed deur die van rechts opent
+            # groene pixel ==> timed deur die van rechts opent
             elif b_in[i, j] == 0 and r_in[i, j] == 0 and g_in[i, j] == 255:
                 world_map[i, j] = TIMEDDEUR
                 door_map[i, j] = doors.timedDoor((j, i), RIGHT, textures[0])
@@ -74,37 +76,47 @@ def generateWorld(afbeelding, factory, resources, textures, renderer, fontManage
 
             elif b_in[i, j] == 50 and r_in[i, j] == 117 and g_in[i, j] == 116:
                 world_map[i, j] = 0
-                spriteList.append(sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "burger.png", 0.5, 0.5, 1, False, False, False, True, 25, 0, 5, resources, factory, None))
+                spriteList.append(
+                    sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "burger.png", 0.5, 0.5, 1, False, False, False, True, 25, 0,
+                                   5, resources, factory, None))
 
             elif b_in[i, j] == 50 and r_in[i, j] == 117 and g_in[i, j] == 50:
                 world_map[i, j] = 0
-                spriteList.append(sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "medkit.png", 0.5, 0.5, 1, False, False, False, True, 0, 0, 10, resources, factory, None))
+                spriteList.append(
+                    sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "medkit.png", 0.5, 0.5, 1, False, False, False, True, 0, 0,
+                                   10, resources, factory, None))
 
             elif r_in[i, j] == 78 and g_in[i, j] == 168 and b_in[i, j] == 153:
                 world_map[i, j] = 0
-                spriteList.append(sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "stick.png", 1.0, 1.0, 1, False, False, False, True, 10, 0, 0, resources, factory, None))
+                spriteList.append(
+                    sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "stick.png", 1.0, 1.0, 1, False, False, False, True, 10, 0,
+                                   0, resources, factory, None))
 
             elif r_in[i, j] == 189 and g_in[i, j] == 17 and b_in[i, j] == 208:
                 world_map[i, j] = 0
-                spriteList.append(sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "kaart.png", 1.0, 1.0, 1, False, False, False, True, 0, 0, 0, resources, factory, None))
+                spriteList.append(
+                    sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "kaart.png", 1.0, 1.0, 1, False, False, False, True, 0, 0, 0,
+                                   resources, factory, None))
 
             elif r_in[i, j] == 25 and g_in[i, j] == 70 and b_in[i, j] == 153:
                 world_map[i, j] = 0
-                spriteList.append(sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "rock.png", 0.5, 0.5, 1, False, False, False, True, 0, 0, 0, resources, factory, None))
+                spriteList.append(
+                    sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "rock.png", 0.5, 0.5, 1, False, False, False, True, 0, 0, 0,
+                                   resources, factory, None))
 
             elif r_in[i, j] == 80 and g_in[i, j] == 129 and b_in[i, j] == 61:
-                world_map[i ,j] = 10
-            #witte pixel ==> openruimte
+                world_map[i, j] = 10
+            # witte pixel ==> openruimte
             else:
                 world_map[i, j] = 0
 
         endtime = time.time()
         if (endtime - starttime) >= 2:
             starttime += 5
-            timeIndex = random.randint(0, len(TIPS)-1)
+            timeIndex = random.randint(0, len(TIPS) - 1)
         renderLoadingScreen(fontManager, factory, renderer, i, r_in.shape[0], timeIndex)
 
-    return(world_map, doorLocation, door_map, wall_map, spriteList)
+    return (world_map, doorLocation, door_map, wall_map, spriteList)
 
 
 class Wall:
@@ -119,15 +131,14 @@ class Wall:
 
 
 def renderLoadingScreen(resources, factory, renderer, waarde, max, textindex):
-
-    completion = int(100*waarde/max)
+    completion = int(100 * waarde / max)
     renderer.clear()
     renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[5])
-    renderer.fill((main.BREEDTE//2 - 100,  main.HOOGTE//2 - 50, 2*completion, 100), main.kleuren[2])
+    renderer.fill((main.BREEDTE // 2 - 100, main.HOOGTE // 2 - 50, 2 * completion, 100), main.kleuren[2])
     text1 = "Loading: " + str(completion) + "%"
     text2 = TIPS[textindex]
-    text = factory.from_text(text1, fontmanager = resources)
-    renderer.copy(text, dstrect=(main.BREEDTE//2 - 100, main.HOOGTE//2 - 50, 200, 100))
-    text = factory.from_text(text2, fontmanager = resources)
-    renderer.copy(text, dstrect=(main.BREEDTE // 2 - len(text2)*4, main.HOOGTE - 100, len(text2) * 8, 60))
+    text = factory.from_text(text1, fontmanager=resources)
+    renderer.copy(text, dstrect=(main.BREEDTE // 2 - 100, main.HOOGTE // 2 - 50, 200, 100))
+    text = factory.from_text(text2, fontmanager=resources)
+    renderer.copy(text, dstrect=(main.BREEDTE // 2 - len(text2) * 4, main.HOOGTE - 100, len(text2) * 8, 60))
     renderer.present()

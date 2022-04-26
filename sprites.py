@@ -13,7 +13,7 @@ def sortSprites(list, p_speler):
         sprite.updateDistance(p_speler)
     list.sort(key=lambda x: x.d_speler, reverse=True)
     list.sort(key=lambda x: x.d_speler, reverse=True)
-    return(list)
+    return (list)
 
 
 class Sprite:
@@ -41,11 +41,12 @@ class Sprite:
     afbeeldingLink = ""
     tekst = ""
 
-    def __init__(self, x, y, richting_x,richting_y, png, h, b, speed, volgIk, eet, healer, collectible, waarde, health, damage, resources, factory, tekst):
+    def __init__(self, x, y, richting_x, richting_y, png, h, b, speed, volgIk, eet, healer, collectible, waarde, health,
+                 damage, resources, factory, tekst):
         self.p_sprite = np.array([[x], [y]])
         self.afbeeldingLink = png
         self.afbeelding = factory.from_image(resources.get_path(png))
-        self.hoogte =float(h)
+        self.hoogte = float(h)
         self.breedte = float(b)
         self.r_sprite = np.array([richting_x, richting_y])
         self.MOVEMENTSPEED = speed
@@ -73,9 +74,10 @@ class Sprite:
                 if np.linalg.norm(p_sprite) > .75:
                     norm = np.linalg.norm([p_sprite])
                     p_sprite /= norm
-                    p_sprite_nieuw = np.array([self.p_sprite[0] - delta * self.MOVEMENTSPEED * p_sprite[0], self.p_sprite[1] - delta * self.MOVEMENTSPEED * p_sprite[1]])
+                    p_sprite_nieuw = np.array([self.p_sprite[0] - delta * self.MOVEMENTSPEED * p_sprite[0],
+                                               self.p_sprite[1] - delta * self.MOVEMENTSPEED * p_sprite[1]])
 
-                #check of nieuwe positie geldig is
+                    # check of nieuwe positie geldig is
                     if world_map[int(p_sprite_nieuw[1]), int(p_sprite_nieuw[0])] == 0:
                         self.p_sprite = p_sprite_nieuw
 
@@ -85,11 +87,8 @@ class Sprite:
                     elif world_map[int(p_sprite_nieuw[1]), int(self.p_sprite[0])] == 0:
                         self.p_sprite[1] = p_sprite_nieuw[1]
                     self.updateDistance(p_speler)
-                    print("Sprite:", self.p_sprite)
-                    print("Speler:", p_speler)
-                    print(self.d_speler)
 
-                #self.followTime -= delta
+                # self.followTime -= delta
             else:
                 self.followTime = 0
 
@@ -100,32 +99,32 @@ class Sprite:
     def srender(self, renderer, r_speler, r_cameravlak, p_speler, z_buffer):
         breed = self.afbeelding.size[0]
         determinant = ((r_cameravlak[0] * r_speler[1]) - (r_speler[0] * r_cameravlak[1]))
-        adj = np.array([[r_speler[1],-r_speler[0]],[-r_cameravlak[1],r_cameravlak[0]]])
+        adj = np.array([[r_speler[1], -r_speler[0]], [-r_cameravlak[1], r_cameravlak[0]]])
         self.drawn = False
 
         for kolom in range(0, breed):
             p_kolom = np.array([self.p_sprite[0], self.p_sprite[1]])
-            #bepaal de coordinaten van de kolom ten opzichte van de speler
+            # bepaal de coordinaten van de kolom ten opzichte van de speler
             p_kolom[0] -= p_speler[0]
             p_kolom[1] -= p_speler[1]
-            #p_kolom[0] += ((-0.5 + kolom / breed) * self.breedte) # * self.r_sprite[0]
-            #p_kolom[1] += ((-0.5 + kolom / breed) * self.breedte) * self.r_sprite[1]
+            # p_kolom[0] += ((-0.5 + kolom / breed) * self.breedte) # * self.r_sprite[0]
+            # p_kolom[1] += ((-0.5 + kolom / breed) * self.breedte) * self.r_sprite[1]
 
-            #bepaal de coordinaten tov van het camera vlak
+            # bepaal de coordinaten tov van het camera vlak
             cameraCoordinaten = (1 / determinant) * np.dot(adj, p_kolom)
 
             cameraCoordinaten[0] += ((-0.5 + kolom / breed) * self.breedte)
 
-            #bepaal het snijpunt met het cameravlak
+            # bepaal het snijpunt met het cameravlak
             snijpunt = (cameraCoordinaten[0] * main.D_CAMERA) / cameraCoordinaten[1]
 
-            #bepaal in welke kolom van het scherm dit snijpunt valt
+            # bepaal in welke kolom van het scherm dit snijpunt valt
             if -1 <= snijpunt <= 1 and cameraCoordinaten[1] > 0:
-                schermKolom = int(np.round((snijpunt + 1) * main.BREEDTE/2))
+                schermKolom = int(np.round((snijpunt + 1) * main.BREEDTE / 2))
                 d_sprite = np.linalg.norm(p_kolom)
-                h = (main.HOOGTE/self.d_speler)*2
-                y1 = main.HOOGTE - int((main.HOOGTE-h)//2) + 20
-                #h = int(self.hoogte * h)
+                h = (main.HOOGTE / self.d_speler) * 2
+                y1 = main.HOOGTE - int((main.HOOGTE - h) // 2) + 20
+                # h = int(self.hoogte * h)
                 h = int(h)
                 schermKolom = main.BREEDTE - 1 - schermKolom
                 if d_sprite < z_buffer[schermKolom] or z_buffer[schermKolom] == 0:
@@ -136,60 +135,53 @@ class Sprite:
                                   dstrect=(schermKolom, y1, 2, h))
             else:
                 schermKolom = 0
-            if kolom == main.BREEDTE//2:
+            if kolom == main.BREEDTE // 2:
                 self.middensteKolom = schermKolom
 
     def render(self, renderer, r_speler, r_cameravlak, p_speler, z_buffer):
         self.updateDistance(p_speler)
         breed = self.afbeelding.size[0]
         determinant = ((r_cameravlak[0] * r_speler[1]) - (r_speler[0] * r_cameravlak[1]))
-        adj = np.array([[r_speler[1], -r_speler[0]], [-r_cameravlak[1],r_cameravlak[0]]])
+        adj = np.array([[r_speler[1], -r_speler[0]], [-r_cameravlak[1], r_cameravlak[0]]])
         self.drawn = False
 
         for kolom in range(0, breed):
             p_kolom = np.array([self.p_sprite[0], self.p_sprite[1]])
-            #bepaal de coordinaten van de kolom ten opzichte van de speler
+            # bepaal de coordinaten van de kolom ten opzichte van de speler
             p_kolom[0] -= p_speler[0]
             p_kolom[1] -= p_speler[1]
-            #p_kolom[0] += ((-0.5 + kolom / breed) * self.breedte) # * self.r_sprite[0]
-            #p_kolom[1] += ((-0.5 + kolom / breed) * self.breedte) * self.r_sprite[1]
+            # p_kolom[0] += ((-0.5 + kolom / breed) * self.breedte) # * self.r_sprite[0]
+            # p_kolom[1] += ((-0.5 + kolom / breed) * self.breedte) * self.r_sprite[1]
 
-            #bepaal de coordinaten tov van het camera vlak
+            # bepaal de coordinaten tov van het camera vlak
             cameraCoordinaten = (1.0 / determinant) * np.dot(adj, p_kolom)
 
             cameraCoordinaten[0] += ((-0.5 + float(kolom) / breed) * self.breedte)
 
-            #bepaal het snijpunt met het cameravlak
+            # bepaal het snijpunt met het cameravlak
             snijpunt = (cameraCoordinaten[0] * float(main.D_CAMERA)) / cameraCoordinaten[1]
 
-            #bepaal in welke kolom van het scherm dit snijpunt valt
+            # bepaal in welke kolom van het scherm dit snijpunt valt
             if -1 <= snijpunt <= 1 and cameraCoordinaten[1] > 0:
-                schermKolom = int(np.round((snijpunt + 1) * main.BREEDTE/2))
+                schermKolom = int(np.round((snijpunt + 1) * main.BREEDTE / 2))
                 d_sprite = np.linalg.norm(p_kolom)
-                h = (main.HOOGTE/(self.d_speler))
-                y1 = main.HOOGTE - int((main.HOOGTE-h)//2) - 50
+                h = (main.HOOGTE / (self.d_speler))
+                y1 = main.HOOGTE - int((main.HOOGTE - h) // 2) - 50
                 h = int(0.5 * h)
                 schermKolom = main.BREEDTE - 1 - schermKolom
                 if self.d_speler < z_buffer[schermKolom] or z_buffer[schermKolom] == 0:
-
                     self.drawn = True
                     self.followTime = 7.5
                     renderer.copy(self.afbeelding,
-                                srcrect=(kolom, 0, 1, self.afbeelding.size[1]),
-                                dstrect=(schermKolom, y1, 2, h))
-
-
-
-
-
-
+                                  srcrect=(kolom, 0, 1, self.afbeelding.size[1]),
+                                  dstrect=(schermKolom, y1, 2, h))
 
     def updateDistance(self, p_speler):
-        d = np.array([self.p_sprite[0]-p_speler[0], self.p_sprite[1]-p_speler[1]])
+        d = np.array([self.p_sprite[0] - p_speler[0], self.p_sprite[1] - p_speler[1]])
         self.d_speler = np.linalg.norm(d)
 
-
-    def checkInteractie(self, hunger, hp, p_speler, delta, geklikt, timeToAttack, interaction, equiplist, equiped, factory, timeCycle, resources, renderer,dramController):
+    def checkInteractie(self, hunger, hp, p_speler, delta, geklikt, timeToAttack, interaction, equiplist, equiped,
+                        factory, timeCycle, resources, renderer, dramController):
         destroy = False
         spelerDamage = 0
 
@@ -213,7 +205,8 @@ class Sprite:
                     hunger += self.hungerValue
                     destroy = True
 
-        if (self.afbeeldingLink == "bonfire.png" and timeCycle > ((main.DAGNACHTCYCLUSTIJD//2) + 10) and geklikt == True):
+        if (self.afbeeldingLink == "bonfire.png" and timeCycle > (
+                (main.DAGNACHTCYCLUSTIJD // 2) + 10) and geklikt == True):
             p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
             p_sprite[0] -= p_speler[0]
             p_sprite[1] -= p_speler[1]
@@ -271,28 +264,20 @@ class Sprite:
                     consum = False
 
                 if equiplist[0] == None:
-                    equiplist[0] = equips.equip(self.factory, self.resources, self.afbeeldingLink, self.DPS, self.hungerValue, self.hp, consum, type)
+                    equiplist[0] = equips.equip(self.factory, self.resources, self.afbeeldingLink, self.DPS,
+                                                self.hungerValue, self.hp, consum, type)
                     destroy = True
                 elif equiplist[1] == None:
-                    equiplist[1] = equips.equip(self.factory, self.resources, self.afbeeldingLink, self.DPS, self.hungerValue, self.hp, consum, type)
+                    equiplist[1] = equips.equip(self.factory, self.resources, self.afbeeldingLink, self.DPS,
+                                                self.hungerValue, self.hp, consum, type)
                     destroy = True
                 elif equiplist[2] == None:
-                    equiplist[2] = equips.equip(self.factory, self.resources, self.afbeeldingLink, self.DPS, self.hungerValue, self.hp, consum, type)
+                    equiplist[2] = equips.equip(self.factory, self.resources, self.afbeeldingLink, self.DPS,
+                                                self.hungerValue, self.hp, consum, type)
                     destroy = True
                 elif equiplist[3] == None:
-                    equiplist[3] = equips.equip(self.factory, self.resources, self.afbeeldingLink, self.DPS, self.hungerValue, self.hp, consum, type)
+                    equiplist[3] = equips.equip(self.factory, self.resources, self.afbeeldingLink, self.DPS,
+                                                self.hungerValue, self.hp, consum, type)
                     destroy = True
 
-        return(hunger, hp, destroy, equiplist, timeCycle)
-
-
-
-
-
-
-
-
-
-
-
-
+        return (hunger, hp, destroy, equiplist, timeCycle)

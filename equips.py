@@ -9,7 +9,8 @@ import playsound
 import globals
 import time
 
-def interactions(hunger, hp, obj , interact, consumableText, p_speler, renderer, world_map, factory,dramController):
+
+def interactions(hunger, hp, obj, interact, consumableText, p_speler, renderer, world_map, factory, dramController):
     if obj != None:
         if interact and obj.consumable:
             (hunger, hp) = obj.interact(hunger, hp, p_speler, renderer)
@@ -20,12 +21,13 @@ def interactions(hunger, hp, obj , interact, consumableText, p_speler, renderer,
 
         if interact and obj.getType() == "KAART":
             statusKaart = True
-            muis_pos = np.array([0,0])
+            muis_pos = np.array([0, 0])
             while statusKaart:
-                (statusKaart, muis_pos) = openKaart(renderer, p_speler, world_map, statusKaart, muis_pos, factory,dramController)
+                (statusKaart, muis_pos) = openKaart(renderer, p_speler, world_map, statusKaart, muis_pos, factory,
+                                                    dramController)
             interact = False
 
-    return(hunger, hp, consumableText, obj)
+    return (hunger, hp, consumableText, obj)
 
 
 class equip:
@@ -39,7 +41,7 @@ class equip:
     h = 0
     tekst = ""
     imagetext = ""
-    size = (1,1)
+    size = (1, 1)
     wat = ""
 
     def __init__(self, factory, resources, afbeelding, damage, hunger, healing, consumeerbaar, type):
@@ -55,7 +57,7 @@ class equip:
         self.h = int(self.image.size[1])
 
     def getType(self):
-        return(self.type)
+        return (self.type)
 
     def render(self, slot, renderer, offset):
         x = offset + 208 + (slot * 75)
@@ -72,7 +74,7 @@ class equip:
             if hunger > 100:
                 hunger = 100
 
-        return(hunger, hp)
+        return (hunger, hp)
 
     def drop(self, spriteList, p_speler, resources, factory):
         eetbaar = False
@@ -84,20 +86,25 @@ class equip:
         if self.healing > 0:
             healer = True
 
-        spriteList.append(sprites.Sprite(p_speler[0]+0.1, p_speler[1]+.1, 0, 0, self.imagetext, 0.5, 0.5, 0, False, eetbaar, healer, True, self.hunger, self.healing, self.damage, resources, factory, self.tekst ))
+        spriteList.append(
+            sprites.Sprite(p_speler[0] + 0.1, p_speler[1] + .1, 0, 0, self.imagetext, 0.5, 0.5, 0, False, eetbaar,
+                           healer, True, self.hunger, self.healing, self.damage, resources, factory, self.tekst))
 
-        return(spriteList)
+        return (spriteList)
 
-def openKaart(renderer, p_speler, world_map, statusKaart, muis_pos, factory,dramController):
-    p_speler_temp = np.array([p_speler[0]-20, p_speler[1]-15])
+
+def openKaart(renderer, p_speler, world_map, statusKaart, muis_pos, factory, dramController):
+    p_speler_temp = np.array([p_speler[0] - 20, p_speler[1] - 15])
     renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[6])
     dramController.readData()
-    for i in range(int(p_speler_temp[0]), int(p_speler_temp[0])+40):
-        for j in range(int(p_speler_temp[1]), int(p_speler_temp[1])+30):
-            if world_map[j,i] == 1:
-                renderer.fill(((i-int(p_speler_temp[0]))*20,(j-int(p_speler_temp[1]))*20,20,20),main.kleuren[0])
-            elif world_map[j,i] > 1:
-                renderer.fill(((i-int(p_speler_temp[0]))*20,(j-int(p_speler_temp[1]))*20,20,20),main.kleuren[1])
+    for i in range(int(p_speler_temp[0]), int(p_speler_temp[0]) + 40):
+        for j in range(int(p_speler_temp[1]), int(p_speler_temp[1]) + 30):
+            if world_map[j, i] == 1:
+                renderer.fill(((i - int(p_speler_temp[0])) * 20, (j - int(p_speler_temp[1])) * 20, 20, 20),
+                              main.kleuren[0])
+            elif world_map[j, i] > 1:
+                renderer.fill(((i - int(p_speler_temp[0])) * 20, (j - int(p_speler_temp[1])) * 20, 20, 20),
+                              main.kleuren[1])
     key_states = sdl2.SDL_GetKeyboardState(None)
     events = sdl2.ext.get_events()
     for event in events:
@@ -118,10 +125,10 @@ def openKaart(renderer, p_speler, world_map, statusKaart, muis_pos, factory,dram
                   srcrect=(0, 0, 50, 50),
                   dstrect=(muis_pos[0] - main.CROSSHAIRGROOTTE // 2, muis_pos[1] - main.CROSSHAIRGROOTTE // 2,
                            main.CROSSHAIRGROOTTE, main.CROSSHAIRGROOTTE))
-    if(dramController.NunChuk.buttonC == 1):
+    if (dramController.NunChuk.buttonC == 1):
         statusKaart = False
     if key_states[sdl2.SDL_SCANCODE_TAB]:
         statusKaart = False
-    renderer.fill((main.BREEDTE//2+5, main.HOOGTE//2+5, 10, 10), main.kleuren[3])
+    renderer.fill((main.BREEDTE // 2 + 5, main.HOOGTE // 2 + 5, 10, 10), main.kleuren[3])
     renderer.present()
     return (statusKaart, muis_pos)
