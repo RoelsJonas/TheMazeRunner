@@ -56,7 +56,7 @@ CONSUMESOUND = "consumable.wav"
 GAMEOVERSOUND = "GameOverSound.wav"
 GATESOUND = "GateSound.wav"
 
-DAGNACHTCYCLUSTIJD = 120  # aantal seconden dat 1 dag nacht cyclus duurt
+DAGNACHTCYCLUSTIJD = 360  # aantal seconden dat 1 dag nacht cyclus duurt
 KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24  # om te weten om de hoeveel tijd de klok een uur moet opschuiven
 
 MUURHOOGTE = 1.5
@@ -313,7 +313,7 @@ def main():
 
         for sprite in spriteList:
             if sprite.d_speler <= 10:
-                sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
+                sprite.renderStatischeSprites(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
             if (dramController.MIC < 200):
                 sprite.moveToPlayer(p_speler, delta, world_map)
             (hunger, hp, destroy, equiplist, timeCycle) = sprite.checkInteractie(hunger, hp, p_speler, delta,

@@ -96,13 +96,14 @@ class Sprite:
         self.hoogte = float(h)
         self.breedte = float(b)
 
-    def srender(self, renderer, r_speler, r_cameravlak, p_speler, z_buffer):
+    def renderStatischeSprites(self, renderer, r_speler, r_cameravlak, p_speler, z_buffer):
+        self.updateDistance(p_speler)
         breed = self.afbeelding.size[0]
         determinant = ((r_cameravlak[0] * r_speler[1]) - (r_speler[0] * r_cameravlak[1]))
         adj = np.array([[r_speler[1], -r_speler[0]], [-r_cameravlak[1], r_cameravlak[0]]])
         self.drawn = False
 
-        for kolom in range(0, breed):
+        for kolom in range(0, breed-2):
             p_kolom = np.array([self.p_sprite[0], self.p_sprite[1]])
             # bepaal de coordinaten van de kolom ten opzichte van de speler
             p_kolom[0] -= p_speler[0]
@@ -111,32 +112,27 @@ class Sprite:
             # p_kolom[1] += ((-0.5 + kolom / breed) * self.breedte) * self.r_sprite[1]
 
             # bepaal de coordinaten tov van het camera vlak
-            cameraCoordinaten = (1 / determinant) * np.dot(adj, p_kolom)
+            cameraCoordinaten = (1.0 / determinant) * np.dot(adj, p_kolom)
 
-            cameraCoordinaten[0] += ((-0.5 + kolom / breed) * self.breedte)
+            cameraCoordinaten[0] += ((-0.5 + float(kolom) / breed) * self.breedte)
 
             # bepaal het snijpunt met het cameravlak
-            snijpunt = (cameraCoordinaten[0] * main.D_CAMERA) / cameraCoordinaten[1]
+            snijpunt = (cameraCoordinaten[0] * float(main.D_CAMERA)) / cameraCoordinaten[1]
 
             # bepaal in welke kolom van het scherm dit snijpunt valt
             if -1 <= snijpunt <= 1 and cameraCoordinaten[1] > 0:
                 schermKolom = int(np.round((snijpunt + 1) * main.BREEDTE / 2))
                 d_sprite = np.linalg.norm(p_kolom)
-                h = (main.HOOGTE / self.d_speler) * 2
-                y1 = main.HOOGTE - int((main.HOOGTE - h) // 2) + 20
-                # h = int(self.hoogte * h)
-                h = int(h)
+                h = (main.HOOGTE / (self.d_speler))
+                y1 = main.HOOGTE - int((main.HOOGTE - h) // 2) - 50
+                h = int(0.5 * h)
                 schermKolom = main.BREEDTE - 1 - schermKolom
-                if d_sprite < z_buffer[schermKolom] or z_buffer[schermKolom] == 0:
+                if self.d_speler < z_buffer[schermKolom] or z_buffer[schermKolom] == 0:
                     self.drawn = True
                     self.followTime = 7.5
                     renderer.copy(self.afbeelding,
-                                  srcrect=(kolom, 0, 1, self.afbeelding.size[1]),
-                                  dstrect=(schermKolom, y1, 2, h))
-            else:
-                schermKolom = 0
-            if kolom == main.BREEDTE // 2:
-                self.middensteKolom = schermKolom
+                                  srcrect=(kolom, 0, 3, self.afbeelding.size[1]),
+                                  dstrect=(schermKolom, y1, 3, h))
 
     def render(self, renderer, r_speler, r_cameravlak, p_speler, z_buffer):
         self.updateDistance(p_speler)
