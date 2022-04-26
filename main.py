@@ -87,6 +87,8 @@ start = False
 settingsbool = False
 azertybool = False
 komtVanResumeScreen = False
+NightSound = False
+DaySound = False
 difficulty = "normal"
 crosshair = "average"
 sens = "average"
@@ -120,6 +122,7 @@ instructionsList = my_file.readlines()
 my_file.close
 
 
+
 def main():
     # Initialiseer de SDL2 bibliotheek
     sdl2.ext.init()
@@ -137,6 +140,8 @@ def main():
     global difficulty
     global crosshair
     global sens
+    global NightSound
+    global DaySound
 
     muis_pos = np.array([BREEDTE // 2, HOOGTE // 2])
 
@@ -203,9 +208,9 @@ def main():
 
     start_time = time.time()  # wanneer oppakbare sprite wordt opgepakt gaat hij uit de spritelist en in de equiplist
     equiplist = [
-        equips.equip(factory, resources, "burger.png", 0, 25, 0, True, "BURGER"),
-        equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
-        equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"), None]
+                 equips.equip(factory, resources, "appel.png", 0, 25, 0, True, "APPEL"),
+                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
+                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"), None]
 
     craftables = [crafts.Craftable(renderer, factory, resources, "medkit2.png", "H1", "H1", "H2", 0, 25, 0),
                   # medkit upgrade van level 1 naar level 2 (10 ==> 25 hp regen)
@@ -215,6 +220,7 @@ def main():
                   # combinatie van stick en rock wordt speer (damage van 10 ==> 17) (van 5 maal slaan naar 3 maal slaan voor monster te vermoorden)
                   ]
     timeCycle = 50
+
     winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
 
     spriteList.append(
@@ -350,9 +356,16 @@ def main():
         dramController.mapHealth(hp)
         dramController.sendData()
 
+
+
         timeCycle += delta
         if round(timeCycle) == DAGNACHTCYCLUSTIJD / 2 + 5:
             playsound.playsound(GATESOUND, False)
+            if(NightSound == False):
+                winsound.PlaySound("muziekNacht.wav", winsound.SND_ASYNC | winsound.SND_LOOP)
+                NightSound = True
+                DaySound = False
+
         if timeCycle >= DAGNACHTCYCLUSTIJD:
             spriteListNacht = []
             for location in spawnLocations:
@@ -373,6 +386,11 @@ def main():
                                        False, 0, 50, 3, resources, factory, None))
 
             timeCycle = 0
+            if(DaySound == False):
+                NightSound = False
+                DaySound = True
+                winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
+
             playsound.playsound(GATESOUND, False)
 
         if drop and equiplist[equiped] != None:
