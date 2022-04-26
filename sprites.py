@@ -250,8 +250,8 @@ class Sprite:
                 elif self.afbeeldingLink == "medkit3.png":
                     type = "H3"
                     consum = True
-                elif self.afbeeldingLink == "burger.png":
-                    type = "BURGER"
+                elif self.afbeeldingLink == "appel.png":
+                    type = "APPEL"
                     consum = True
                 elif self.afbeeldingLink == "stick.png":
                     type = "STICK"
