@@ -10,6 +10,8 @@ import sdl2.sdlttf
 import time
 import random
 
+muis_pos = [400,400]
+
 
 def rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, texture, r_straal, r_speler, offset):
     d_euclidisch = d_muur
@@ -202,6 +204,7 @@ class interactableDoor:
 
 
     def interact(self, renderer, factory, resources, interaction, p_speler, equiplist, equiped, setting, dramco):
+        global muis_pos
         if interaction:
             d_deur = np.array([self.p_door[0], self.p_door[1]])
             d_deur[0] -= p_speler[0]
@@ -229,6 +232,34 @@ class interactableDoor:
                     start = time.time_ns()
                     renderer.clear()
                     dramco.readData()
+
+                    events = sdl2.ext.get_events()
+                    for event in events:
+                        if event.type == sdl2.SDL_MOUSEMOTION:
+                            muis_pos[0] += event.motion.xrel
+                            if muis_pos[0] < 0:
+                                muis_pos[0] = 0
+                            elif muis_pos[0] > main.BREEDTE:
+                                muis_pos[0] = main.BREEDTE
+
+                            muis_pos[1] += event.motion.yrel
+                            if muis_pos[1] < 0:
+                                muis_pos[1] = 0
+                            elif muis_pos[1] > main.HOOGTE:
+                                muis_pos[1] = main.HOOGTE
+
+                        if event.type == sdl2.SDL_MOUSEBUTTONDOWN:
+                            if 0 <= muis_pos[0] <= main.BREEDTE // 2 - 25:
+                                if 0 <= muis_pos[1] <= main.HOOGTE // 2 - 25:
+                                    answer = self.answer1
+                                elif main.HOOGTE // 2 + 25 <= muis_pos[1] <= main.HOOGTE:
+                                    answer = self.answer3
+
+                            if  main.BREEDTE // 2 + 25 <= muis_pos[0] <= main.BREEDTE:
+                                if 0 <= muis_pos[1] <= main.HOOGTE // 2 - 25:
+                                    answer = self.answer2
+                                elif main.HOOGTE // 2 + 25 <= muis_pos[1] <= main.HOOGTE:
+                                    answer = self.answer4
 
                     renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[4])
 
@@ -263,7 +294,11 @@ class interactableDoor:
                         renderer.copy(correctText, dstrect=(main.BREEDTE//2 - 100, 400, 200, 100))
                         if time.time() - solvetime > 1:
                             inPuzzle = False
-
+                    renderer.copy(factory.from_image(resources.get_path("crosshair.png")),
+                                  srcrect=(0, 0, 50, 50),
+                                  dstrect=(
+                                  muis_pos[0] - main.CROSSHAIRGROOTTE // 2, muis_pos[1] - main.CROSSHAIRGROOTTE // 2,
+                                  main.CROSSHAIRGROOTTE, main.CROSSHAIRGROOTTE))
                     renderer.present()
                     if(time.time_ns()-start < 20000000):
                         time.sleep((time.time_ns()-start)/1000000000)
@@ -275,3 +310,5 @@ class interactableDoor:
                     if self.state == 1:
                         self.opening = 1
                     playsound.playsound(main.GATESOUND, False)
+
+
