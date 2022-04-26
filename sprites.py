@@ -164,10 +164,10 @@ class Sprite:
             # bepaal in welke kolom van het scherm dit snijpunt valt
             if -1 <= snijpunt <= 1 and cameraCoordinaten[1] > 0:
                 schermKolom = int(np.round((snijpunt + 1) * main.BREEDTE / 2))
-                d_sprite = np.linalg.norm(p_kolom)
                 h = (main.HOOGTE / (self.d_speler))
                 y1 = main.HOOGTE - int((main.HOOGTE - h) // 2) - 50
-                h = int(0.5 * h)
+                h = int(self.hoogte * h)
+                print(h, y1)
                 schermKolom = main.BREEDTE - 1 - schermKolom
                 if self.d_speler < z_buffer[schermKolom] or z_buffer[schermKolom] == 0:
                     self.drawn = True
