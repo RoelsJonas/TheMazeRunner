@@ -165,6 +165,7 @@ def main():
     consumableText = text.text("Hmm, that's good stuff!", BREEDTE // 2 - 200, 450, 400, 50)
     slaapText = text.text("Catching some Z's", BREEDTE // 2 - 200, 450, 400, 50)
     completionText = text.text("Congratulations! You have found a way out!", BREEDTE // 2 - 350, 450, 700, 60)
+
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites, stick,
      rock) = rendering.create_resources(renderer)
     while not start:
@@ -430,9 +431,11 @@ def main():
         completionText.renderText(delta, renderer, factory)
         rendering.render_FPS(delta, renderer, factory, ManagerFont)
         renderer.present()
+
         # print("Total frame time", (time.time() - frameStartTime))
 
         highlighted = [False, False, False, False]
+
         while crafting:
             dramController.readData()
             dramController.mapStamina(stamina)
@@ -442,12 +445,44 @@ def main():
              craftingIndex2) = rendering.render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
                                                           hp, hunger, stamina, highlighted, craftingIndex1,
                                                           craftingIndex2, craftables, dramController)
+
             start_time = time.time()
+
 
     # Sluit SDL2 af
     sdl2.ext.quit()
 
 
+
+
 # faah
 if __name__ == '__main__':
     main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

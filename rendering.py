@@ -132,6 +132,7 @@ def render_StartScreen(renderer, factory, muis_pos, resources, dramController):
             else:
                 selected += 1
                 pausecounter = 0
+
     if (selected == 0):
         StartScreen_render_Line1 = factory.from_text(Line1_text, fontmanager=ManagerFont2)
         StartScreen_render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont)
@@ -149,6 +150,7 @@ def render_StartScreen(renderer, factory, muis_pos, resources, dramController):
     renderer.copy(StartScreen_render_Line2, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 125, 250, 200))
     renderer.copy(StartScreen_render_Line3, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 + 25, 250, 200))
 
+
     if (dramController.NunChuk.buttonZ == 1 and pausecounter > 75):
         if (selected == 0):
             starten = True
@@ -161,7 +163,10 @@ def render_StartScreen(renderer, factory, muis_pos, resources, dramController):
             started = False
         pausecounter = 0
 
+
     return (muis_pos, afsluiten, starten, settings)
+
+
 
 
 def render_ResumeScreen(renderer, factory, muis_pos, resources, dramController):
@@ -209,6 +214,7 @@ def render_ResumeScreen(renderer, factory, muis_pos, resources, dramController):
                   srcrect=(0, 0, 50, 50),
                   dstrect=(muis_pos[0] - main.CROSSHAIRGROOTTE // 2, muis_pos[1] - main.CROSSHAIRGROOTTE // 2,
                            main.CROSSHAIRGROOTTE, main.CROSSHAIRGROOTTE))
+
 
     ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=main.kleuren[7])
     ManagerFont2 = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=main.kleuren[2])
@@ -260,6 +266,7 @@ def render_ResumeScreen(renderer, factory, muis_pos, resources, dramController):
             afsluiten = True
             started = False
         pausecounter = 0
+
     return (muis_pos, afsluiten, starten, settings)
 
 
@@ -381,6 +388,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources, setting, dramc
                 selected_Y += 1
                 pausecounter = 0
 
+
     if (dramco.NunChuk.joyX > 210):
         if (pausecounter > 25):
             if (selected_Y == 0):
@@ -404,6 +412,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources, setting, dramc
                 else:
                     selected_X_cross += 1
                     pausecounter = 0
+
     if (dramco.NunChuk.joyX < 60):
         if (pausecounter > 25):
             if (selected_Y == 0):
@@ -428,6 +437,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources, setting, dramc
                     selected_X_cross -= 1
                     pausecounter = 0
 
+
     if (selected_Y == 0):
         if (selected_X_sens == 0):
             main.SENSITIVITY = 0.01
@@ -438,6 +448,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources, setting, dramc
         if (selected_X_sens == 2):
             main.SENSITIVITY = 0.0001
             main.sens = "low"
+
     if (selected_Y == 1):
         if (selected_X_diff == 0):
             main.difficulty = "hard"
@@ -460,6 +471,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources, setting, dramc
             main.STAMINAREGENMODIFIER = 4
             main.HUNGERHPLOSSMODIFIER = 0.25
             main.HPREPLENISHMODIFIERER = 0.7
+
     if (selected_Y == 2):
         if (selected_X_cross == 0):
             main.CROSSHAIRGROOTTE = 50
@@ -474,6 +486,8 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources, setting, dramc
         if (dramco.NunChuk.buttonZ == 1):
             settings = False
             pausecounter = 0
+
+
 
     renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[5])
 
@@ -494,6 +508,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources, setting, dramc
     AverageCrosshair_text = "average"
     Small_text = "small"
     Back = "back"
+
 
     render_Azerty = factory.from_text(Azerty_text, fontmanager=ManagerFont)
     if (selected_Y == 0):
@@ -517,6 +532,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources, setting, dramc
         render_Crosshair = factory.from_text(Crosshair_text, fontmanager=ManagerFont)
         render_Back = factory.from_text(Back, fontmanager=ManagerFontBlue)
 
+
     if main.difficulty == "hard":
         render_Hard = factory.from_text(Hard_text, fontmanager=ManagerFontGreen)
     else:
@@ -529,6 +545,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources, setting, dramc
         render_Easy = factory.from_text(Easy_text, fontmanager=ManagerFontGreen)
     else:
         render_Easy = factory.from_text(Easy_text, fontmanager=ManagerFont)
+
 
     if main.sens == "high":
         render_High = factory.from_text(High_text, fontmanager=ManagerFontGreen)
@@ -543,6 +560,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources, setting, dramc
     else:
         render_Low = factory.from_text(Low_text, fontmanager=ManagerFont)
 
+
     if main.crosshair == "big":
         render_Big = factory.from_text(Big_text, fontmanager=ManagerFontGreen)
     else:
@@ -555,6 +573,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources, setting, dramc
         render_Small = factory.from_text(Small_text, fontmanager=ManagerFontGreen)
     else:
         render_Small = factory.from_text(Small_text, fontmanager=ManagerFont)
+
 
     renderer.copy(render_Sensitivity, dstrect=(main.BREEDTE // 2 - 400, main.HOOGTE // 2 - 325, 250, 100))
     renderer.copy(render_High, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 325, 125, 100))
@@ -587,7 +606,10 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources, setting, dramc
 
     renderer.copy(render_Back, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 + 100, 250, 200))
 
+
     return (settings, komtVanResumeScreen)
+
+
 
 
 def render_GameOVer(renderer, factory):
@@ -888,3 +910,25 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
 
     renderer.present()
     return (muis_pos, equiplist, equiped, inventory, highlighted, craftingIndex1, craftingIndex2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -10,6 +10,8 @@ import globals
 import time
 
 
+
+
 def interactions(hunger, hp, obj, interact, consumableText, p_speler, renderer, world_map, factory, dramController):
     if obj != None:
         if interact and obj.consumable:
@@ -25,9 +27,12 @@ def interactions(hunger, hp, obj, interact, consumableText, p_speler, renderer, 
             while statusKaart:
                 (statusKaart, muis_pos) = openKaart(renderer, p_speler, world_map, statusKaart, muis_pos, factory,
                                                     dramController)
+
+
             interact = False
 
     return (hunger, hp, consumableText, obj)
+
 
 
 class equip:
@@ -93,6 +98,7 @@ class equip:
         return (spriteList)
 
 
+
 def openKaart(renderer, p_speler, world_map, statusKaart, muis_pos, factory, dramController):
     p_speler_temp = np.array([p_speler[0] - 20, p_speler[1] - 15])
     renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[6])
@@ -105,6 +111,8 @@ def openKaart(renderer, p_speler, world_map, statusKaart, muis_pos, factory, dra
             elif world_map[j, i] > 1:
                 renderer.fill(((i - int(p_speler_temp[0])) * 20, (j - int(p_speler_temp[1])) * 20, 20, 20),
                               main.kleuren[1])
+
+
     key_states = sdl2.SDL_GetKeyboardState(None)
     events = sdl2.ext.get_events()
     for event in events:
@@ -131,4 +139,5 @@ def openKaart(renderer, p_speler, world_map, statusKaart, muis_pos, factory, dra
         statusKaart = False
     renderer.fill((main.BREEDTE // 2 + 5, main.HOOGTE // 2 + 5, 10, 10), main.kleuren[3])
     renderer.present()
+
     return (statusKaart, muis_pos)

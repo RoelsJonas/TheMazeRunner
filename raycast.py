@@ -83,3 +83,20 @@ def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, tim
                     z_buffer = z_buffer_nieuw
 
     return (d_muur, intersectie, horizontaal, z_buffer, door_map, texture)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

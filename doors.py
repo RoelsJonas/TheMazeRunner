@@ -314,3 +314,16 @@ class interactableDoor:
                     if self.state == 1:
                         self.opening = 1
                     playsound.playsound(main.GATESOUND, False)
+
+
+
+
+
+
+
+
+
+
+
+
+
