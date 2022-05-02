@@ -49,7 +49,7 @@ STAMINAREGENMODIFIER = 3  # snelheid waarmee stamina regenereert
 HUNGERHPLOSSMODIFIER = 0.5  # snelheid waarmee hp verloren gaat wanneer hunger = 0
 CROSSHAIRGROOTTE = 26
 SENSITIVITY = 0.001
-INTERACTIONDISTANCE = 1.4
+INTERACTIONDISTANCE = 1.8
 HPREPLENISHMODIFIERER = 0, 2
 
 CONSUMESOUND = "consumable.wav"
@@ -217,7 +217,7 @@ def main():
                   # medkit upgrade van level 1 naar level 2 (10 ==> 25 hp regen)
                   crafts.Craftable(renderer, factory, resources, "medkit3.png", "H2", "H2", "H3", 0, 60, 0),
                   # medkit upgrade van level 2 naar level 3 ( 25 ==> 60 hp regen)
-                  crafts.Craftable(renderer, factory, resources, "spear.png", "STICK", "ROCK", "SPEAR", 17, 0, 0),
+                  crafts.Craftable(renderer, factory, resources, "spear.png", "STICK", "ROCK", "SPEAR", 25, 0, 0),
                   # combinatie van stick en rock wordt speer (damage van 10 ==> 17) (van 5 maal slaan naar 3 maal slaan voor monster te vermoorden)
                   ]
     timeCycle = 50
