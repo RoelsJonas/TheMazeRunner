@@ -98,7 +98,7 @@ class DramController:
         vals = np.array(
             [self.IMU[2, 0] - self.IMU[1, 0], self.IMU[2, 1] - self.IMU[1, 1], self.IMU[2, 2] - self.IMU[1, 2]])
         # print(np.linalg.norm(vals))
-        if (np.linalg.norm(vals) > 10):
+        if (np.linalg.norm(vals) > 15):
             return True
         else:
             return False
