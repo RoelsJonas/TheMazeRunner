@@ -71,7 +71,7 @@ class Sprite:
                 p_sprite[0] -= p_speler[0]
                 p_sprite[1] -= p_speler[1]
 
-                if np.linalg.norm(p_sprite) > 1.2:
+                if np.linalg.norm(p_sprite) > 1.0:
                     norm = np.linalg.norm([p_sprite])
                     p_sprite /= norm
                     p_sprite_nieuw = np.array([self.p_sprite[0] - delta * self.MOVEMENTSPEED * p_sprite[0],
@@ -159,23 +159,18 @@ class Sprite:
 
             # bepaal in welke kolom van het scherm dit snijpunt valt
             if -1 <= snijpunt <= 1 and cameraCoordinaten[1] > 0:
-                schermKolom = int(((snijpunt + 1) * main.BREEDTE / 2))
-                h = (main.HOOGTE/ (self.d_speler))
-                #y1 = main.HOOGTE - int((main.HOOGTE - h) // 2)
-                y1 = int(float(main.HOOGTE) - (float(main.HOOGTE) - h) // 2 + float(main.HOOGTE) * float(main.MUURHOOGTE)/(2* self.d_speler))
-                h = int(self.hoogte * h)
+                schermKolom = int(np.round((snijpunt + 1) * main.BREEDTE / 2))
+                d_sprite = np.linalg.norm(p_kolom)
+                h = (main.HOOGTE / (self.d_speler))
+                y1 = main.HOOGTE - int((main.HOOGTE - h) // 2) - 100
+                h = int(0.5 * h)
                 schermKolom = main.BREEDTE - 1 - schermKolom
                 if self.d_speler < z_buffer[schermKolom] or z_buffer[schermKolom] == 0:
                     self.drawn = True
                     self.followTime = 7.5
-                    if(self.d_speler < 1.5):
-                        renderer.copy(self.afbeelding,
-                                      srcrect=(kolom, 0, 3, self.afbeelding.size[1]),
-                                      dstrect=(schermKolom, int(y1 - self.d_speler/1.5 * h), 3, h))
-                    else:
-                        renderer.copy(self.afbeelding,
-                                      srcrect=(kolom, 0, 2, self.afbeelding.size[1]),
-                                      dstrect=(schermKolom, int(y1 - h), 2, h))
+                    renderer.copy(self.afbeelding,
+                                  srcrect=(kolom, 0, 3, self.afbeelding.size[1]),
+                                  dstrect=(schermKolom, int(y1 - 1.5 * h), 3, int(1.5 * h)))
 
     def updateDistance(self, p_speler):
         d = np.array([self.p_sprite[0] - p_speler[0], self.p_sprite[1] - p_speler[1]])

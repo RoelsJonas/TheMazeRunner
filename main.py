@@ -56,7 +56,7 @@ CONSUMESOUND = "consumable.wav"
 GAMEOVERSOUND = "GameOverSound.wav"
 GATESOUND = "GateSound.wav"
 
-DAGNACHTCYCLUSTIJD = 360  # aantal seconden dat 1 dag nacht cyclus duurt
+DAGNACHTCYCLUSTIJD = 120  # aantal seconden dat 1 dag nacht cyclus duurt
 KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24  # om te weten om de hoeveel tijd de klok een uur moet opschuiven
 
 MUURHOOGTE = 1.5
@@ -233,15 +233,15 @@ def main():
     for location in spawnLocations:
         if difficulty == "hard":
             spriteListNacht.append(
-                sprites.Sprite(location[0], location[1], 1, 0, "spellun-sprite.png", 3, 1.9, 1, True, False, False,
+                sprites.Sprite(location[0], location[1], 1, 0, "spellun-sprite.png", 6, 1.5, 1, True, False, False,
                                False, 0, 50, 7, resources, factory, None))
         elif difficulty == "normal":
             spriteListNacht.append(
-                sprites.Sprite(location[0], location[1], 1, 0, "spellun-sprite.png", 3, 1.9, 1, True, False, False,
+                sprites.Sprite(location[0], location[1], 1, 0, "spellun-sprite.png", 6, 1.5, 1, True, False, False,
                                False, 0, 50, 5, resources, factory, None))
         elif difficulty == 'easy':
             spriteListNacht.append(
-                sprites.Sprite(location[0], location[1], 1, 0, "spellun-sprite.png", 3, 1.9, 1, True, False, False,
+                sprites.Sprite(location[0], location[1], 1, 0, "spellun-sprite.png", 6, 1.5, 1, True, False, False,
                                False, 0, 50, 3, resources, factory, None))
 
     # Blijf frames renderen tot we het signaal krijgen dat we moeten afsluiten
@@ -372,17 +372,17 @@ def main():
             for location in spawnLocations:
                 if difficulty == "hard":
                     spriteListNacht.append(
-                        sprites.Sprite(location[0], location[1], 1, 0, "spellun-sprite.png", 3, 1.9, 1, True, False,
+                        sprites.Sprite(location[0], location[1], 1, 0, "spellun-sprite.png", 3, 1.5, 1, True, False,
                                        False,
                                        False, 0, 50, 7, resources, factory, None))
                 elif difficulty == "normal":
                     spriteListNacht.append(
-                        sprites.Sprite(location[0], location[1], 1, 0, "spellun-sprite.png", 3, 1.9, 1, True, False,
+                        sprites.Sprite(location[0], location[1], 1, 0, "spellun-sprite.png", 3, 1.5, 1, True, False,
                                        False,
                                        False, 0, 50, 5, resources, factory, None))
                 elif difficulty == 'easy':
                     spriteListNacht.append(
-                        sprites.Sprite(location[0], location[1], 1, 0, "spellun-sprite.png", 3, 1.9, 1, True, False,
+                        sprites.Sprite(location[0], location[1], 1, 0, "spellun-sprite.png", 3, 1.5, 1, True, False,
                                        False,
                                        False, 0, 50, 3, resources, factory, None))
 
