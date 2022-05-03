@@ -47,7 +47,7 @@ def bewegen(delta, delta_p, r_speler, r_cameravlak, p_speler, door_map, world_ma
 
 
 def polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map, wall_map,
-            dramController):
+            dramController, hp):
     moet_afsluiten = False
     damage = 0
     delta_p = np.array([0, 0])
@@ -91,6 +91,9 @@ def polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, d
 
     if key_states[sdl2.SDL_SCANCODE_C]:
         r_speler *= -1
+
+    if key_states[sdl2.SDL_SCANCODE_L]:
+        hp = 100
 
     if equipedcounter >= 5:
         if (dramController.buttonBlue == 1):
@@ -156,7 +159,7 @@ def polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, d
         start = False
         settings = False
 
-    return (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting, start)
+    return (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting, start, hp)
 
 
 def draaien(r_speler, r_cameravlak, dramController):
