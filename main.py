@@ -404,9 +404,9 @@ def main():
                               srcrect=(0, 0, equiplist[equiped].image.size[0], equiplist[equiped].image.size[1]),
                               dstrect=(BREEDTE - 300, HOOGTE - 300, 250, 250))
 
-        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting, start) = movement.polling(
+        (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting, start, hp) = movement.polling(
             delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, door_map, world_map, wall_map,
-            dramController)
+            dramController, hp)
         (r_speler, r_cameravlak, geklikt) = movement.draaien(r_speler, r_cameravlak, dramController)
 
         if hunger > 0:
