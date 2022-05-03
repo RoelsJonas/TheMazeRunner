@@ -166,6 +166,10 @@ def render_StartScreen(renderer, factory, muis_pos, resources, dramController):
 
     return (muis_pos, afsluiten, starten, settings)
 
+def renderBlood(renderer, factory):
+    renderer.copy(factory.from_image("resources/BloodOverlay.png"),
+                  srcrect=(0, 0, 1280, 800),
+                  dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
 
 
 

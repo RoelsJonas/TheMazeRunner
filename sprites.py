@@ -222,6 +222,7 @@ class Sprite:
             p_sprite = np.linalg.norm(p_sprite)
             if self.d_speler < main.INTERACTIONDISTANCE:
                 hp -= self.DPS * delta
+                rendering.renderBlood(renderer, factory)
                 dramController.vibratorCounter = 5
                 dramController.vibrator = 1
 
