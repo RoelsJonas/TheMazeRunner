@@ -102,8 +102,8 @@ def render_StartScreen(renderer, factory, muis_pos, resources, dramController):
                     settings = True
                 elif main.HOOGTE // 2 - 200 <= muis_pos[1] <= main.HOOGTE // 2 - 100:
                     starten = True
-
-    renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[5])
+    renderer.copy(factory.from_image("resources/background.jpg"),
+                  dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
     renderer.copy(factory.from_image(resources.get_path("crosshair.png")),
                   srcrect=(0, 0, 50, 50),
                   dstrect=(muis_pos[0] - main.CROSSHAIRGROOTTE // 2, muis_pos[1] - main.CROSSHAIRGROOTTE // 2,
@@ -146,9 +146,11 @@ def render_StartScreen(renderer, factory, muis_pos, resources, dramController):
         StartScreen_render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont)
         StartScreen_render_Line3 = factory.from_text(Line3_text, fontmanager=ManagerFont2)
 
+
     renderer.copy(StartScreen_render_Line1, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 275, 250, 200))
     renderer.copy(StartScreen_render_Line2, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 125, 250, 200))
     renderer.copy(StartScreen_render_Line3, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 + 25, 250, 200))
+
 
 
     if (dramController.NunChuk.buttonZ == 1 and pausecounter > 75):
@@ -213,7 +215,8 @@ def render_ResumeScreen(renderer, factory, muis_pos, resources, dramController):
                     starten = True
                     started = False
 
-    renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[5])
+    renderer.copy(factory.from_image("resources/background.jpg"),
+                  dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
     renderer.copy(factory.from_image(resources.get_path("crosshair.png")),
                   srcrect=(0, 0, 50, 50),
                   dstrect=(muis_pos[0] - main.CROSSHAIRGROOTTE // 2, muis_pos[1] - main.CROSSHAIRGROOTTE // 2,
@@ -491,13 +494,12 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources, setting, dramc
             settings = False
             pausecounter = 0
 
-
-
-    renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[5])
+    renderer.copy(factory.from_image("resources/background.jpg"),
+                  dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
 
     ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=main.kleuren[7])
     ManagerFontGreen = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=main.kleuren[2])
-    ManagerFontBlue = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=main.kleuren[3])
+    ManagerFontBlue = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=main.kleuren[1])
     Sensitivity_text = "sensitivity:"
     Difficulty_text = "difficulty:"
     Crosshair_text = "crosshair:"
@@ -617,6 +619,8 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources, setting, dramc
 
 
 def render_GameOVer(renderer, factory):
+    renderer.copy(factory.from_image("resources/background.jpg"),
+                  dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
     ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(255, 0, 0))
     GameOver_text = "Game Over"
     GameOver_render = factory.from_text(GameOver_text, fontmanager=ManagerFont)

@@ -131,7 +131,8 @@ class Wall:
 def renderLoadingScreen(resources, factory, renderer, waarde, max, textindex):
     completion = int(100 * waarde / max)
     renderer.clear()
-    renderer.fill((0, 0, main.BREEDTE, main.HOOGTE), main.kleuren[5])
+    renderer.copy(factory.from_image("resources/background.jpg"),
+                  dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
     renderer.fill((main.BREEDTE // 2 - 100, main.HOOGTE // 2 - 50, 2 * completion, 100), main.kleuren[2])
     text1 = "Loading: " + str(completion) + "%"
     text2 = TIPS[textindex]
