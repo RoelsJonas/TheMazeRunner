@@ -21,17 +21,17 @@ def bewegen(delta, delta_p, r_speler, r_cameravlak, p_speler, door_map, world_ma
 
     if (world_map[int(p_speler_nieuw[1]), int(p_speler_nieuw[0])] == 2 or world_map[
         int(p_speler_nieuw[1]), int(p_speler_nieuw[0])] == 3) and door_map[
-        int(p_speler_nieuw[1]), int(p_speler_nieuw[0])].state == 0:
+        int(p_speler_nieuw[1]), int(p_speler_nieuw[0])].state != 1:
         p_speler = p_speler_nieuw
 
     elif (world_map[int(p_speler[1]), int(p_speler_nieuw[0])] == 2 or world_map[
         int(p_speler[1]), int(p_speler_nieuw[0])] == 3) and door_map[
-        int(p_speler[1]), int(p_speler_nieuw[0])].state == 0:
+        int(p_speler[1]), int(p_speler_nieuw[0])].state != 1:
         p_speler[0] = p_speler_nieuw[0]
 
     elif (world_map[int(p_speler_nieuw[1]), int(p_speler[0])] == 2 or world_map[
         int(p_speler_nieuw[1]), int(p_speler[0])] == 3) and door_map[
-        int(p_speler_nieuw[1]), int(p_speler[0])].state == 0:
+        int(p_speler_nieuw[1]), int(p_speler[0])].state != 1:
         p_speler[1] = p_speler_nieuw[1]
 
     elif world_map[int(p_speler[1]), int(p_speler_nieuw[0])] == 0 or world_map[
