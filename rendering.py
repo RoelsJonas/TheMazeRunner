@@ -614,7 +614,7 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources, setting, dramc
 
 def render_GameOVer(renderer, factory):
     ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(255, 0, 0))
-    GameOver_text = "Ge zijt dood"
+    GameOver_text = "Game Over"
     GameOver_render = factory.from_text(GameOver_text, fontmanager=ManagerFont)
     renderer.copy(GameOver_render, dstrect=(150, 200, 500, 200))
     renderer.present()
