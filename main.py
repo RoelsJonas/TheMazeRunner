@@ -64,8 +64,8 @@ KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24  # om te weten om de hoeveel tijd de klok
 MUURHOOGTE = 1.5
 
 # Constanten
-BREEDTE = 1920
-HOOGTE = 1080
+BREEDTE = 800
+HOOGTE = 600
 SPEED = 1.5
 SPRINT_SPEED = 2.25
 
@@ -419,7 +419,7 @@ def main():
             hp -= delta * HUNGERHPLOSSMODIFIER
 
         if hp <= 0:
-            rendering.render_GameOVer(renderer, factory)
+            rendering.render_GameOVer(renderer, factory,dramController)
             playsound.playsound(GAMEOVERSOUND, True)
             moet_afsluiten = True
 

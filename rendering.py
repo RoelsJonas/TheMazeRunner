@@ -618,13 +618,17 @@ def render_SettingsScreen(renderer, factory, muis_pos, resources, setting, dramc
 
 
 
-def render_GameOVer(renderer, factory):
+def render_GameOVer(renderer, factory,dramco):
+    dramco.vibrator = 0
+    dramco.readData()
+    dramco.sendData()
     renderer.copy(factory.from_image("resources/background.jpg"),
                   dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
     ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(255, 0, 0))
     GameOver_text = "Game Over"
     GameOver_render = factory.from_text(GameOver_text, fontmanager=ManagerFont)
     renderer.copy(GameOver_render, dstrect=(main.BREEDTE//2 - 250, main.HOOGTE//2 -100, 500, 200))
+
     renderer.present()
 
 def WinningScreen(renderer,factory):
