@@ -58,7 +58,7 @@ GATESOUND = "GateSound.wav"
 WEAPONSOUND = "resources/swish_4.wav"
 GHOSTSOUND = "resources/ghost.wav"
 
-DAGNACHTCYCLUSTIJD = 360  # aantal seconden dat 1 dag nacht cyclus duurt
+DAGNACHTCYCLUSTIJD = 120  # aantal seconden dat 1 dag nacht cyclus duurt
 KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24  # om te weten om de hoeveel tijd de klok een uur moet opschuiven
 
 MUURHOOGTE = 1.5
@@ -424,7 +424,7 @@ def main():
             moet_afsluiten = True
 
         if world_map[int(p_speler[1]), int(p_speler[0])] == 10:
-            completionText.textTimer = 10
+            rendering.WinningScreen(renderer,factory)
 
         rendering.dim_image(renderer, dimmer, timeCycle)
         rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist,
