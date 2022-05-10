@@ -49,7 +49,7 @@ STAMINAREGENMODIFIER = 3  # snelheid waarmee stamina regenereert
 HUNGERHPLOSSMODIFIER = 0.5  # snelheid waarmee hp verloren gaat wanneer hunger = 0
 CROSSHAIRGROOTTE = 26
 SENSITIVITY = 0.001
-INTERACTIONDISTANCE = 1.8
+INTERACTIONDISTANCE = 1.0
 HPREPLENISHMODIFIERER = 0, 2
 
 CONSUMESOUND = "consumable.wav"
