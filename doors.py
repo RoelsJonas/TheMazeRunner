@@ -148,10 +148,10 @@ class interactableDoor:
 
     def setPassCode(self, codeList, instructionsList):
         index = random.randint(0, 13)  # random index nemen om random vraag uit vraaglijst te nemen
-        self.passCode = codeList[index * 4]
         self.instructionText = instructionsList[index]
 
-        answerList = [codeList[index * 4], codeList[index * 4 + 1], codeList[index * 4 + 2], codeList[index * 4 + 3]]
+        answerList = [codeList[index * 4].strip(), codeList[index * 4 + 1], codeList[index * 4 + 2], codeList[index * 4 + 3]]
+        self.passCode = answerList[0]
         random.shuffle(answerList)
         self.answer1 = answerList[0]
         self.answer2 = answerList[1]
@@ -221,7 +221,7 @@ class interactableDoor:
                 ManagerFontGreen = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(0, 255, 0))
                 ManagerFontOrange = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50,
                                                          color=(255, 128, 0))
-                text = self.instructionText
+                text = self.instructionText.split(";")[0]
                 answerText1 = factory.from_text(self.answer1, fontmanager=ManagerFontBlue)
                 answerText2 = factory.from_text(self.answer2, fontmanager=ManagerFontGreen)
                 answerText3 = factory.from_text(self.answer3, fontmanager=ManagerFontRed)

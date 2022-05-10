@@ -147,9 +147,9 @@ def render_StartScreen(renderer, factory, muis_pos, resources, dramController):
         StartScreen_render_Line3 = factory.from_text(Line3_text, fontmanager=ManagerFont2)
 
 
-    renderer.copy(StartScreen_render_Line1, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 275, 250, 200))
-    renderer.copy(StartScreen_render_Line2, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 125, 250, 200))
-    renderer.copy(StartScreen_render_Line3, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 + 25, 250, 200))
+    renderer.copy(StartScreen_render_Line1, dstrect=(main.BREEDTE // 2 - 150, main.HOOGTE // 2 - 275, 300, 200))
+    renderer.copy(StartScreen_render_Line2, dstrect=(main.BREEDTE // 2 - 150, main.HOOGTE // 2 - 125, 300, 200))
+    renderer.copy(StartScreen_render_Line3, dstrect=(main.BREEDTE // 2 - 150, main.HOOGTE // 2 + 25, 300, 200))
 
 
 
@@ -258,9 +258,9 @@ def render_ResumeScreen(renderer, factory, muis_pos, resources, dramController):
         StartScreen_render_Line2 = factory.from_text(Line2_text, fontmanager=ManagerFont)
         StartScreen_render_Line3 = factory.from_text(Line3_text, fontmanager=ManagerFont2)
 
-    renderer.copy(StartScreen_render_Line1, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 275, 250, 200))
-    renderer.copy(StartScreen_render_Line2, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 - 125, 250, 200))
-    renderer.copy(StartScreen_render_Line3, dstrect=(main.BREEDTE // 2 - 125, main.HOOGTE // 2 + 25, 250, 200))
+    renderer.copy(StartScreen_render_Line1, dstrect=(main.BREEDTE // 2 - 150, main.HOOGTE // 2 - 275, 300, 200))
+    renderer.copy(StartScreen_render_Line2, dstrect=(main.BREEDTE // 2 - 150, main.HOOGTE // 2 - 125, 300, 200))
+    renderer.copy(StartScreen_render_Line3, dstrect=(main.BREEDTE // 2 - 150, main.HOOGTE // 2 + 25, 300, 200))
 
     if (dramController.NunChuk.buttonZ == 1 and pausecounter > 75):
         if (selected == 0):
@@ -918,25 +918,3 @@ def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped,
 
     renderer.present()
     return (muis_pos, equiplist, equiped, inventory, highlighted, craftingIndex1, craftingIndex2)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

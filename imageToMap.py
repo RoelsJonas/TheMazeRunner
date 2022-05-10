@@ -25,7 +25,7 @@ TIPS = ["Watch out! At night the doors will close and monster will appear!",
         "To move and look around, use the joystick on the NunChuk.",
         "To switch between items, use the green and blue button.",
         "To go to the resume screen, use the red button.",
-        "To consume an item, shake the controlller! But not to hard, some of the components might break!",
+        "Shake the controller to consume an item! But not to hard, some of the components might break!",
         "To sprint, press the c button on the NunChuk."
         ]
 
@@ -139,5 +139,5 @@ def renderLoadingScreen(resources, factory, renderer, waarde, max, textindex):
     text = factory.from_text(text1, fontmanager=resources)
     renderer.copy(text, dstrect=(main.BREEDTE // 2 - 100, main.HOOGTE // 2 - 50, 200, 100))
     text = factory.from_text(text2, fontmanager=resources)
-    renderer.copy(text, dstrect=(main.BREEDTE // 2 - len(text2) * 4, main.HOOGTE - 100, len(text2) * 8, 60))
+    renderer.copy(text, dstrect=(main.BREEDTE // 2 - len(text2) * 4, main.HOOGTE - 100, len(text2) * 8, 50))
     renderer.present()
