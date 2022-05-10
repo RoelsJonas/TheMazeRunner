@@ -56,7 +56,7 @@ CONSUMESOUND = "consumable.wav"
 GAMEOVERSOUND = "GameOverSound.wav"
 GATESOUND = "GateSound.wav"
 
-DAGNACHTCYCLUSTIJD = 360  # aantal seconden dat 1 dag nacht cyclus duurt
+DAGNACHTCYCLUSTIJD = 120  # aantal seconden dat 1 dag nacht cyclus duurt
 KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24  # om te weten om de hoeveel tijd de klok een uur moet opschuiven
 
 MUURHOOGTE = 1.5
@@ -161,10 +161,10 @@ def main():
     renderer = sdl2.ext.Renderer(window)
 
     tekstList = []
-    beginText = text.text("Who am I? What am I doing here?!?", BREEDTE // 2 - 350, 450, 700, 40)
-    consumableText = text.text("Hmm, that's good stuff!", BREEDTE // 2 - 225, 450, 250, 50)
-    slaapText = text.text("Catching some Z's", BREEDTE // 2 - 225, 450, 450, 50)
-    completionText = text.text("Congratulations! You have found a way out!", BREEDTE // 2 - 350, 450, 700, 60)
+    beginText = text.text("Who am I? What am I doing here?!?", BREEDTE // 2 - 350, HOOGTE - 200, 700, 40, timerval=5)
+    consumableText = text.text("Hmm, that's good stuff!", BREEDTE // 2 - 225, HOOGTE - 150, 450, 50)
+    slaapText = text.text("Catching some Z's", BREEDTE // 2 - 225, HOOGTE - 200, 450, 50)
+    completionText = text.text("Congratulations! You have found a way out!", BREEDTE // 2 - 350, HOOGTE - 150, 700, 60)
 
     (resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites, stick,
      rock) = rendering.create_resources(renderer)

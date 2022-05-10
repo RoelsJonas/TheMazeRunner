@@ -17,7 +17,7 @@ class text:
     b = 0
     h = 0
 
-    def __init__(self, textFile, x, y, b, h):
+    def __init__(self, textFile, x, y, b, h, timerval = 10):
         self.textFile = textFile
         self.textTimer = 0
         self.font = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(0, 0, 0))
@@ -25,6 +25,7 @@ class text:
         self.y = y
         self.b = b
         self.h = h
+        self.timerVal = timerval
 
     def renderText(self, delta, renderer, factory):
         if(self.textTimer > 0):
@@ -33,6 +34,6 @@ class text:
             self.textTimer -= delta
 
     def display(self):
-        self.textTimer = 10
+        self.textTimer = self.timerVal
 
 
