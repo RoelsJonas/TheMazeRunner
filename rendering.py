@@ -627,6 +627,15 @@ def render_GameOVer(renderer, factory):
     renderer.copy(GameOver_render, dstrect=(150, 200, 500, 200))
     renderer.present()
 
+def WinningScreen(renderer,factory):
+    renderer.copy(factory.from_image("resources/background.jpg"),
+                  dstrect=(0,0,main.BREEDTE,main.HOOGTE))
+    ManagerFont = sdl2.ext.FontManager(font_path="resources/OpenSans.ttf", size=50, color=(255, 0, 0))
+    Winning_text = "You have found a way out of the maze!"
+    Winning_render = factory.from_text(Winning_text,fontmanager=ManagerFont)
+    renderer.copy(Winning_render,dstrect=(150,200,500,200))
+    renderer.copy(factory.from_text("Congratulations!",fontmanager=ManagerFont),dstrect=(150,400,500,200))
+    renderer.present()
 
 def render_FPS(delta, renderer, factory, ManagerFont):
     text_ = "FPS:" + str(np.round(1 / delta))

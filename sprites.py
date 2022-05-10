@@ -280,6 +280,7 @@ class Sprite:
 
         if self.volgt:
             if self.hp <= 0:
+                playsound.playsound(main.GHOSTSOUND, False)
                 destroy = True
 
             p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
