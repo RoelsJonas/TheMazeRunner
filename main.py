@@ -55,6 +55,8 @@ HPREPLENISHMODIFIERER = 0, 2
 CONSUMESOUND = "consumable.wav"
 GAMEOVERSOUND = "GameOverSound.wav"
 GATESOUND = "GateSound.wav"
+WEAPONSOUND = "resources/swish_4.wav"
+GHOSTSOUND = "resources/ghost.wav"
 
 DAGNACHTCYCLUSTIJD = 360  # aantal seconden dat 1 dag nacht cyclus duurt
 KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24  # om te weten om de hoeveel tijd de klok een uur moet opschuiven
@@ -343,6 +345,7 @@ def main():
 
         if (geklikt or dramController.detectMotion()) and timeToAttack < 0 and equiplist[equiped] != None and equiplist[
             equiped].type in weaponList:
+            playsound.playsound(WEAPONSOUND, False)
             timeToAttack = 1
 
         timeToAttack -= delta
