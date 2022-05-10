@@ -58,7 +58,7 @@ GATESOUND = "GateSound.wav"
 WEAPONSOUND = "resources/swish_4.wav"
 GHOSTSOUND = "resources/ghost.wav"
 
-DAGNACHTCYCLUSTIJD = 120  # aantal seconden dat 1 dag nacht cyclus duurt
+DAGNACHTCYCLUSTIJD = 240  # aantal seconden dat 1 dag nacht cyclus duurt
 KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24  # om te weten om de hoeveel tijd de klok een uur moet opschuiven
 
 MUURHOOGTE = 1.5
@@ -212,12 +212,12 @@ def main():
     start_time = time.time()  # wanneer oppakbare sprite wordt opgepakt gaat hij uit de spritelist en in de equiplist
     equiplist = [
                  equips.equip(factory, resources, "appel.png", 0, 25, 0, True, "APPEL"),
-                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"),
-                 equips.equip(factory, resources, "medkit.png", 0, 0, 10, True, "H1"), None]
+                 equips.equip(factory, resources, "medkit.png", 0, 0, 25, True, "H1"),
+                 equips.equip(factory, resources, "medkit.png", 0, 0, 25, True, "H1"), None]
 
-    craftables = [crafts.Craftable(renderer, factory, resources, "medkit2.png", "H1", "H1", "H2", 0, 25, 0),
+    craftables = [crafts.Craftable(renderer, factory, resources, "medkit2.png", "H1", "H1", "H2", 0, 50, 0),
                   # medkit upgrade van level 1 naar level 2 (10 ==> 25 hp regen)
-                  crafts.Craftable(renderer, factory, resources, "medkit3.png", "H2", "H2", "H3", 0, 60, 0),
+                  crafts.Craftable(renderer, factory, resources, "medkit3.png", "H2", "H2", "H3", 0, 100, 0),
                   # medkit upgrade van level 2 naar level 3 ( 25 ==> 60 hp regen)
                   crafts.Craftable(renderer, factory, resources, "spear.png", "STICK", "ROCK", "SPEAR", 25, 0, 0),
                   # combinatie van stick en rock wordt speer (damage van 10 ==> 17) (van 5 maal slaan naar 3 maal slaan voor monster te vermoorden)

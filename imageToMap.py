@@ -81,7 +81,7 @@ def generateWorld(afbeelding, factory, resources, textures, renderer, fontManage
             elif b_in[i, j] == 50 and r_in[i, j] == 117 and g_in[i, j] == 50:
                 world_map[i, j] = 0
                 spriteList.append(
-                    sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "medkit.png", 0.5, 0.5, 1, False, False, False, True, 0, 10,
+                    sprites.Sprite(j + 0.5, i + 0.5, 1, 0, "medkit.png", 0.5, 0.5, 1, False, False, False, True, 0, 25,
                                    0, resources, factory, None))
 
             elif r_in[i, j] == 78 and g_in[i, j] == 168 and b_in[i, j] == 153:
