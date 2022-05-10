@@ -94,7 +94,8 @@ def polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, d
 
     if key_states[sdl2.SDL_SCANCODE_L]:
         hp = 100
-
+    if key_states[sdl2.SDL_SCANCODE_N]:
+        hp = 0
     if equipedcounter >= 5:
         if (dramController.buttonBlue == 1):
             if (equiped == 3):
@@ -155,9 +156,13 @@ def polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, d
     if key_states[sdl2.SDL_SCANCODE_ESCAPE]:
         start = False
         settings = False
+        dramController.vibrator = 0
+        dramController.sendData()
     if (dramController.buttonRed == 1):
         start = False
         settings = False
+        dramController.vibrator = 0
+        dramController.sendData()
 
     return (p_speler, moet_afsluiten, stamina, hunger, equiped, interact, pakOp, drop, crafting, start, hp)
 

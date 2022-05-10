@@ -49,7 +49,7 @@ STAMINAREGENMODIFIER = 3  # snelheid waarmee stamina regenereert
 HUNGERHPLOSSMODIFIER = 0.5  # snelheid waarmee hp verloren gaat wanneer hunger = 0
 CROSSHAIRGROOTTE = 26
 SENSITIVITY = 0.001
-INTERACTIONDISTANCE = 1.8
+INTERACTIONDISTANCE = 1.0
 HPREPLENISHMODIFIERER = 0, 2
 
 CONSUMESOUND = "consumable.wav"
@@ -419,7 +419,7 @@ def main():
             hp -= delta * HUNGERHPLOSSMODIFIER
 
         if hp <= 0:
-            rendering.render_GameOVer(renderer, factory)
+            rendering.render_GameOVer(renderer, factory,dramController)
             playsound.playsound(GAMEOVERSOUND, True)
             moet_afsluiten = True
 
