@@ -64,8 +64,8 @@ KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24  # om te weten om de hoeveel tijd de klok
 MUURHOOGTE = 1.5
 
 # Constanten
-BREEDTE = 800
-HOOGTE = 600
+BREEDTE = 1920
+HOOGTE = 1080
 SPEED = 1.5
 SPRINT_SPEED = 2.25
 
