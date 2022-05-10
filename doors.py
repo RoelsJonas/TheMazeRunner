@@ -232,6 +232,7 @@ class interactableDoor:
                     start = time.time_ns()
                     renderer.clear()
                     dramco.readData()
+                    dramco.sendData()
 
                     events = sdl2.ext.get_events()
                     for event in events:
