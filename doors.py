@@ -202,8 +202,10 @@ class interactableDoor:
 
         return (z_buffer)
 
-    def interact(self, renderer, factory, resources, interaction, p_speler, equiplist, equiped, setting, dramco):
+    def interact(self, renderer, factory, resources, interaction, p_speler, equiplist, equiped, setting, dramco, hp):
         global muis_pos
+        waitingTime = 0
+        solvetime = 0
         if interaction:
             d_deur = np.array([self.p_door[0], self.p_door[1]])
             d_deur[0] -= p_speler[0]
@@ -229,6 +231,7 @@ class interactableDoor:
                 textRender = factory.from_text(text, fontmanager=ManagerFont)
                 pressTime = 0
                 while inPuzzle:
+                    answer = ""
                     start = time.time_ns()
                     renderer.clear()
                     dramco.readData()
@@ -274,13 +277,13 @@ class interactableDoor:
 
                     renderer.copy(textRender, dstrect=(main.BREEDTE // 2 - len(text) * 4, 100, len(text) * 8, 60))
                     renderer.copy(answerText1,
-                                  dstrect=(main.BREEDTE // 4 - len(text) * 2, 180, len(self.answer1) * 16, 60))
+                                  dstrect=(main.BREEDTE // 4 - len(self.answer1) * 8, 180, len(self.answer1) * 16, 60))
                     renderer.copy(answerText2,
-                                  dstrect=(main.BREEDTE // 2 + len(text) * 2, 180, len(self.answer2) * 16, 60))
+                                  dstrect=(3*main.BREEDTE // 4 - len(self.answer2) * 8, 180, len(self.answer2) * 16, 60))
                     renderer.copy(answerText3,
-                                  dstrect=(main.BREEDTE // 4 - len(text) * 2, 360, len(self.answer3) * 16, 60))
+                                  dstrect=(main.BREEDTE // 4 - len(self.answer3) * 8, 360, len(self.answer3) * 16, 60))
                     renderer.copy(answerText4,
-                                  dstrect=(main.BREEDTE // 2 + len(text) * 2, 360, len(self.answer4) * 16, 60))
+                                  dstrect=(3*main.BREEDTE // 4 - len(self.answer4) * 8, 360, len(self.answer4) * 16, 60))
                     # [buttonBlue, buttonGreen, ButtonRed, buttonOrange]
                     if (dramco.buttonBlue == 1):
                         answer = self.answer1
@@ -296,9 +299,20 @@ class interactableDoor:
                             solvetime = time.time()
                             solved = True
                         correctText = factory.from_text("Correct!", fontmanager=ManagerFont)
+
+                    if time.time() - solvetime < 1:
                         renderer.copy(correctText, dstrect=(main.BREEDTE // 2 - 100, 400, 200, 100))
-                        if time.time() - solvetime > 1:
-                            inPuzzle = False
+                    if time.time() - solvetime > 1 and solved:
+                        inPuzzle = False
+                    if (answer != self.passCode and answer != ""):
+                        waitingTime = time.time()
+                        wrongText = factory.from_text("Wrong!", fontmanager=ManagerFont)
+                        if hp >= 21.0:
+                            hp -= 20.0
+                        dramco.mapHealth(hp)
+                    if time.time() - waitingTime < 1:
+                        renderer.copy(wrongText, dstrect=(main.BREEDTE // 2 - 100, 400, 200, 100))
+
                     renderer.copy(factory.from_image(resources.get_path("crosshair.png")),
                                   srcrect=(0, 0, 50, 50),
                                   dstrect=(
@@ -315,6 +329,53 @@ class interactableDoor:
                     if self.state == 1:
                         self.opening = 1
                     playsound.playsound(main.GATESOUND, False)
+
+        return (hp)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

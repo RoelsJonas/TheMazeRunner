@@ -224,7 +224,7 @@ def main():
                   ]
     timeCycle = 50
 
-    winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
+    winsound.PlaySound('resources/TownTheme.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
 
     spriteList.append(
         sprites.Sprite(150.0, 137.0, 1, 1, "bonfire.png", 0.5, 0.5, 1, False, False, False, False, 0, 0, 0, resources,
@@ -309,9 +309,9 @@ def main():
 
         for i in range(len(doorLocations)):
             if world_map[doorLocations[i][0], doorLocations[i][1]] == 3:
-                door_map[doorLocations[i][0], doorLocations[i][1]].interact(renderer, factory, resources, pakOp,
+                hp = door_map[doorLocations[i][0], doorLocations[i][1]].interact(renderer, factory, resources, pakOp,
                                                                             p_speler, equiplist, equiped, setting,
-                                                                            dramController)
+                                                                            dramController, hp)
                 door_map[doorLocations[i][0], doorLocations[i][1]].updateState(delta)
 
         for sprite in spriteList:
@@ -393,7 +393,7 @@ def main():
             if(DaySound == False):
                 NightSound = False
                 DaySound = True
-                winsound.PlaySound('muziek.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
+                winsound.PlaySound('resources/TownTheme.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
 
             playsound.playsound(GATESOUND, False)
 
