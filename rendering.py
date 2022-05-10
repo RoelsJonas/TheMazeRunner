@@ -643,7 +643,7 @@ def WinningScreen(renderer,factory):
     renderer.present()
 
 def render_FPS(delta, renderer, factory, ManagerFont):
-    text_ = "FPS:" + str(np.round(1 / delta))
+    text_ = "FPS:" + str(int(np.round(1 /- delta)))
     text = factory.from_text(text_, fontmanager=ManagerFont)
     renderer.copy(text, dstrect=(0, 0, 50, 25))
 
