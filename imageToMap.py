@@ -2,11 +2,9 @@ from PIL import Image
 import numpy as np
 import doors
 import main
-import globals
 import random
 import time
 import sprites
-import globals
 
 MUUR = 1
 TIMEDDEUR = 2

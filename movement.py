@@ -3,7 +3,6 @@ import sdl2
 import sdl2.ext
 import sdl2.sdlttf
 import main
-import doors
 
 equipedcounter = 5
 
@@ -195,32 +194,3 @@ def draaien(r_speler, r_cameravlak, dramController):
         r_cameravlak = np.array([r_speler[1], -1 * r_speler[0]])
 
     return (r_speler, r_cameravlak, muisGeklikt)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -117,11 +117,11 @@ kleuren = [
 my_file_code = open("codeList.txt", "r")
 code_content = my_file_code.read()
 codeList = code_content.split(",")
-my_file_code.close
+my_file_code.close()
 
 my_file = open("instructionsList.txt", "r")
 instructionsList = my_file.readlines()
-my_file.close
+my_file.close()
 
 
 

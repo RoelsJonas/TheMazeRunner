@@ -1,12 +1,9 @@
-import math
-import time
 import numpy as np
 import sdl2
 import sdl2.ext
 import sdl2.sdlttf
 import main
-import sprites
-import equips
+
 
 pausecounter = 100
 craftingcounter = 100

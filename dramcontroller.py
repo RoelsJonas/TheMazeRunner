@@ -1,5 +1,4 @@
 import serial
-import time
 import numpy as np
 from serial.tools.list_ports import comports
 

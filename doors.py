@@ -1,7 +1,4 @@
 import numpy as np
-
-import dramcontroller
-import keyBoardInput
 import main
 import playsound
 import sdl2
