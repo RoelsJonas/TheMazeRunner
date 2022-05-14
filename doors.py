@@ -17,8 +17,8 @@ def rendering(renderer, window, kolom, d_muur, intersectie, horizontaal, texture
     d_euclidisch = d_muur
     d_muur = d_euclidisch * np.dot(r_speler, r_straal)
 
-    hoogte = main.MUURHOOGTE * (window.size[1] / d_muur)
-    y1 = int((window.size[1] - hoogte) // 2) - 100
+    hoogte = main.MUURHOOGTE * (main.HOOGTE / d_muur)
+    y1 = int((main.HOOGTE - hoogte) // 2) - 100
     textuur_y = 0
     textuur_hoogte = int(texture.size[1])
 

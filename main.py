@@ -150,8 +150,9 @@ def main():
     dramController = dramcontroller.DramController()
 
     # Maak een venster aan om de game te renderen
-    window = sdl2.ext.Window("The Maze Runner", size=(BREEDTE, HOOGTE))
+    window = sdl2.ext.Window("The Maze Runner", size=(BREEDTE, HOOGTE), flags=sdl2.SDL_WINDOW_FULLSCREEN_DESKTOP)
     window.show()
+
 
     # creer settingsobjectdingetje
     setting = settings.setting(True)
@@ -161,6 +162,7 @@ def main():
 
     # Maak een renderer aan zodat we in ons venster kunnen renderen
     renderer = sdl2.ext.Renderer(window)
+    sdl2.render.SDL_RenderSetLogicalSize(renderer.renderer, BREEDTE, HOOGTE)
 
     tekstList = []
     beginText = text.text("Who am I? What am I doing here?!?", BREEDTE // 2 - 350, HOOGTE - 200, 700, 40, timerval=5)
@@ -280,7 +282,7 @@ def main():
         rendering.render_lucht_en_vloer(renderer, timeCycle)
         # Render de huidige frame
 
-        for kolom in range(0, window.size[0]):
+        for kolom in range(0, BREEDTE):
             r_straal = raycast.bereken_r_straal(r_speler, r_cameravlak, kolom)
 
             r_straal = raycast.bereken_r_straal(r_speler, r_cameravlak, kolom)

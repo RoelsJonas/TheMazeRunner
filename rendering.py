@@ -22,12 +22,12 @@ selected_X_cross = 1
 
 
 def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist, timeToAttack):
-    offset = ((main.BREEDTE - 800) // 2)
+    offset = 0
     renderer.fill((0, main.HOOGTE - 75, main.BREEDTE, main.HOOGTE), main.kleuren[5])
     renderer.fill((offset + 69, main.HOOGTE - 60, int(hp), 47), main.kleuren[10])
     renderer.fill((offset + 688, main.HOOGTE - 65, int(stamina), 22), main.kleuren[9])
     renderer.fill((offset + 688, main.HOOGTE - 35, int(hunger), 22), main.kleuren[8])
-    renderer.copy(hud, srcrect=(0, 0, 800, 75), dstrect=(offset, main.HOOGTE - 75, 800, 75))
+    renderer.copy(hud, srcrect=(0, 0, 800, 75), dstrect=(offset, main.HOOGTE - main.HOOGTE//8, main.BREEDTE, main.HOOGTE//8))
     renderer.copy(crosshair, srcrect=(0, 0, 50, 50), dstrect=(
     (main.BREEDTE - main.CROSSHAIRGROOTTE) // 2, (main.HOOGTE - main.CROSSHAIRGROOTTE) // 2, main.CROSSHAIRGROOTTE,
     main.CROSSHAIRGROOTTE))
@@ -51,8 +51,8 @@ def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, text
     d_euclidisch = d_muur
     d_muur = d_euclidisch * np.dot(r_speler, r_straal)
 
-    hoogte = main.MUURHOOGTE * (window.size[1] / d_muur)
-    y1 = int((window.size[1] - hoogte) // 2) - 100
+    hoogte = main.MUURHOOGTE * (main.HOOGTE / d_muur)
+    y1 = int((main.HOOGTE - hoogte) // 2) - main.HOOGTE//6
     textuur_y = 0
     textuur_hoogte = int(texture.size[1])
 
