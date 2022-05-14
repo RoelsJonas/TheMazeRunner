@@ -37,3 +37,6 @@ class text:
         self.textTimer = self.timerVal
 
 
+
+
+

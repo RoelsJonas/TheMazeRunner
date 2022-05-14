@@ -342,3 +342,6 @@ class Sprite:
                     destroy = True
 
         return (hunger, hp, destroy, equiplist, timeCycle)
+
+
+
