@@ -207,7 +207,7 @@ class interactableDoor:
             d_deur = np.array([self.p_door[0], self.p_door[1]])
             d_deur[0] -= p_speler[0]
             d_deur[1] -= p_speler[1]
-            d_deur = np.linalg.norm(d_deur)
+            d_deur = (d_deur[0]**2 + d_deur[1]**2)**0.5
 
             if d_deur < 1.25:
                 inPuzzle = True

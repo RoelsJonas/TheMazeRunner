@@ -1,5 +1,7 @@
+import cProfile
 import math
 import time
+import timeit
 import numpy as np
 import sdl2
 import sdl2.ext
@@ -72,14 +74,14 @@ SPRINT_SPEED = 2.25
 # Globale variabelen
 
 # positie van de speler
-p_speler = np.array([510 + 1 / math.sqrt(2), 512 - 1 / math.sqrt(2)])
+#p_speler = np.array([510 + 1 / math.sqrt(2), 512 - 1 / math.sqrt(2)])
 # p_speler = np.array([5,0.75])
 
 # richting waarin de speler kijkt
-r_speler = np.array([1 / math.sqrt(2), -1 / math.sqrt(2)])
+#r_speler = np.array([1 / math.sqrt(2), -1 / math.sqrt(2)])
 
 # cameravlak
-r_cameravlak = np.array([r_speler[1], -1 * r_speler[0]])
+#r_cameravlak = np.array([r_speler[1], -1 * r_speler[0]])
 
 D_CAMERA = 1 / np.tan(np.deg2rad(90) / 2)
 
@@ -128,13 +130,10 @@ my_file.close()
 def main():
     # Initialiseer de SDL2 bibliotheek
     sdl2.ext.init()
-    global p_speler
     global stamina
     global hp
     global hunger
     global moet_afsluiten
-    global r_speler
-    global r_cameravlak
     global start
     global komtVanResumeScreen
     global settingsbool
@@ -144,7 +143,9 @@ def main():
     global sens
     global NightSound
     global DaySound
-
+    p_speler = np.array([510 + 1 / math.sqrt(2), 512 - 1 / math.sqrt(2)])
+    r_speler = np.array([1 / math.sqrt(2), -1 / math.sqrt(2)])
+    r_cameravlak = np.array([r_speler[1], -1 * r_speler[0]])
     muis_pos = np.array([BREEDTE // 2, HOOGTE // 2])
 
     dramController = dramcontroller.DramController()
@@ -458,5 +459,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
-
+    cProfile.run("main()")

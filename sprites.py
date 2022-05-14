@@ -68,8 +68,8 @@ class Sprite:
                 p_sprite[0] -= p_speler[0]
                 p_sprite[1] -= p_speler[1]
 
-                if np.linalg.norm(p_sprite) > 1.0:
-                    norm = np.linalg.norm([p_sprite])
+                norm = (p_sprite[0]**2 + p_sprite[1]**2)**0.5
+                if norm > 1.0:
                     p_sprite /= norm
                     p_sprite_nieuw = np.array([self.p_sprite[0] - delta * self.MOVEMENTSPEED * p_sprite[0],
                                                self.p_sprite[1] - delta * self.MOVEMENTSPEED * p_sprite[1]])
@@ -119,7 +119,7 @@ class Sprite:
             # bepaal in welke kolom van het scherm dit snijpunt valt
             if -1 <= snijpunt <= 1 and cameraCoordinaten[1] > 0:
                 schermKolom = int(np.round((snijpunt + 1) * main.BREEDTE / 2))
-                d_sprite = np.linalg.norm(p_kolom)
+                d_sprite = (p_kolom[0]**2 + p_kolom[1]**2)**0.5
                 h = (main.HOOGTE / (self.d_speler))
                 y1 = main.HOOGTE - int((main.HOOGTE - h) // 2) - 100
                 h = int(0.5 * h)
@@ -159,8 +159,8 @@ class Sprite:
         if -1 <= snijpunt <= 1 and cameraCoordinaten[1] > 0:
             eerste = True
             schermKolom = int(np.round((snijpunt + 1) * main.BREEDTE / 2))
-            d_sprite = np.linalg.norm(p_kolom)
-            h = (main.HOOGTE / (self.d_speler))
+            d_sprite = (p_kolom[0]**2 + p_kolom[1]**2)**0.5
+            h = (main.HOOGTE / self.d_speler)
             y1 = main.HOOGTE - int((main.HOOGTE - h) // 2) - 100
             h = int(0.5 * h)
             schermKolom = main.BREEDTE - 1 - schermKolom
@@ -190,7 +190,7 @@ class Sprite:
         if -1 <= snijpunt <= 1 and cameraCoordinaten[1] > 0:
             laatste = True
             schermKolom = int(np.round((snijpunt + 1) * main.BREEDTE / 2))
-            d_sprite = np.linalg.norm(p_kolom)
+            d_sprite = (p_kolom[0]**2 + p_kolom[1]**2)**0.5
             h = (main.HOOGTE / (self.d_speler))
             y1 = main.HOOGTE - int((main.HOOGTE - h) // 2) - 100
             h = int(0.5 * h)
@@ -223,7 +223,7 @@ class Sprite:
                 # bepaal in welke kolom van het scherm dit snijpunt valt
                 if -1 <= snijpunt <= 1 and cameraCoordinaten[1] > 0:
                     schermKolom = int(np.round((snijpunt + 1) * main.BREEDTE / 2))
-                    d_sprite = np.linalg.norm(p_kolom)
+                    d_sprite = (p_kolom[0]**2 + p_kolom[1]**2)**0.5
                     h = (main.HOOGTE / (self.d_speler))
                     y1 = main.HOOGTE - int((main.HOOGTE - h) // 2) - 100
                     h = int(0.5 * h)
@@ -237,7 +237,7 @@ class Sprite:
 
     def updateDistance(self, p_speler):
         d = np.array([self.p_sprite[0] - p_speler[0], self.p_sprite[1] - p_speler[1]])
-        self.d_speler = np.linalg.norm(d)
+        self.d_speler = (d[0]**2 + d[1]**2)**0.5
 
     def checkInteractie(self, hunger, hp, p_speler, delta, geklikt, timeToAttack, interaction, equiplist, equiped,
                         factory, timeCycle, resources, renderer, dramController):
@@ -252,7 +252,7 @@ class Sprite:
             p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
             p_sprite[0] -= p_speler[0]
             p_sprite[1] -= p_speler[1]
-            p_sprite = np.linalg.norm(p_sprite)
+            p_sprite = (p_sprite[0]**2 + p_sprite[1]**2)**0.5
             if p_sprite < main.INTERACTIONDISTANCE:
                 if hunger == 100:
                     hunger = 100
@@ -269,7 +269,7 @@ class Sprite:
             p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
             p_sprite[0] -= p_speler[0]
             p_sprite[1] -= p_speler[1]
-            p_sprite = np.linalg.norm(p_sprite)
+            p_sprite = (p_sprite[0]**2 + p_sprite[1]**2)**0.5
             if p_sprite < main.INTERACTIONDISTANCE:
                 timeCycle = 0
                 playsound.playsound(main.GATESOUND, False)
@@ -283,7 +283,7 @@ class Sprite:
             p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
             p_sprite[0] -= p_speler[0]
             p_sprite[1] -= p_speler[1]
-            p_sprite = np.linalg.norm(p_sprite)
+            p_sprite = (p_sprite[0]**2 + p_sprite[1]**2)**0.5
             if self.d_speler < main.INTERACTIONDISTANCE:
                 hp -= self.DPS * delta
                 rendering.renderBlood(renderer, factory)
@@ -297,7 +297,7 @@ class Sprite:
             p_sprite = np.array([self.p_sprite[0], self.p_sprite[1]])
             p_sprite[0] -= p_speler[0]
             p_sprite[1] -= p_speler[1]
-            p_sprite = np.linalg.norm(p_sprite)
+            p_sprite = (p_sprite[0]**2 + p_sprite[1]**2)**0.5
             if p_sprite < 1:
                 type = ""
                 consum = False
