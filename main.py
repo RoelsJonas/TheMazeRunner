@@ -283,8 +283,6 @@ def main():
 
         for kolom in range(0, BREEDTE):
             r_straal = raycast.bereken_r_straal(r_speler, r_cameravlak, kolom)
-
-            r_straal = raycast.bereken_r_straal(r_speler, r_cameravlak, kolom)
             (d_muur, intersectie, horizontaal, z_buffer, door_map, texture) = raycast.raycast(p_speler, r_straal,
                                                                                               renderer, window, kolom,
                                                                                               textures, r_speler,
