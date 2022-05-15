@@ -349,7 +349,7 @@ def main():
                     elif (world_map[i_y, i_x] == 2 or world_map[i_y, i_x] == 3) and not (deur):
                         deur = True
                         z_buffer_nieuw = door_map[i_y, i_x].render(renderer, window, kolom,
-                                                                   d_muur, intersectie,
+                                                                   np.linalg.norm(intersectie - p_speler), intersectie,
                                                                    horizontaal, textures, r_straal, r_speler,
                                                                    timeCycle,
                                                                    z_buffer, p_speler, delta)
@@ -357,7 +357,7 @@ def main():
                             BREEDTE - 1 - kolom]:
                             z_buffer = z_buffer_nieuw
 
-            if z_buffer[BREEDTE - 1 - kolom] == 0 or z_buffer[BREEDTE - 1 - kolom] > d_muur:
+            if z_buffer[BREEDTE - 1 - kolom] == 0 or z_buffer[BREEDTE - 1 - kolom] > d_muur and not deur:
                 z_buffer[BREEDTE - 1 - kolom] = d_muur
                 rendering.render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, texture, r_straal,
                                        r_speler)
