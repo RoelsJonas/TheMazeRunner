@@ -6,10 +6,10 @@ import dramcontroller
 
 def bereken_r_straal(r_speler, r_cameravlak, kolom):
     r_straal_kolom = (float(main.D_CAMERA) * r_speler) + (
-                ((-1) + ((2 * float(kolom)) / 800.0)) * r_cameravlak)
+                ((-1) + ((2 * float(kolom)) / float(main.BREEDTE))) * r_cameravlak)
     norm = (r_straal_kolom[0]**2 + r_straal_kolom[1]**2)**0.5
     #r_straal = r_straal_kolom / np.linalg.norm(r_straal_kolom)
-    r_straal = r_straal_kolom / norm
+    r_straal = r_straal_kolom / ((r_straal_kolom[0]**2 + r_straal_kolom[1]**2)**0.5)
     return r_straal
 
 
@@ -72,14 +72,13 @@ def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, tim
         if world_map[i_y, i_x] != 0 and world_map[i_y, i_x] != 10:
             if world_map[i_y, i_x] == 1:
                 verschil = intersectie - p_speler
-                #d_muur = np.linalg.norm(intersectie - p_speler)  # np.sqrt(np.power(intersectie[0] - p_speler[0], 2) + np.power(intersectie[1] - p_speler[1], 2))
                 d_muur = (verschil[0]**2 + verschil[1]**2)**0.5
                 texture = wall_map[i_y, i_x].image
 
             elif (world_map[i_y, i_x] == 2 or world_map[i_y, i_x] == 3) and not (deur):
                 deur = True
                 z_buffer_nieuw = door_map[i_y, i_x].render(renderer, window, kolom,
-                                                           np.linalg.norm(intersectie - p_speler), intersectie,
+                                                           d_muur, intersectie,
                                                            horizontaal, textures, r_straal, r_speler, timeCycle,
                                                            z_buffer, p_speler, delta)
                 if z_buffer[BREEDTE - 1 - kolom] == 0 or z_buffer_nieuw[BREEDTE - 1 - kolom] < z_buffer[
