@@ -6,7 +6,7 @@ import dramcontroller
 
 def bereken_r_straal(r_speler, r_cameravlak, kolom):
     r_straal_kolom = (float(main.D_CAMERA) * r_speler) + (
-                ((-1) + ((2 * float(kolom)) / float(main.BREEDTE))) * r_cameravlak)
+                ((-1) + ((2 * float(kolom)) / 800.0)) * r_cameravlak)
     norm = (r_straal_kolom[0]**2 + r_straal_kolom[1]**2)**0.5
     #r_straal = r_straal_kolom / np.linalg.norm(r_straal_kolom)
     r_straal = r_straal_kolom / norm

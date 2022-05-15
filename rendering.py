@@ -661,6 +661,7 @@ def create_resources(renderer):
     hud = factory.from_image(resources.get_path("hud.png"))
     crosshair = factory.from_image(resources.get_path("crosshair.png"))
     dimmer = factory.from_image((resources.get_path("dimmer.png")))
+    dimmerFull = factory.from_image(resources.get_path("dimmerFull.png"))
     mist = factory.from_image((resources.get_path("tunnelVision.png")))
     stick = factory.from_image((resources.get_path("stick.png")))
     rock = factory.from_image((resources.get_path("rock.png")))
@@ -680,7 +681,7 @@ def create_resources(renderer):
     afbeeldingen_sprites.append(factory.from_image((resources.get_path("spellun-sprite.png"))))
 
     return (
-    resources, factory, ManagerFont, textures, hud, crosshair, dimmer, klokImages, mist, afbeeldingen_sprites, stick,
+    resources, factory, ManagerFont, textures, hud, crosshair, (dimmer, dimmerFull), klokImages, mist, afbeeldingen_sprites, stick,
     rock)
 
 
@@ -688,15 +689,15 @@ def dim_image(renderer, dimmer, timeCycle):
     if (main.DAGNACHTCYCLUSTIJD // 2) + 5 <= timeCycle <= ((main.DAGNACHTCYCLUSTIJD // 2) + 10):  # avond maken
         for i in range(int(timeCycle * 10 - ((
                                                      main.DAGNACHTCYCLUSTIJD // 2) + 5) * 10)):  # afhankelijk van timeCyclus bepaalde hoeveelheid dimmers toevoegen om langzaam donker te worden, term achter minteken is om offset te maken
-            renderer.copy(dimmer, srcrect=(0, 0, 1, 1), dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
+            renderer.copy(dimmer[0], srcrect=(0, 0, 1, 1), dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
 
     elif timeCycle > ((main.DAGNACHTCYCLUSTIJD // 2) + 10):  # nacht
-        for i in range(50):
-            renderer.copy(dimmer, srcrect=(0, 0, 1, 1), dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
+
+        renderer.copy(dimmer[1], srcrect=(0, 0, 1, 1), dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
 
     elif timeCycle <= 5:  # ochtend maken
         for i in range(int(50 - 10 * timeCycle)):
-            renderer.copy(dimmer, srcrect=(0, 0, 1, 1), dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
+            renderer.copy(dimmer[0], srcrect=(0, 0, 1, 1), dstrect=(0, 0, main.BREEDTE, main.HOOGTE))
 
 
 def render_inventory(renderer, factory, resources, muis_pos, equiplist, equiped, hp, hunger, stamina, highlighted,
