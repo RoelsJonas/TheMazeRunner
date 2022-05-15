@@ -8,7 +8,6 @@ import playsound
 import sys
 import settings
 import rendering
-import raycast
 import movement
 import sprites
 import winsound
