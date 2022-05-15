@@ -44,7 +44,7 @@ spawnLocations = [(139.5, 109.5),
 
 HUNGERMODIFIER = 0.15  # snelheid waarmee hunger daalt
 SPRINTINGHUNGERMODIFIER = 0.1  # snelheid waarmee hunger extra daal tijdens het sprinten
-STAMINALOSSMODIFIER = 5  # snelheid waarmee stamina verloren gaat tijdens sprinten
+STAMINALOSSMODIFIER = 2  # snelheid waarmee stamina verloren gaat tijdens sprinten
 STAMINAREGENMODIFIER = 3  # snelheid waarmee stamina regenereert
 HUNGERHPLOSSMODIFIER = 0.5  # snelheid waarmee hp verloren gaat wanneer hunger = 0
 CROSSHAIRGROOTTE = 26
@@ -58,7 +58,7 @@ GATESOUND = "GateSound.wav"
 WEAPONSOUND = "resources/swish_4.wav"
 GHOSTSOUND = "resources/ghost.wav"
 
-DAGNACHTCYCLUSTIJD = 120  # aantal seconden dat 1 dag nacht cyclus duurt
+DAGNACHTCYCLUSTIJD = 360  # aantal seconden dat 1 dag nacht cyclus duurt
 KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24  # om te weten om de hoeveel tijd de klok een uur moet opschuiven
 
 MUURHOOGTE = 1.5
