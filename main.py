@@ -1,7 +1,5 @@
-import cProfile
 import math
 import time
-import timeit
 import numpy as np
 import sdl2
 import sdl2.ext
@@ -60,7 +58,7 @@ GATESOUND = "GateSound.wav"
 WEAPONSOUND = "resources/swish_4.wav"
 GHOSTSOUND = "resources/ghost.wav"
 
-DAGNACHTCYCLUSTIJD = 240  # aantal seconden dat 1 dag nacht cyclus duurt
+DAGNACHTCYCLUSTIJD = 120  # aantal seconden dat 1 dag nacht cyclus duurt
 KLOKINTERVAL = DAGNACHTCYCLUSTIJD / 24  # om te weten om de hoeveel tijd de klok een uur moet opschuiven
 
 MUURHOOGTE = 1.5
@@ -225,7 +223,7 @@ def main():
                   crafts.Craftable(renderer, factory, resources, "spear.png", "STICK", "ROCK", "SPEAR", 25, 0, 0),
                   # combinatie van stick en rock wordt speer (damage van 10 ==> 17) (van 5 maal slaan naar 3 maal slaan voor monster te vermoorden)
                   ]
-    timeCycle = 50
+    timeCycle = 60.0
 
     winsound.PlaySound('resources/TownTheme.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
 
@@ -331,20 +329,19 @@ def main():
                 spriteList.remove(sprite)
 
         if timeCycle > (DAGNACHTCYCLUSTIJD // 2) + 10:
-            if sprite.d_speler <= 10:
-                for sprite in spriteListNacht:
-                    if sprite.d_speler <= 50:
-                        sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
-                    if (dramController.MIC < 200):
-                        sprite.moveToPlayer(p_speler, delta, world_map)
-                (hunger, hp, destroy, equiplist, timeCycle) = sprite.checkInteractie(hunger, hp, p_speler, delta,
-                                                                                     geklikt or dramController.detectMotion(),
-                                                                                     timeToAttack, pakOp, equiplist,
-                                                                                     equiped, factory, timeCycle,
-                                                                                     resources, renderer,
-                                                                                     dramController)
-                if destroy or timeCycle == 0:
-                    spriteListNacht.remove(sprite)
+            for sprite in spriteListNacht:
+                if sprite.d_speler <= 20:
+                    sprite.render(renderer, r_speler, r_cameravlak, p_speler, z_buffer)
+                if (dramController.MIC < 200):
+                    sprite.moveToPlayer(p_speler, delta, world_map)
+            (hunger, hp, destroy, equiplist, timeCycle) = sprite.checkInteractie(hunger, hp, p_speler, delta,
+                                                                                 geklikt or dramController.detectMotion(),
+                                                                                 timeToAttack, pakOp, equiplist,
+                                                                                 equiped, factory, timeCycle,
+                                                                                 resources, renderer,
+                                                                                 dramController)
+            if destroy or timeCycle == 0:
+                spriteListNacht.remove(sprite)
 
         if (geklikt or dramController.detectMotion()) and timeToAttack < 0 and equiplist[equiped] != None and equiplist[
             equiped].type in weaponList:
@@ -459,4 +456,4 @@ def main():
 
 
 if __name__ == '__main__':
-    cProfile.run("main()")
+    main()

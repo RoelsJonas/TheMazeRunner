@@ -15,8 +15,9 @@ def bereken_r_straal(r_speler, r_cameravlak, kolom):
 
 def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, timeCycle, z_buffer, door_map, world_map,
             delta, wall_map):
+    BREEDTE = main.BREEDTE
     d_muur = -1
-    intersectie = np.array([0, 0])
+    intersectie = [0, 0]
     horizontaal = True
     deur = False
     texture = ""
@@ -56,17 +57,17 @@ def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, tim
         if horizontaal:
             i_x = int(intersectie[0])
             if r_straal[1] < 0:
-                i_y = int(round(intersectie[1]))
+                i_y = int((intersectie[1]))
                 i_y -= 1
             else:
-                i_y = int(round(intersectie[1]))
+                i_y = int((intersectie[1]))
 
         else:
             i_y = int(intersectie[1])
             if r_straal[0] >= 0:
-                i_x = int(round(intersectie[0]))
+                i_x = int((intersectie[0]))
             else:
-                i_x = int(round(intersectie[0])) - 1
+                i_x = int((intersectie[0])) - 1
 
         if world_map[i_y, i_x] != 0 and world_map[i_y, i_x] != 10:
             if world_map[i_y, i_x] == 1:
@@ -81,8 +82,8 @@ def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, tim
                                                            np.linalg.norm(intersectie - p_speler), intersectie,
                                                            horizontaal, textures, r_straal, r_speler, timeCycle,
                                                            z_buffer, p_speler, delta)
-                if z_buffer[main.BREEDTE - 1 - kolom] == 0 or z_buffer_nieuw[main.BREEDTE - 1 - kolom] < z_buffer[
-                    main.BREEDTE - 1 - kolom]:
+                if z_buffer[BREEDTE - 1 - kolom] == 0 or z_buffer_nieuw[BREEDTE - 1 - kolom] < z_buffer[
+                    BREEDTE - 1 - kolom]:
                     z_buffer = z_buffer_nieuw
 
     return (d_muur, intersectie, horizontaal, z_buffer, door_map, texture)

@@ -46,7 +46,8 @@ def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokIma
 
 def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, texture, r_straal, r_speler):
     d_euclidisch = d_muur
-    d_muur = d_euclidisch * np.dot(r_speler, r_straal)
+    dot = r_speler[0] * r_straal[0] + r_speler[1] * r_straal[1]
+    d_muur = d_euclidisch * dot
 
     hoogte = main.MUURHOOGTE * (main.HOOGTE / d_muur)
     y1 = int((main.HOOGTE - hoogte) // 2) - main.HOOGTE//6
@@ -55,17 +56,19 @@ def render_kolom(renderer, window, kolom, d_muur, intersectie, horizontaal, text
 
     schermkolom = main.BREEDTE - 1 - kolom
     if horizontaal:
-        textuur_x = int(round((intersectie[0] - int(intersectie[0])) * texture.size[0]))
+        textuur_x = int(((intersectie[0] - int(intersectie[0])) * texture.size[0]))
     else:
-        textuur_x = int(round((intersectie[1] - int(intersectie[1])) * texture.size[0]))
+        textuur_x = int(((intersectie[1] - int(intersectie[1])) * texture.size[0]))
 
     renderer.copy(texture, srcrect=(textuur_x, textuur_y, 1, textuur_hoogte),
                   dstrect=(schermkolom, y1, 2, int(hoogte)))  # muur
 
 
 def render_lucht_en_vloer(renderer, timecycle):
-    renderer.fill((0, 0, main.BREEDTE, int(main.HOOGTE / 2) - 100), main.kleuren[11])
-    renderer.fill((0, main.HOOGTE, main.BREEDTE, int(-main.HOOGTE / 2 - 100)), main.kleuren[6])
+    HOOGTE = main.HOOGTE
+    BREEDTE = main.BREEDTE
+    renderer.fill((0, 0, BREEDTE, int(HOOGTE / 2) - 100), main.kleuren[11])
+    renderer.fill((0, HOOGTE, BREEDTE, int(-HOOGTE / 2 - 100)), main.kleuren[6])
 
 
 def render_StartScreen(renderer, factory, muis_pos, resources, dramController):
