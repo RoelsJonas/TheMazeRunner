@@ -21,10 +21,12 @@ selected_X_cross = 1
 def render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist, timeToAttack):
     offset = 0
     #renderer.fill((0, main.HOOGTE - 75, main.BREEDTE, main.HOOGTE), main.kleuren[5])
-    renderer.copy(hud, srcrect=(0, 0, 800, 75), dstrect=(offset, main.HOOGTE - main.HOOGTE//8, main.BREEDTE, main.HOOGTE//8))
+    renderer.copy(hud[0], srcrect=(0, 0, 800, 75), dstrect=(offset, main.HOOGTE - main.HOOGTE//8, main.BREEDTE, main.HOOGTE//8))
     renderer.fill((offset + 69, main.HOOGTE - 60, int(hp), 47), main.kleuren[10])
     renderer.fill((offset + 688, main.HOOGTE - 65, int(stamina), 22), main.kleuren[9])
     renderer.fill((offset + 688, main.HOOGTE - 35, int(hunger), 22), main.kleuren[8])
+
+    renderer.copy(hud[1], srcrect=(0, 0, 800, 75), dstrect=(offset, main.HOOGTE - main.HOOGTE//8, main.BREEDTE, main.HOOGTE//8))
 
     renderer.copy(crosshair, srcrect=(0, 0, 50, 50), dstrect=(
     (main.BREEDTE - main.CROSSHAIRGROOTTE) // 2, (main.HOOGTE - main.CROSSHAIRGROOTTE) // 2, main.CROSSHAIRGROOTTE,
@@ -641,7 +643,7 @@ def WinningScreen(renderer,factory):
     renderer.copy(Winning_render, dstrect=(main.BREEDTE // 2 - 400, main.HOOGTE // 2 - 100, 800, 100))
     renderer.copy(factory.from_text("Congratulations!", fontmanager=ManagerFont),
                   dstrect=(main.BREEDTE // 2 - 250, main.HOOGTE // 2, 500, 100))
-    renderer.present()
+    #renderer.present()
 
 def render_FPS(delta, renderer, factory, ManagerFont):
     text_ = "FPS:" + str(int(np.round(1 / delta)))
@@ -659,7 +661,8 @@ def create_resources(renderer):
     muur = factory.from_image(resources.get_path("wall-concrete1.png"))
     muur2 = factory.from_image(resources.get_path("metal.png"))
     craftingBench = factory.from_image(resources.get_path("craftingBench.png"))
-    hud = factory.from_image(resources.get_path("hud2.png"))
+    hud = factory.from_image(resources.get_path("hud.png"))
+    hud_bg = factory.from_image(resources.get_path("hud_bg.png"))
     crosshair = factory.from_image(resources.get_path("crosshair.png"))
     dimmer = factory.from_image((resources.get_path("dimmer.png")))
     dimmerFull = factory.from_image(resources.get_path("dimmerFull.png"))
@@ -682,7 +685,7 @@ def create_resources(renderer):
     afbeeldingen_sprites.append(factory.from_image((resources.get_path("spellun-sprite.png"))))
 
     return (
-    resources, factory, ManagerFont, textures, hud, crosshair, (dimmer, dimmerFull), klokImages, mist, afbeeldingen_sprites, stick,
+    resources, factory, ManagerFont, textures, (hud_bg, hud), crosshair, (dimmer, dimmerFull), klokImages, mist, afbeeldingen_sprites, stick,
     rock)
 
 

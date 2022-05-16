@@ -304,9 +304,12 @@ class interactableDoor:
                     if (answer != self.passCode and answer != ""):
                         waitingTime = time.time()
                         wrongText = factory.from_text("Wrong!", fontmanager=ManagerFont)
-                        if hp >= 21.0:
+                        if hp >= 21.0 and not tookDamage:
                             hp -= 20.0
+                            tookDamage = True
                         dramco.mapHealth(hp)
+                    if answer == "":
+                        tookDamage = False
                     if time.time() - waitingTime < 1:
                         renderer.copy(wrongText, dstrect=(main.BREEDTE // 2 - 100, 400, 200, 100))
 

@@ -487,8 +487,7 @@ def main():
             playsound.playsound(GAMEOVERSOUND, True)
             moet_afsluiten = True
 
-        if world_map[int(p_speler[1]), int(p_speler[0])] == 10:
-            rendering.WinningScreen(renderer,factory)
+
 
         rendering.dim_image(renderer, dimmer, timeCycle)
         rendering.render_hud(renderer, hud, stamina, hp, hunger, crosshair, timeCycle, klokImages, equiped, equiplist,
@@ -497,6 +496,8 @@ def main():
         consumableText.renderText(delta, renderer, factory)
         completionText.renderText(delta, renderer, factory)
         rendering.render_FPS(delta, renderer, factory, ManagerFont)
+        if world_map[int(p_speler[1]), int(p_speler[0])] == 10:
+            rendering.WinningScreen(renderer, factory)
         renderer.present()
 
         # print("Total frame time", (time.time() - frameStartTime))
