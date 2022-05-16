@@ -148,7 +148,7 @@ def main():
     dramController = dramcontroller.DramController()
 
     # Maak een venster aan om de game te renderen
-    window = sdl2.ext.Window("The Maze Runner", size=(BREEDTE, HOOGTE), flags=sdl2.SDL_WINDOW_FULLSCREEN_DESKTOP)
+    window = sdl2.ext.Window("The Maze Runner", size=(BREEDTE, HOOGTE), flags=sdl2.SDL_WINDOW_FULLSCREEN)
     window.show()
 
 
