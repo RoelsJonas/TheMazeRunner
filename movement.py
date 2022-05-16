@@ -93,8 +93,13 @@ def polling(delta, p_speler, r_speler, r_cameravlak, stamina, hunger, equiped, d
 
     if key_states[sdl2.SDL_SCANCODE_L]:
         hp = 100
+
     if key_states[sdl2.SDL_SCANCODE_N]:
         hp = 0
+
+    if key_states[sdl2.SDL_SCANCODE_O]:
+        p_speler = np.array([151.5, 137.5])
+
     if equipedcounter >= 5:
         if (dramController.buttonBlue == 1):
             if (equiped == 3):

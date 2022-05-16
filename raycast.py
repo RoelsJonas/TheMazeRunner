@@ -77,8 +77,6 @@ def raycast(p_speler, r_straal, renderer, window, kolom, textures, r_speler, tim
 
             elif (world_map[i_y, i_x] == 2 or world_map[i_y, i_x] == 3) and not (deur):
                 deur = True
-                verschil = intersectie - p_speler
-                d_muur = (verschil[0]**2 + verschil[1]**2)**0.5
                 z_buffer_nieuw = door_map[i_y, i_x].render(renderer, window, kolom,
                                                            d_muur, intersectie,
                                                            horizontaal, textures, r_straal, r_speler, timeCycle,

@@ -222,7 +222,7 @@ def main():
                   crafts.Craftable(renderer, factory, resources, "spear.png", "STICK", "ROCK", "SPEAR", 25, 0, 0),
                   # combinatie van stick en rock wordt speer (damage van 10 ==> 17) (van 5 maal slaan naar 3 maal slaan voor monster te vermoorden)
                   ]
-    timeCycle = 60.0
+    timeCycle = 200.0
 
     winsound.PlaySound('resources/TownTheme.wav', winsound.SND_ASYNC | winsound.SND_LOOP)
 
